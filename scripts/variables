@@ -1,0 +1,21 @@
+#!/bin/bash
+
+. ./scripts/os
+
+export dbUser=$("$GREP" -Po 'DB_USER=\K.*$' ./db/.env 2>/dev/null)
+if [ -z "$dbUser" ]
+then
+    echo 'Enter a username for the database.'
+    read -p 'Username: ' dbUser
+    export dbUser
+fi
+
+export password=$("$GREP" -Po 'DB_PASSWORD=\K.*$' ./db/.env 2>/dev/null)
+if [ -z "$password" ]
+then
+    # Generate a random password that satisfies password requirements.
+    echo 'A password is randomly being generated.'
+    password=$(date +%s | sha256sum | base64 | head -c 29)A8!
+    echo "Your generated password is: $password"
+    export password
+fi

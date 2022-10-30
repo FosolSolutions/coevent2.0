@@ -1,0 +1,11 @@
+{
+  "git.ignoreLimitWarning": true,
+  "yaml.schemas": {
+    "kubernetes": "kubernetes.yml",
+    "http://json.schemastore.org/appveyor": "appveyor.yml",
+    "https://json.schemastore.org/github-workflow": "/.github/workflows/**/*.yml",
+    "https://raw.githubusercontent.com/garethr/openshift-json-schema/master/v4.1.0/_definitions.json": "./openshift/**/*.yaml",
+  },
+  "yaml.schemaStore.enable": false,
+  "java.configuration.updateBuildConfiguration": "interactive"
+}

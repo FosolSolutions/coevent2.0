@@ -1,0 +1,45 @@
+version: '3.5'
+
+services:
+  database:
+    image: coevent:database
+    profiles:
+      - all
+    restart: "no"
+    container_name: ce-database
+    build:
+      context: db
+    env_file:
+      - db/.env
+    ports:
+      - ${DATABASE_PORT:-30000}:1433
+    volumes:
+      - coevent-database:/var/opt/mssql
+    networks:
+      - coevent
+      
+  api:
+    image: coevent:api
+    profiles:
+      - all
+    restart: "no"
+    container_name: ce-api
+    build:
+      context: backend
+      dockerfile: api/Dockerfile
+    env_file:
+      - backend/api/.env
+    ports:
+      - ${API_HTTP_PORT:-30001}:8080
+      - ${API_HTTPS_PORT:-30002}:8443
+    networks:
+      - coevent
+
+networks:
+  coevent:
+    name: ce-net
+    driver: bridge
+
+volumes:
+  coevent-database:
+    name: ce-database
