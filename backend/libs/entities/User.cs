@@ -3,7 +3,7 @@ namespace CoEvent.Entities;
 /// <summary>
 /// 
 /// </summary>
-public class User
+public class User : AuditColumns
 {
   #region Properties
   /// <summary>

@@ -1,6 +1,7 @@
 using System.Text;
 using CoEvent.API.Authentication;
 using CoEvent.API.Config;
+using CoEvent.Core.Encryption;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
@@ -16,6 +17,7 @@ public static class AuthenticationExtensions
   /// </summary>
   public static IServiceCollection AddCoEventAuthentication(this IServiceCollection services, IConfiguration configuration)
   {
+    services.AddSingleton<IHashPassword, HashPassword>();
     services.AddScoped<IAuthenticator, Authenticator>();
     services.Configure<CoEventAuthenticationOptions>(configuration.GetSection("Authentication"));
     var config = configuration.GetSection("Authentication").Get<CoEventAuthenticationOptions>();

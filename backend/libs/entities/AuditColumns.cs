@@ -31,7 +31,7 @@ public abstract class AuditColumns
   /// <summary>
   /// 
   /// </summary>
-  public byte[]? RowVersion { get; set; }
+  public byte[]? Version { get; set; }
   #endregion
 
   #region Constructors

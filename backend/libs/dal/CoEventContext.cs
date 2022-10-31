@@ -6,6 +6,8 @@ using Microsoft.Extensions.Options;
 using System.Text.Json;
 using CoEvent.Entities;
 using CoEvent.Core.Extensions;
+using CoEvent.DAL.Extensions;
+using CoEvent.DAL.Configuration;
 
 /// <summary>
 /// 
@@ -71,8 +73,9 @@ public class CoEventContext : DbContext
   #endregion
 
   #region Methods
+
   /// <summary>
-  /// 
+  /// Configures the DbContext with the specified options.
   /// </summary>
   /// <param name="optionsBuilder"></param>
   protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -86,12 +89,12 @@ public class CoEventContext : DbContext
   }
 
   /// <summary>
-  /// 
+  /// Apply all the configuration settings to the model.
   /// </summary>
   /// <param name="modelBuilder"></param>
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
-    modelBuilder.ApplyConfigurationsFromAssembly(typeof(CoEventContext).Assembly);
+    modelBuilder.ApplyAllConfigurations(typeof(UserConfiguration), this);
   }
 
   /// <summary>
@@ -121,6 +124,51 @@ public class CoEventContext : DbContext
       }
     }
     return base.SaveChanges();
+  }
+
+  /// <summary>
+  /// Wrap the save changes in a transaction for rollback.
+  /// </summary>
+  /// <returns></returns>
+  public int CommitTransaction()
+  {
+    var result = 0;
+    using (var transaction = this.Database.BeginTransaction())
+    {
+      try
+      {
+        result = this.SaveChanges();
+        transaction.Commit();
+      }
+      catch (DbUpdateException)
+      {
+        transaction.Rollback();
+        throw;
+      }
+    }
+    return result;
+  }
+
+  /// <summary>
+  /// Deserialize the specified 'json' to the specified type of 'T'.
+  /// </summary>
+  /// <typeparam name="T"></typeparam>
+  /// <param name="json"></param>
+  /// <returns></returns>
+  public T? Deserialize<T>(string json)
+  {
+    return JsonSerializer.Deserialize<T>(json, _serializerOptions);
+  }
+
+  /// <summary>
+  /// Serialize the specified 'item'.
+  /// </summary>
+  /// <typeparam name="T"></typeparam>
+  /// <param name="item"></param>
+  /// <returns></returns>
+  public string Serialize<T>(T item)
+  {
+    return JsonSerializer.Serialize(item, _serializerOptions);
   }
   #endregion
 }

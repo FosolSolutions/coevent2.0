@@ -1,11 +1,11 @@
-namespace CoEvent.DAL.Services.Interfaces;
+namespace CoEvent.UoW;
 
 using CoEvent.Entities;
 
 /// <summary>
 /// 
 /// </summary>
-public interface IUserService : IBaseService<User>
+public interface IUserService : IBaseService<User, int>
 {
   /// <summary>
   /// 

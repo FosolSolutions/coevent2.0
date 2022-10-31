@@ -1,5 +1,7 @@
 using System.Text.Json.Serialization;
 using CoEvent.API.Config;
+using CoEvent.API.Extensions;
+using CoEvent.API.Middleware;
 using CoEvent.Core.Extensions;
 using CoEvent.Swagger;
 
@@ -21,6 +23,7 @@ builder.Services.AddControllers()
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
   });
 builder.Services.AddSwaggerDocs();
+builder.Services.AddCoEventAuthentication(config);
 
 // *****************************************
 // Application 
@@ -34,7 +37,15 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UsePathBase(config.GetValue<string>("BaseUrl"));
+
+app.UseMiddleware(typeof(ErrorHandlingMiddleware));
+app.UseMiddleware(typeof(ResponseTimeMiddleware));
 // app.UseHttpsRedirection();
+
+app.UseMiddleware(typeof(LogRequestMiddleware));
+
+app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapControllers();
 app.Run();
