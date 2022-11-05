@@ -10,4 +10,8 @@
     <AssemblyVersion>0.0.0.1</AssemblyVersion>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\core\CoEvent.Core.csproj" />
+  </ItemGroup>
+
 </Project>

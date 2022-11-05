@@ -54,15 +54,13 @@ done
 # handle non-option arguments
 if [[ $# -ne 1 ]]; then
   # If the parameters for 'service' and 'profile' are empty, then default to second argument.
-  if [ -z "$s" ] && [ -z "$p" ] && [ ! -z "$2" ]; then
+  if [ -z "$s" ] && [ -z "$p" ] && [ ! -z "${2-}" ]; then
     s=$2
   fi
-  echo "service=$s"
+  # if [ ! -z "$s" ]; then echo "service=$s"; fi
   # Invalid arguments provided
   # echo "$0: A single input file is required."
   # exit 4
 fi
-
-
 
 # echo "arguments: service: $s, profile: $p"

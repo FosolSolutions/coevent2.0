@@ -3,18 +3,22 @@ namespace CoEvent.Entities;
 /// <summary>
 /// 
 /// </summary>
-public enum UserType
+public enum UserStatus
 {
   /// <summary>
   /// 
   /// </summary>
-  Participant = 0,
+  Registered = 0,
   /// <summary>
   /// 
   /// </summary>
-  User = 1,
+  Preapproved = 1,
   /// <summary>
   /// 
   /// </summary>
-  SystemAccount = 2,
+  Approved = 2,
+  /// <summary>
+  /// 
+  /// </summary>
+  Denied = 3
 }

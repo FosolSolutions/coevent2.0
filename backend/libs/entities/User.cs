@@ -9,7 +9,6 @@ public class User : AuditColumns
   /// <summary>
   /// 
   /// </summary>
-
   public long Id { get; set; }
 
   /// <summary>
@@ -21,6 +20,11 @@ public class User : AuditColumns
   /// 
   /// </summary>
   public string Email { get; set; } = "";
+
+  /// <summary>
+  /// 
+  /// </summary>
+  public bool EmailVerified { get; set; }
 
   /// <summary>
   /// 
@@ -55,7 +59,7 @@ public class User : AuditColumns
   /// <summary>
   /// 
   /// </summary>
-  public bool IsDisabled { get; set; }
+  public bool IsEnabled { get; set; }
 
   /// <summary>
   /// 
@@ -70,11 +74,26 @@ public class User : AuditColumns
   /// <summary>
   /// 
   /// </summary>
-  public bool IsVerified { get; set; }
+  public UserStatus Status { get; set; }
+
+  /// <summary>
+  /// 
+  /// </summary>
+  public DateTime? LastLoginOn { get; set; }
 
   /// <summary>
   /// 
   /// </summary>
   public DateTime? VerifiedOn { get; set; }
+
+  /// <summary>
+  /// 
+  /// </summary>
+  public virtual ICollection<Role> Roles { get; set; } = new List<Role>();
+
+  /// <summary>
+  /// 
+  /// </summary>
+  public virtual ICollection<UserRole> RolesManyToMany { get; set; } = new List<UserRole>();
   #endregion
 }

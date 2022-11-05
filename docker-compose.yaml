@@ -12,7 +12,7 @@ services:
     env_file:
       - db/.env
     ports:
-      - ${DATABASE_PORT:-30000}:1433
+      - ${DB_PORT:-30000}:1433
     volumes:
       - coevent-database:/var/opt/mssql
     networks:

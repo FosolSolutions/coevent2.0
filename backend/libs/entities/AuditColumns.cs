@@ -1,6 +1,8 @@
 namespace CoEvent.Entities;
 
 using System;
+using System.Security.Claims;
+using CoEvent.Core.Extensions;
 
 /// <summary>
 /// 
@@ -54,6 +56,18 @@ public abstract class AuditColumns
     this.CreatedBy = createdBy;
     this.UpdatedOn = new DateTime();
     this.UpdatedBy = createdBy;
+  }
+  #endregion
+
+  #region Methods
+  /// <summary>
+  /// Update the audit columns.
+  /// </summary>
+  /// <param name="user"></param>
+  public void OnModified(ClaimsPrincipal? user)
+  {
+    this.UpdatedBy = user?.GetUsername() ?? "";
+    this.UpdatedOn = DateTime.UtcNow;
   }
   #endregion
 }

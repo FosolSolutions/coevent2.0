@@ -3,7 +3,6 @@ namespace CoEvent.API.Authentication;
 using System.Security.Claims;
 using System.Text;
 using CoEvent.API.Config;
-using CoEvent.DAL.Services.Interfaces;
 using Entities = CoEvent.Entities;
 using Microsoft.Extensions.Options;
 using CoEvent.API.Models.Tokens;
@@ -12,6 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using CoEvent.DAL.Security;
 using CoEvent.Core.Encryption;
+using CoEvent.UoW;
 
 /// <summary>
 /// Authenticator class, provides a way to authenticate users.

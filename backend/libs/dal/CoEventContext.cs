@@ -23,7 +23,6 @@ public class CoEventContext : DbContext
   // public virtual DbSet<Account> Accounts { get; set; } = null!;
   // public virtual DbSet<Application> Applications { get; set; } = null!;
   // public virtual DbSet<Calendar> Calendars { get; set; } = null!;
-  // public virtual DbSet<Claim> Claims { get; set; } = null!;
   // public virtual DbSet<Criteria> Criterias { get; set; } = null!;
   // public virtual DbSet<CriteriaTrait> CriteriaTraits { get; set; } = null!;
   // public virtual DbSet<Event> Events { get; set; } = null!;
@@ -32,8 +31,6 @@ public class CoEventContext : DbContext
   // public virtual DbSet<OpeningCriteria> OpeningCriterias { get; set; } = null!;
   // public virtual DbSet<OpeningOccurrence> OpeningOccurrences { get; set; } = null!;
   // public virtual DbSet<Participant> Participants { get; set; } = null!;
-  // public virtual DbSet<RoleClaim> RoleClaims { get; set; } = null!;
-  // public virtual DbSet<Role> Roles { get; set; } = null!;
   // public virtual DbSet<Schedule> Schedules { get; set; } = null!;
   // public virtual DbSet<Survey> Surveys { get; set; } = null!;
   // public virtual DbSet<SurveyQuestion> SurveyQuestions { get; set; } = null!;
@@ -45,7 +42,26 @@ public class CoEventContext : DbContext
   /// 
   /// </summary>
   public virtual DbSet<User> Users { get; set; } = null!;
-  // public virtual DbSet<UserRole> UserRoles { get; set; } = null!;
+
+  /// <summary>
+  /// 
+  /// </summary>
+  public virtual DbSet<UserRole> UserRoles { get; set; } = null!;
+
+  /// <summary>
+  /// 
+  /// </summary>
+  public virtual DbSet<Role> Roles { get; set; } = default!;
+
+  /// <summary>
+  /// 
+  /// </summary>
+  public virtual DbSet<RoleClaim> RoleClaims { get; set; } = default!;
+
+  /// <summary>
+  /// 
+  /// </summary>
+  public virtual DbSet<Claim> Claims { get; set; } = default!;
   #endregion
 
   #region Constructors

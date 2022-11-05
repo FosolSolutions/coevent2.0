@@ -66,7 +66,6 @@ public abstract class BaseService<TEntity, TKey> : BaseService, IBaseService<TEn
 
     this.Context.Entry(entity).State = EntityState.Added;
     this.Context.Add(entity);
-    this.Context.UpdateCache<TEntity>();
 
     this.Context.CommitTransaction();
     return entity;
@@ -93,7 +92,6 @@ public abstract class BaseService<TEntity, TKey> : BaseService, IBaseService<TEn
       {
         this.Context.Entry(original).CurrentValues.SetValues(entity);
         this.Context.Update(original);
-        this.Context.UpdateCache<TEntity>();
         this.Context.CommitTransaction();
         return (original as TEntity)!;
       }
@@ -101,7 +99,6 @@ public abstract class BaseService<TEntity, TKey> : BaseService, IBaseService<TEn
 
     entry.State = EntityState.Modified;
     this.Context.Update(entity);
-    this.Context.UpdateCache<TEntity>();
     this.Context.CommitTransaction();
     return entity;
   }
@@ -117,7 +114,6 @@ public abstract class BaseService<TEntity, TKey> : BaseService, IBaseService<TEn
 
     this.Context.Entry(entity).State = EntityState.Deleted;
     this.Context.Remove(entity);
-    this.Context.UpdateCache<TEntity>();
 
     this.Context.CommitTransaction();
   }

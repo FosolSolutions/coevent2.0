@@ -63,9 +63,10 @@ public class CoEventContextFactory : IDesignTimeDbContextFactory<CoEventContext>
     // Build connection string. This requires that you have a connectionstring in the appsettings.json
     var cs = configuration.GetConnectionString("DefaultConnection");
     var sqlBuilder = new SqlConnectionStringBuilder(cs);
-    sqlBuilder.DataSource = !String.IsNullOrWhiteSpace(sqlBuilder.DataSource) ? sqlBuilder.DataSource : configuration["DB_ADDR"];
-    sqlBuilder.UserID = !String.IsNullOrWhiteSpace(sqlBuilder.UserID) ? sqlBuilder.UserID : configuration["DB_USER"];
+    if (String.IsNullOrWhiteSpace(sqlBuilder.DataSource) && !String.IsNullOrWhiteSpace(configuration["DB_ADDR"]))
+      sqlBuilder.DataSource = configuration["DB_ADDR"];
     sqlBuilder.InitialCatalog = !String.IsNullOrWhiteSpace(sqlBuilder.InitialCatalog) ? sqlBuilder.InitialCatalog : configuration["DB_NAME"];
+    sqlBuilder.UserID = !String.IsNullOrWhiteSpace(sqlBuilder.UserID) ? sqlBuilder.UserID : configuration["DB_USER"];
     sqlBuilder.Password = !String.IsNullOrWhiteSpace(sqlBuilder.Password) ? sqlBuilder.Password : configuration["DB_PASSWORD"];
 
     FactorySettings.DefaultPassword = !String.IsNullOrWhiteSpace(configuration["DEFAULT_PASSWORD"]) ? configuration["DEFAULT_PASSWORD"] : throw new Exception("Configuration 'DEFAULT_PASSWORD' is required.");
