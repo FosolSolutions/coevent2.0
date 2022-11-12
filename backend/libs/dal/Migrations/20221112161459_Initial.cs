@@ -51,6 +51,7 @@ namespace CoEvent.DAL.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Key = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     AccountType = table.Column<int>(type: "int", nullable: false),
                     OwnerId = table.Column<long>(type: "bigint", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
@@ -209,6 +210,12 @@ namespace CoEvent.DAL.Migrations
                 name: "IX_Account_AccountType_OwnerId_Name",
                 table: "Account",
                 columns: new[] { "AccountType", "OwnerId", "Name" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Account_Key",
+                table: "Account",
+                column: "Key",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Account_Name",

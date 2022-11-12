@@ -7,7 +7,15 @@ export interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /**
    * The styled variant.
    */
-  variant?: ButtonVariant;
+  variant?:
+    | ButtonVariant
+    | 'primary'
+    | 'secondary'
+    | 'success'
+    | 'info'
+    | 'warning'
+    | 'danger'
+    | 'link';
   /**
    * The tooltip to show on hover.
    */

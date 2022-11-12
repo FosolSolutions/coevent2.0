@@ -3,6 +3,7 @@ import '@szhsin/react-menu/dist/transitions/slide.css';
 
 import { Menu } from '@szhsin/react-menu';
 import { usePadlock } from 'hooks';
+import { FaHome } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
 import { MenuLink } from '.';
@@ -14,6 +15,9 @@ export const HomeMenu = () => {
 
   return account.authenticated ? (
     <styled.Menu>
+      <styled.HomeButton onClick={() => navigate('/')} title="home">
+        <FaHome />
+      </styled.HomeButton>
       <styled.MenuButton onClick={() => navigate('/calendar')}>Calendar</styled.MenuButton>
       <Menu menuButton={<styled.MenuButton>Schedules</styled.MenuButton>} transition>
         <MenuLink to="/schedule">Victoria Ecclesia</MenuLink>

@@ -21,9 +21,7 @@ export const UserMenu = () => {
   return auth.authenticated ? (
     <styled.UserMenu>
       <div>{auth.userInfo?.displayName}</div>
-      <div>
-        <LogoutButton onClick={() => auth.logout()} size={20} />
-      </div>
+      <LogoutButton onClick={() => auth.logout()} size={20} title="Logout" />
     </styled.UserMenu>
   ) : !isLoginPage ? (
     <Button variant={ButtonVariant.warning} onClick={() => navigate('/login')}>

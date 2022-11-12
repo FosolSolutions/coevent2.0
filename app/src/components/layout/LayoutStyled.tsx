@@ -13,9 +13,17 @@ export const Layout = styled.div`
     flex-grow: 1;
   }
 
+  header {
+    padding: 0.5em;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 1em;
+    justify-content: flex-end;
+  }
+
   main {
     flex-grow: 1;
-    padding: 10px;
     overflow: auto;
     position: relative;
   }

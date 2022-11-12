@@ -2,13 +2,12 @@ import './index.scss';
 
 import { AppRouter, Layout } from 'components';
 import { PadlockProvider, Settings } from 'hooks';
-import React from 'react';
 import { CookiesProvider } from 'react-cookie';
 import { BrowserRouter } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
 
 function App() {
-  const name = 'Coevent';
+  const name = 'CoEvent';
 
   return (
     <CookiesProvider>

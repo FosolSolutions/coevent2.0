@@ -3,7 +3,7 @@ namespace CoEvent.Models;
 /// <summary>
 /// 
 /// </summary>
-public class UserModel
+public class UserModel : AuditColumnsModel
 {
 
 }

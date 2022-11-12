@@ -1,8 +1,9 @@
 import { MenuButton as MB } from '@szhsin/react-menu';
 import styled from 'styled-components';
 
-export const MenuButton = styled(MB)`
+export const HomeButton = styled(MB)`
   color: inherit;
+  background-color: transparent;
   cursor: pointer;
   font-size: 1rem;
   font-weight: 500;
@@ -20,7 +21,6 @@ export const MenuButton = styled(MB)`
   }
 
   &:active {
-    color: ${(props) => props.theme.css.light};
     background-color: ${(props) => props.theme.css.primaryColorRgb};
   }
 `;

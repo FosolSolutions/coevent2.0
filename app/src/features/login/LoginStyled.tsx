@@ -2,31 +2,18 @@ import styled from 'styled-components';
 
 export const Login = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex-wrap: nowrap;
   justify-content: center;
   align-content: center;
   align-items: center;
-  height: 100%;
+  gap: 1em;
 
-  > div:first-child {
-    display: flex;
-    flex-direction: row;
-    flex-flow: wrap;
-    align-items: stretch;
-    gap: 1em;
-    border-radius: 0.5rem;
-    background: white;
-    padding: 1rem;
-    height: max-content;
-    max-width: 60ch;
+  & > div:first-child {
+    text-align: center;
 
-    > * {
-      flex: 1 0 100%;
-
-      p {
-        text-align: center;
-      }
+    p {
+      margin: 0.5em;
     }
   }
 

@@ -20,8 +20,10 @@ body, button, input, textarea {
   -moz-osx-font-smoothing: grayscale;
 }
 
-header {
-  font-size: 2em;
+main {
+  display: flex;
+  flex-direction: row;
+  align-self: center;
 }
 
 #root {
@@ -48,19 +50,6 @@ ul {
 
 *, *::before, *::after {
   box-sizing: border-box;
-}
-
-// *************************************************
-// Global
-// *************************************************
-
-.App {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
 }
 
 // *************************************************

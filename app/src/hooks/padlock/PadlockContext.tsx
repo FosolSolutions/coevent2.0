@@ -42,7 +42,7 @@ export const PadlockProvider: React.FC<IPadlockProviderProps> = ({
   authenticated: initAuthenticated = false,
   token: initToken,
   userInfo: initUserInfo,
-  baseApiUrl = 'api/',
+  baseApiUrl = '/api',
   autoRefreshToken,
   loginPath,
   children,

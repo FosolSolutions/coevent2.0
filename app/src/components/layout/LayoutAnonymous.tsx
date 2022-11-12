@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Footer, Header, Loading } from '..';
+import { Loading } from '..';
 import * as styled from './LayoutStyled';
 
 interface ILayoutAnonymousProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -20,14 +20,12 @@ export const LayoutAnonymous: React.FC<ILayoutAnonymousProps> = ({ name, childre
 
   return (
     <styled.Layout {...rest}>
-      <Header name={name} />
       <div className="main-window">
         <main>
           {children}
           {isLoading && <Loading />}
         </main>
       </div>
-      <Footer />
     </styled.Layout>
   );
 };

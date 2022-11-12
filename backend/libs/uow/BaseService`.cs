@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using CoEvent.Entities;
 using CoEvent.DAL;
+using CoEvent.Entities.Models;
+using CoEvent.DAL.Extensions;
 
 namespace CoEvent.UoW;
 
@@ -35,9 +37,30 @@ public abstract class BaseService<TEntity, TKey> : BaseService, IBaseService<TEn
   /// <summary>
   /// 
   /// </summary>
+  /// <param name="filter"></param>
+  /// <returns></returns>
+  public virtual Paging<TEntity> Find(PageFilter filter)
+  {
+    var query = this.Context.Set<TEntity>().AsQueryable();
+    var total = query.Count();
+
+    if (filter.Sort?.Any() == true)
+      query = query.OrderByProperty(filter.Sort);
+
+    var items = query
+      .AsNoTracking()
+      .Skip(filter.Skip)
+      .Take(filter.Quantity)
+      .ToArray();
+
+    return new Paging<TEntity>(filter, items, total);
+  }
+
+  /// <summary>
+  /// 
+  /// </summary>
   /// <param name="key"></param>
   /// <returns></returns>
-
   public virtual TEntity? FindByKey(params object[] key)
   {
     return this.Context.Find<TEntity>(key);
@@ -65,7 +88,18 @@ public abstract class BaseService<TEntity, TKey> : BaseService, IBaseService<TEn
 
     this.Context.Entry(entity).State = EntityState.Added;
     this.Context.Add(entity);
+    return entity;
+  }
 
+  /// <summary>
+  /// 
+  /// </summary>
+  /// <param name="entity"></param>
+  /// <returns></returns>
+  /// <exception cref="ArgumentNullException"></exception>
+  public virtual TEntity AddAndSave(TEntity entity)
+  {
+    Add(entity);
     this.Context.CommitTransaction();
     return entity;
   }
@@ -91,13 +125,24 @@ public abstract class BaseService<TEntity, TKey> : BaseService, IBaseService<TEn
       {
         this.Context.Entry(original).CurrentValues.SetValues(entity);
         this.Context.Update(original);
-        this.Context.CommitTransaction();
         return (original as TEntity)!;
       }
     }
 
     entry.State = EntityState.Modified;
     this.Context.Update(entity);
+    return entity;
+  }
+
+  /// <summary>
+  /// 
+  /// </summary>
+  /// <param name="entity"></param>
+  /// <returns></returns>
+  /// <exception cref="ArgumentNullException"></exception>
+  public virtual TEntity UpdateAndSave(TEntity entity)
+  {
+    entity = Update(entity);
     this.Context.CommitTransaction();
     return entity;
   }
@@ -113,7 +158,16 @@ public abstract class BaseService<TEntity, TKey> : BaseService, IBaseService<TEn
 
     this.Context.Entry(entity).State = EntityState.Deleted;
     this.Context.Remove(entity);
+  }
 
+  /// <summary>
+  /// 
+  /// </summary>
+  /// <param name="entity"></param>
+  /// <exception cref="ArgumentNullException"></exception>
+  public virtual void DeleteAndSave(TEntity entity)
+  {
+    Delete(entity);
     this.Context.CommitTransaction();
   }
   #endregion

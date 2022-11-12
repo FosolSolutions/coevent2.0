@@ -20,48 +20,55 @@ public class CoEventContext : DbContext
   #endregion
 
   #region Properties
-  // public virtual DbSet<Account> Accounts { get; set; } = null!;
-  // public virtual DbSet<Application> Applications { get; set; } = null!;
-  // public virtual DbSet<Calendar> Calendars { get; set; } = null!;
-  // public virtual DbSet<Criteria> Criterias { get; set; } = null!;
-  // public virtual DbSet<CriteriaTrait> CriteriaTraits { get; set; } = null!;
-  // public virtual DbSet<Event> Events { get; set; } = null!;
-  // public virtual DbSet<EventOccurrence> EventOccurrences { get; set; } = null!;
-  // public virtual DbSet<Opening> Openings { get; set; } = null!;
-  // public virtual DbSet<OpeningCriteria> OpeningCriterias { get; set; } = null!;
-  // public virtual DbSet<OpeningOccurrence> OpeningOccurrences { get; set; } = null!;
-  // public virtual DbSet<Participant> Participants { get; set; } = null!;
-  // public virtual DbSet<Schedule> Schedules { get; set; } = null!;
-  // public virtual DbSet<Survey> Surveys { get; set; } = null!;
-  // public virtual DbSet<SurveyQuestion> SurveyQuestions { get; set; } = null!;
-  // public virtual DbSet<Trait> Traits { get; set; } = null!;
-  // public virtual DbSet<UserAccount> UserAccounts { get; set; } = null!;
-  // public virtual DbSet<UserClaim> UserClaims { get; set; } = null!;
-
   /// <summary>
-  /// 
+  /// get/set - Table of accounts.
   /// </summary>
-  public virtual DbSet<User> Users { get; set; } = null!;
+  public virtual DbSet<Account> Accounts { get; set; } = default!;
 
   /// <summary>
-  /// 
+  /// get/set - Table of users.
   /// </summary>
-  public virtual DbSet<UserRole> UserRoles { get; set; } = null!;
+  public virtual DbSet<User> Users { get; set; } = default!;
 
   /// <summary>
-  /// 
+  /// get/set - Table of user accounts.
+  /// </summary>
+  public virtual DbSet<UserAccount> UserAccounts { get; set; } = default!;
+
+  /// <summary>
+  /// get/set - Table of user roles.
+  /// </summary>
+  public virtual DbSet<UserRole> UserRoles { get; set; } = default!;
+
+  /// <summary>
+  /// get/set - Table of roles.
   /// </summary>
   public virtual DbSet<Role> Roles { get; set; } = default!;
 
   /// <summary>
-  /// 
+  /// get/set - Table of role claims.
   /// </summary>
   public virtual DbSet<RoleClaim> RoleClaims { get; set; } = default!;
 
   /// <summary>
-  /// 
+  /// get/set - Table of claims.
   /// </summary>
   public virtual DbSet<Claim> Claims { get; set; } = default!;
+
+  // public virtual DbSet<Application> Applications { get; set; } = default!;
+  // public virtual DbSet<Calendar> Calendars { get; set; } = default!;
+  // public virtual DbSet<Criteria> Criterias { get; set; } = default!;
+  // public virtual DbSet<CriteriaTrait> CriteriaTraits { get; set; } = default!;
+  // public virtual DbSet<Event> Events { get; set; } = default!;
+  // public virtual DbSet<EventOccurrence> EventOccurrences { get; set; } = default!;
+  // public virtual DbSet<Opening> Openings { get; set; } = default!;
+  // public virtual DbSet<OpeningCriteria> OpeningCriterias { get; set; } = default!;
+  // public virtual DbSet<OpeningOccurrence> OpeningOccurrences { get; set; } = default!;
+  // public virtual DbSet<Participant> Participants { get; set; } = default!;
+  // public virtual DbSet<Schedule> Schedules { get; set; } = default!;
+  // public virtual DbSet<Survey> Surveys { get; set; } = default!;
+  // public virtual DbSet<SurveyQuestion> SurveyQuestions { get; set; } = default!;
+  // public virtual DbSet<Trait> Traits { get; set; } = default!;
   #endregion
 
   #region Constructors

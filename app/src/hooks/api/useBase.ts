@@ -1,8 +1,8 @@
 import { useSummon } from 'hooks';
 
 /**
- * Common hook to make requests to the PIMS APi.
- * @returns CustomAxios object setup for the PIMS API.
+ * Common hook to make requests to the APi.
+ * @returns CustomAxios object setup for the API.
  */
 export const useBase = () => {
   const { summon } = useSummon();

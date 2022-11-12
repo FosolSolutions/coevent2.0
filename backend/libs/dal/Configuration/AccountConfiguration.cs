@@ -16,12 +16,14 @@ public class AccountConfiguration : CommonColumnsConfiguration<Account, int>
   public override void Configure(EntityTypeBuilder<Account> builder)
   {
     builder.ToTable("Account");
+    builder.Property(m => m.Key).IsRequired();
     builder.Property(m => m.AccountType).IsRequired();
     builder.Property(m => m.OwnerId).IsRequired();
 
     builder.HasOne(m => m.Owner).WithMany(m => m.OwnedAccounts).HasForeignKey(m => m.OwnerId).OnDelete(DeleteBehavior.Cascade);
 
     builder.HasIndex(m => new { m.AccountType, m.OwnerId, m.Name });
+    builder.HasIndex(m => m.Key).IsUnique();
 
     base.Configure(builder);
   }

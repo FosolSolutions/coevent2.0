@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Footer, Header, Loading } from '..';
+import { HomeMenu, Loading, UserMenu } from '..';
 import * as styled from './LayoutStyled';
 
 interface ILayoutProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -20,12 +20,14 @@ export const Layout: React.FC<ILayoutProps> = ({ name, children, ...rest }) => {
 
   return (
     <styled.Layout {...rest}>
-      <Header name={name} />
+      <header>
+        <HomeMenu />
+        <UserMenu />
+      </header>
       <main>
         {children}
         {isLoading && <Loading />}
       </main>
-      <Footer />
     </styled.Layout>
   );
 };

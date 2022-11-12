@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CoEvent.DAL.Migrations
 {
     [DbContext(typeof(CoEventContext))]
-    [Migration("20221111204909_Initial")]
+    [Migration("20221112161459_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -56,6 +56,9 @@ namespace CoEvent.DAL.Migrations
                     b.Property<bool>("IsEnabled")
                         .HasColumnType("bit");
 
+                    b.Property<Guid>("Key")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -81,6 +84,9 @@ namespace CoEvent.DAL.Migrations
                         .HasDefaultValueSql("0");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Key")
+                        .IsUnique();
 
                     b.HasIndex("Name")
                         .IsUnique();

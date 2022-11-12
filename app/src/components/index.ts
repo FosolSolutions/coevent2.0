@@ -6,6 +6,7 @@ export * from './grid-table';
 export * from './header';
 export * from './layout';
 export * from './loading';
+export * from './logo';
 export * from './menu';
 export * from './router';
 export * from './spinner';

@@ -1,8 +1,12 @@
+import { Logo } from 'components';
+
+import * as styled from './HomeStyled';
+
 export const Home = () => {
   return (
-    <div className="App">
-      <header>CoEvent</header>
+    <styled.Home className="home">
+      <Logo />
       <p>Scheduling for teams</p>
-    </div>
+    </styled.Home>
   );
 };

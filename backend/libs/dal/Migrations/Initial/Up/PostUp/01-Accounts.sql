@@ -2,6 +2,7 @@ SET IDENTITY_INSERT dbo.[Account] ON
 
 INSERT INTO dbo.[Account] (
   [Id]
+  , [Key]
   , [Name]
   , [AccountType]
   , [IsEnabled]
@@ -10,6 +11,7 @@ INSERT INTO dbo.[Account] (
   , [UpdatedBy]
 ) VALUES (
   1 -- Id
+  , '94fa9af3-6889-49ab-bff5-dda84d35e84d' -- Key
   , 'CoEvent' -- Name
   , 0 -- AccountType.Free
   , 1 -- IsEnabled

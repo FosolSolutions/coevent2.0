@@ -1,6 +1,6 @@
-# Coevent 2.0
+# CoEvent 2.0
 
-Volunteer scheduling and organizing app
+Scheduling for teams.
 
 ## Development
 
