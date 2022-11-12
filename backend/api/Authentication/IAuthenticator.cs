@@ -1,6 +1,6 @@
 namespace CoEvent.API.Authentication;
 
-using CoEvent.API.Models.Tokens;
+using CoEvent.API.Models.Auth;
 
 /// <summary>
 /// get/set -

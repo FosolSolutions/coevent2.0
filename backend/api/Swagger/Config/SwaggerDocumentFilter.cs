@@ -22,7 +22,7 @@ namespace CoEvent.API.Swagger.Config
     public SwaggerDocumentFilter(IHttpContextAccessor httpContextAccessor, IConfiguration configuration)
     {
       _context = httpContextAccessor;
-      _basePath = configuration.GetValue<string>("BaseUrl");
+      _basePath = configuration.GetValue<string>("BaseUrl") ?? "/";
     }
     #endregion
 

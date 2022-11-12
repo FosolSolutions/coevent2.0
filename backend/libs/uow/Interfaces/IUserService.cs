@@ -5,7 +5,7 @@ using CoEvent.Entities;
 /// <summary>
 /// 
 /// </summary>
-public interface IUserService : IBaseService<User, int>
+public interface IUserService : IBaseService<User, long>
 {
   /// <summary>
   /// 
@@ -26,5 +26,5 @@ public interface IUserService : IBaseService<User, int>
   /// </summary>
   /// <param name="userId"></param>
   /// <returns></returns>
-  IEnumerable<UserClaim> GetClaims(long userId);
+  IEnumerable<Claim> GetClaims(long userId);
 }

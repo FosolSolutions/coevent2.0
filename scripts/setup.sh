@@ -29,7 +29,9 @@ gen_root_env () {
 API_HTTP_PORT=$portApiHttp
 API_HTTPS_PORT=$portApiHttps
 APP_HTTP_PORT=$portAppHttp
-APP_HTTPS_PORT=$portAppHttps" >> ./.env
+APP_HTTPS_PORT=$portAppHttps
+NGINX_HTTP_PORT=$portNginxHttp
+NGINX_HTTPS_PORT=$portNginxHttps" >> ./.env
     echo "./.env created"
   fi
 }
@@ -51,10 +53,23 @@ gen_api_env () {
     echo "./backend/api/.env exists"
   else
     echo \
-"ConnectionStrings_DefaultConnection=Server=$dockerHost,$portDb
+"# API
+ASPNETCORE_ENVIRONMENT=Development
+ASPNETCORE_URLS=http://+:8080
+
+# Database
+ConnectionStrings__DefaultConnection=Server=$dockerHost,$portDb;TrustServerCertificate=True
 DB_NAME=$dbName
 DB_USER=$dbUser
-DB_PASSWORD=$dbPassword" >> ./backend/api/.env
+DB_PASSWORD=$dbPassword
+
+# Authentication
+Authentication__Issuer=http://localhost:$portAppHttp/
+Authentication__Audience=http://localhost:$portAppHttp/
+Authentication__PrivateKey=$privateKey
+Authentication__SaltLength=$saltLength
+Authentication__AccessTokenExpiresIn=00:05:00
+Authentication__RefreshTokenExpiresIn=01:00:00" >> ./backend/api/.env
     echo "./backend/api/.env created"
   fi
 }
@@ -64,11 +79,13 @@ gen_dal_env () {
     echo "./backend/libs/dal/.env exists"
   else
     echo \
-"ConnectionStrings_DefaultConnection=Server=$dockerHost,$portDb
+"ConnectionStrings__DefaultConnection=Server=$dockerHost,$portDb;TrustServerCertificate=True
 DB_NAME=$dbName
 DB_USER=$dbUser
 DB_PASSWORD=$dbPassword
-DEFAULT_PASSWORD=$defaultPassword" >> ./backend/libs/dal/.env
+
+DEFAULT_PASSWORD=$defaultPassword
+SALT_LENGTH=$saltLength" >> ./backend/libs/dal/.env
     echo "./backend/libs/dal/.env created"
   fi
 }

@@ -29,6 +29,11 @@ public class RoleClaim
 
   #region Constructors
   /// <summary>
+  /// Creates a new instance of an RoleClaim object.
+  /// </summary>
+  protected RoleClaim() { }
+
+  /// <summary>
   /// 
   /// </summary>
   /// <param name="role"></param>

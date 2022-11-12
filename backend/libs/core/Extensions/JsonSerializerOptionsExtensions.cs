@@ -28,10 +28,10 @@ public static class JsonSerializerOptionsExtensions
   /// <returns></returns>
   public static JsonSerializerOptions CreateJsonSerializerOptions(this IConfiguration configuration, JsonSerializerOptions options)
   {
-    options.DefaultIgnoreCondition = configuration["Serialization:Json:DefaultIgnoreCondition"].TryParseEnum<JsonIgnoreCondition>();
-    options.PropertyNameCaseInsensitive = configuration["Serialization:Json:PropertyNameCaseInsensitive"].TryParseBoolean(true);
+    options.DefaultIgnoreCondition = configuration["Serialization:Json:DefaultIgnoreCondition"]?.TryParseEnum<JsonIgnoreCondition>() ?? JsonIgnoreCondition.WhenWritingNull;
+    options.PropertyNameCaseInsensitive = configuration["Serialization:Json:PropertyNameCaseInsensitive"]?.TryParseBoolean(true) ?? true;
     options.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-    options.WriteIndented = configuration["Serialization:Json:WriteIndented"].TryParseBoolean(true);
+    options.WriteIndented = configuration["Serialization:Json:WriteIndented"]?.TryParseBoolean(true) ?? true;
     return options;
   }
 }

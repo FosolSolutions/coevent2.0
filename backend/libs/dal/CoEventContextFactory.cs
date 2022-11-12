@@ -69,7 +69,9 @@ public class CoEventContextFactory : IDesignTimeDbContextFactory<CoEventContext>
     sqlBuilder.UserID = !String.IsNullOrWhiteSpace(sqlBuilder.UserID) ? sqlBuilder.UserID : configuration["DB_USER"];
     sqlBuilder.Password = !String.IsNullOrWhiteSpace(sqlBuilder.Password) ? sqlBuilder.Password : configuration["DB_PASSWORD"];
 
-    FactorySettings.DefaultPassword = !String.IsNullOrWhiteSpace(configuration["DEFAULT_PASSWORD"]) ? configuration["DEFAULT_PASSWORD"] : throw new Exception("Configuration 'DEFAULT_PASSWORD' is required.");
+    FactorySettings.DefaultPassword = !String.IsNullOrWhiteSpace(configuration["DEFAULT_PASSWORD"])
+      ? configuration["DEFAULT_PASSWORD"]!
+      : throw new Exception("Configuration 'DEFAULT_PASSWORD' is required.");
     if (Int32.TryParse(configuration["SALT_LENGTH"], out int saltLength))
     {
       FactorySettings.SaltLength = saltLength;

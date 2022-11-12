@@ -34,6 +34,15 @@ then
     export defaultPassword
 fi
 
+export privateKey=$("$GREP" -Po 'Authentication__PrivateKey=\K.*$' ./backend/api/.env 2>/dev/null)
+if [ -z "$privateKey" ]
+then
+    privateKey=$(date +%s | sha256sum | base64 | head -c 32)
+    export privateKey
+fi
+saltLength=50
+export saltLength
+
 #######################################################
 # Docker Environment Variables
 #######################################################
@@ -43,6 +52,7 @@ then
     portDb=30000
     export portDb
 fi
+
 export portApiHttp=$("$GREP" -Po 'API_HTTP_PORT=\K.*$' ./.env 2>/dev/null)
 if [ -z "$portApiHttp" ]
 then
@@ -55,6 +65,7 @@ then
     portApiHttps=30002
     export portApiHttps
 fi
+
 export portAppHttp=$("$GREP" -Po 'APP_HTTP_PORT=\K.*$' ./.env 2>/dev/null)
 if [ -z "$portAppHttp" ]
 then
@@ -66,4 +77,17 @@ if [ -z "$portAppHttps" ]
 then
     portAppHttps=30004
     export portAppHttps
+fi
+
+export portNginxHttp=$("$GREP" -Po 'NGINX_HTTP_PORT=\K.*$' ./.env 2>/dev/null)
+if [ -z "$portNginxHttp" ]
+then
+    portNginxHttp=30080
+    export portNginxHttp
+fi
+export portNginxHttps=$("$GREP" -Po 'NGINX_HTTPS_PORT=\K.*$' ./.env 2>/dev/null)
+if [ -z "$portNginxHttps" ]
+then
+    portNginxHttps=30443
+    export portNginxHttps
 fi

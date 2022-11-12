@@ -2,11 +2,12 @@ namespace CoEvent.DAL.Configuration;
 
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using CoEvent.Entities;
+using Microsoft.EntityFrameworkCore;
 
 /// <summary>
 /// 
 /// </summary>
-public class ClaimConfiguration : SortableColumnsConfiguration<Claim, int>
+public class ClaimConfiguration : AuditColumnsConfiguration<Claim>
 {
   /// <summary>
   /// 
@@ -14,9 +15,16 @@ public class ClaimConfiguration : SortableColumnsConfiguration<Claim, int>
   /// <param name="builder"></param>
   public override void Configure(EntityTypeBuilder<Claim> builder)
   {
-    builder.Property(m => m.Key).IsRequired();
+    builder.ToTable("Claim");
+    builder.HasKey(m => m.Id);
+    builder.Property(m => m.Id).IsRequired().ValueGeneratedOnAdd();
+    builder.Property(m => m.ClaimType).IsRequired().HasMaxLength(50);
+    builder.Property(m => m.Value).IsRequired().HasMaxLength(100);
+    builder.Property(m => m.AccountId).IsRequired();
 
-    builder.HasIndex(m => m.Key).IsUnique();
+    builder.HasOne(m => m.Account).WithMany(m => m.Claims).HasForeignKey(m => m.AccountId).OnDelete(DeleteBehavior.Restrict);
+
+    builder.HasIndex(m => new { m.ClaimType, m.Value }).IsUnique();
 
     base.Configure(builder);
   }

@@ -15,6 +15,7 @@ public class UserConfiguration : AuditColumnsConfiguration<User>
   /// <param name="builder"></param>
   public override void Configure(EntityTypeBuilder<User> builder)
   {
+    builder.ToTable("User");
     builder.HasKey(m => m.Id);
     builder.Property(m => m.Id).IsRequired().ValueGeneratedOnAdd();
     builder.Property(m => m.Username).IsRequired().HasMaxLength(50);
@@ -29,6 +30,7 @@ public class UserConfiguration : AuditColumnsConfiguration<User>
     builder.Property(m => m.LastLoginOn);
 
     builder.HasMany(m => m.Roles).WithMany(m => m.Users).UsingEntity<UserRole>();
+    builder.HasMany(m => m.Accounts).WithMany(m => m.Users).UsingEntity<UserAccount>();
 
     builder.HasIndex(m => m.Username).IsUnique();
     builder.HasIndex(m => m.Key).IsUnique();

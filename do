@@ -36,19 +36,21 @@ elif [ "$action" = "db-migrations" ]; then
 elif [ "$action" = "db-add" ]; then
   db-add $s
 elif [ "$action" = "db-update" ]; then
-  db_update $s
+  db-update $s
 elif [ "$action" = "db-rollback" ]; then
-  db_rollback $s
+  db-rollback $s
 elif [ "$action" = "db-remove" ]; then
-  db_remove $s
+  db-remove $s
 elif [ "$action" = "db-drop" ]; then
-  db_drop $s
+  db-drop $s
 elif [ "$action" = "db-refresh" ]; then
-  db_refresh $s
+  db-refresh $s
 
 # Other
 elif [ "$action" = "go" ]; then
   start firefox --new-tab --url http://localhost:30001
+else
+  echo "Invalid action '$action', refer to help."
 fi
 
 

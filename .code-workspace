@@ -1,0 +1,12 @@
+{
+  "folders": [
+    {
+      "name": "Backend",
+      "path": "backend/api"
+    },
+    {
+      "name": "Application",
+      "path": "app"
+    }
+  ]
+}

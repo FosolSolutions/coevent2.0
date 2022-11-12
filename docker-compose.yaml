@@ -32,6 +32,54 @@ services:
     ports:
       - ${API_HTTP_PORT:-30001}:8080
       - ${API_HTTPS_PORT:-30002}:8443
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    networks:
+      - coevent
+
+  app:
+    image: coevent:editor
+    profiles:
+      - all
+    stdin_open: true
+    tty: true
+    restart: "no"
+    container_name: ce-editor
+    build:
+      context: app
+      dockerfile: Dockerfile
+    env_file: ./app/.env
+    volumes:
+      - ./app/src:/usr/app/src
+      - ./app/public:/usr/app/public
+    ports:
+      - ${APP_HTTP_PORT:-30003}:3000
+      - ${APP_HTTPS_PORT:-30004}:3443
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    depends_on:
+      - api
+    networks:
+      - coevent
+
+  nginx:
+    image: coevent:nginx
+    profiles:
+      - all
+    restart: "no"
+    container_name: ce-nginx
+    build:
+      context: ./nginx
+    env_file:
+      - nginx/.env
+    ports:
+      - ${NGINX_HTTP_PORT:-30080}:80
+      - ${NGINX_HTTPS_PORT:-30443}:443
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    depends_on:
+      - api
+      - app
     networks:
       - coevent
 

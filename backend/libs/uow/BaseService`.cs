@@ -1,7 +1,6 @@
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using CoEvent.DAL.Extensions;
 using CoEvent.Entities;
 using CoEvent.DAL;
 

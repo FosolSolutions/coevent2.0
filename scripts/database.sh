@@ -19,14 +19,14 @@ db-add () {
   cd backend/libs/dal
   dotnet ef migrations add $1
   code -r ./Migrations/*_$1.cs
-  ../../../scripts/db-migration.sh $1
+  bash ../../../scripts/db-migration.sh $1
 }
 
 # Update the database with the latest migration (n=name of migration).
 db-update () {
-  echo "Update the database to the specified migration '$1', or the latest"
+  echo "Update the database to the specified migration '${1-"latest"}'"
   cd backend/libs/dal
-  dotnet ef database update ${1-}
+  dotnet ef database update ${1-} --verbose
 }
 
 db-rollback () {

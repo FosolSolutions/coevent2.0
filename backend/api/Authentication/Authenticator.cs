@@ -5,13 +5,15 @@ using System.Text;
 using CoEvent.API.Config;
 using Entities = CoEvent.Entities;
 using Microsoft.Extensions.Options;
-using CoEvent.API.Models.Tokens;
+using CoEvent.API.Models.Auth;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using CoEvent.DAL.Security;
 using CoEvent.Core.Encryption;
 using CoEvent.UoW;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 
 /// <summary>
 /// Authenticator class, provides a way to authenticate users.
@@ -103,7 +105,7 @@ public class Authenticator : IAuthenticator
   /// <returns></returns>
   public async Task<TokenModel> AuthenticateAsync(Entities.User user)
   {
-    var claims = _dbService.GetClaims(user.Id).Select(c => new Claim(c.Name, c.Value, typeof(string).FullName, CoEventIssuer.Account(c.AccountId), CoEventIssuer.OriginalIssuer)).ToList();
+    var claims = _dbService.GetClaims(user.Id).Select(c => new Claim(c.ClaimType, c.Value, typeof(string).FullName, CoEventIssuer.Account(c.AccountId), CoEventIssuer.OriginalIssuer)).ToList();
     var refreshClaims = new[]
     {
             new Claim(ClaimTypes.NameIdentifier, $"{user.Key}", typeof(string).FullName, CoEventIssuer.Issuer, CoEventIssuer.OriginalIssuer),
@@ -118,6 +120,22 @@ public class Authenticator : IAuthenticator
   {
     var accessToken = GenerateJwtToken(new ClaimsPrincipal(identity), _options.AccessTokenExpiresIn);
     var refreshToken = _options.RefreshTokenExpiresIn.TotalMilliseconds > 0 ? GenerateJwtToken(GeneratePrincipal(JwtBearerDefaults.AuthenticationScheme, refreshClaims), _options.RefreshTokenExpiresIn) : null;
+
+    // Create a cookie for the user.
+    var authProperties = new AuthenticationProperties()
+    {
+      AllowRefresh = true,
+      ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
+      IsPersistent = true,
+      IssuedUtc = DateTimeOffset.UtcNow
+    };
+    if (_httpContext.HttpContext != null)
+      await _httpContext.HttpContext.SignInAsync(
+        CookieAuthenticationDefaults.AuthenticationScheme,
+        new ClaimsPrincipal(identity),
+        authProperties
+      );
+
     return await Task.FromResult(new TokenModel(accessToken, refreshToken, _options.DefaultScope));
   }
 

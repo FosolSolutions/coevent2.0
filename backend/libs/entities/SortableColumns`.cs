@@ -13,4 +13,20 @@ public class SortableColumns<TKey> : CommonColumns<TKey>
   /// </summary>
   public int SortOrder { get; set; }
   #endregion
+
+  #region Constructors
+  /// <summary>
+  /// Creates a new instance of an SortableColumns object.
+  /// </summary>
+  protected SortableColumns() { }
+
+  /// <summary>
+  /// Creates a new instance of a SortableColumns object, initializes with specified parameters.
+  /// </summary>
+  /// <param name="name"></param>
+  public SortableColumns(string name) : base(name)
+  {
+
+  }
+  #endregion
 }

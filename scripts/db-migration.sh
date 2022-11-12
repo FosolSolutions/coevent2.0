@@ -1,6 +1,5 @@
 #!/bin/bash
 MNAME=$1;
-cd dal;
 
 FILE1=./Migrations/$(basename ./Migrations/*_$MNAME.cs);
 echo "Updating migration '$FILE1'";
@@ -8,7 +7,7 @@ echo "Updating migration '$FILE1'";
 sed -i "2iusing CoEvent.DAL;" $FILE1;
 
 search=":\ Migration";
-replace=":\ SeedMigration";
+replace=":\ SqlServerSeedMigration";
 sed -i "s/$search/$replace/" $FILE1;
 
 fl1=$(grep -n "protected override void Up(MigrationBuilder migrationBuilder)" $FILE1 | head -n 1 | cut -d: -f1);
@@ -16,7 +15,7 @@ l1=$(($fl1 + 2));
 sed -i "${l1}i\ \ \ \ \ \ \ \ \ \ \ \ PreUp(migrationBuilder);" $FILE1;
 
 fl=$(grep -n "protected override void Down(MigrationBuilder migrationBuilder)" $FILE1 | head -n 1 | cut -d: -f1);
-l2=$(($fl - 2));
+l2=$(($fl - 3));
 sed -i "${l2}i\ \ \ \ \ \ \ \ \ \ \ \ PostUp(migrationBuilder);" $FILE1;
 
 l3=$(($fl + 3));

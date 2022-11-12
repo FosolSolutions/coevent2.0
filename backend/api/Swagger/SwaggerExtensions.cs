@@ -99,7 +99,7 @@ public static class SwaggerExtensions
       var apiVersionProvider = builder.Services.GetRequiredService<IApiVersionDescriptionProvider>();
       foreach (var description in apiVersionProvider.ApiVersionDescriptions)
       {
-        options.SwaggerEndpoint(String.Format(config.GetValue<string>("Swagger:EndpointPath"), description.GroupName), description.GroupName);
+        options.SwaggerEndpoint(String.Format(config.GetValue<string>("Swagger:EndpointPath") ?? "swagger", description.GroupName), description.GroupName);
       }
       options.RoutePrefix = config.GetValue<string>("Swagger:RoutePrefix");
     });

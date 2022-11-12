@@ -15,11 +15,12 @@ public class RoleClaimConfiguration : IEntityTypeConfiguration<RoleClaim>
   /// <param name="builder"></param>
   public virtual void Configure(EntityTypeBuilder<RoleClaim> builder)
   {
+    builder.ToTable("RoleClaim");
     builder.HasKey(m => new { m.RoleId, m.ClaimId });
     builder.Property(m => m.RoleId).IsRequired().ValueGeneratedNever();
     builder.Property(m => m.ClaimId).IsRequired().ValueGeneratedNever();
 
     builder.HasOne(m => m.Role).WithMany(m => m.ClaimsManyToMany).HasForeignKey(m => m.RoleId).OnDelete(DeleteBehavior.Cascade);
-    builder.HasOne(m => m.Claim).WithMany(m => m.RolesManyToMany).HasForeignKey(m => m.RoleId).OnDelete(DeleteBehavior.Cascade);
+    builder.HasOne(m => m.Claim).WithMany(m => m.RolesManyToMany).HasForeignKey(m => m.ClaimId).OnDelete(DeleteBehavior.Cascade);
   }
 }

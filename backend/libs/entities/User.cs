@@ -95,5 +95,50 @@ public class User : AuditColumns
   /// 
   /// </summary>
   public virtual ICollection<UserRole> RolesManyToMany { get; set; } = new List<UserRole>();
+
+  /// <summary>
+  /// 
+  /// </summary>
+  public ICollection<Account> OwnedAccounts { get; } = new List<Account>();
+
+  /// <summary>
+  /// 
+  /// </summary>
+  public ICollection<Account> Accounts { get; } = new List<Account>();
+
+  /// <summary>
+  /// 
+  /// </summary>
+  public ICollection<UserAccount> AccountsManyToMany { get; } = new List<UserAccount>();
+  #endregion
+
+  #region Constructors
+  /// <summary>
+  /// Creates a new instance of an User object.
+  /// </summary>
+  protected User() { }
+
+  /// <summary>
+  /// 
+  /// </summary>
+  /// <param name="username"></param>
+  /// <param name="email"></param>
+  /// <param name="key"></param>
+  public User(string username, string email, Guid key)
+  {
+    this.Username = username;
+    this.Email = email;
+    this.Key = key;
+    this.DisplayName = username;
+  }
+
+  /// <summary>
+  /// 
+  /// </summary>
+  /// <param name="username"></param>
+  /// <param name="email"></param>
+  public User(string username, string email) : this(username, email, Guid.NewGuid())
+  {
+  }
   #endregion
 }

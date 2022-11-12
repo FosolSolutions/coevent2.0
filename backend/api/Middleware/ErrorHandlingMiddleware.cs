@@ -4,8 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Net.Mime;
 using System.Text.Json;
 using System.Threading.Tasks;
+using CoEvent.Core.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -108,6 +110,11 @@ public class ErrorHandlingMiddleware
       code = HttpStatusCode.BadRequest;
       message = "Item does not exist.";
     }
+    else if (ex is InvalidOperationException)
+    {
+      code = HttpStatusCode.BadRequest;
+      message = _env.IsDevelopment() ? ex.GetAllMessages() : ex.Message;
+    }
     else
     {
       _logger.LogError(ex, "Middleware caught unhandled exception.");
@@ -116,7 +123,7 @@ public class ErrorHandlingMiddleware
     if (!context.Response.HasStarted)
     {
       var result = JsonSerializer.Serialize(new Models.ErrorResponseModel(_env, ex, message, details), _options.JsonSerializerOptions);
-      context.Response.ContentType = "application/json";
+      context.Response.ContentType = MediaTypeNames.Application.Json;
       context.Response.StatusCode = (int)code;
       await context.Response.WriteAsync(result);
     }

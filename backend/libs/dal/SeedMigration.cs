@@ -52,6 +52,15 @@ public abstract class SeedMigration : Migration
 
   #region Methods
   /// <summary>
+  /// Insert the seed data specified by this method.
+  /// Override this method in a partial class to automatically run.
+  /// </summary>
+  /// <param name="migrationBuilder"></param>
+  protected virtual void InsertData(MigrationBuilder migrationBuilder)
+  {
+  }
+
+  /// <summary>
   /// Execute any scripts in the migration \Up\PreUp\ folder.
   /// </summary>
   /// <param name="migrationBuilder"></param>
@@ -59,7 +68,7 @@ public abstract class SeedMigration : Migration
   {
     if (migrationBuilder == null) throw new ArgumentNullException(nameof(migrationBuilder));
 
-    ScriptDeploy(migrationBuilder, Path.Combine(this.DefaultMigrationsPath, this.Version, Path.Combine("Up", "PreUp")), "PreUp Scripts");
+    ScriptDeploy(migrationBuilder, Path.Combine(this.DefaultMigrationsPath, this.Version, "Up", "PreUp"), "PreUp Scripts");
   }
 
   /// <summary>
@@ -81,7 +90,9 @@ public abstract class SeedMigration : Migration
   {
     if (migrationBuilder == null) throw new ArgumentNullException(nameof(migrationBuilder));
 
-    ScriptDeploy(migrationBuilder, Path.Combine(this.DefaultMigrationsPath, this.Version, Path.Combine("Up", "PostUp")), "PostUp Scripts");
+    ScriptDeploy(migrationBuilder, Path.Combine(this.DefaultMigrationsPath, this.Version, "Up", "PostUp"), "PostUp Scripts");
+
+    InsertData(migrationBuilder);
   }
 
   /// <summary>
@@ -92,7 +103,7 @@ public abstract class SeedMigration : Migration
   {
     if (migrationBuilder == null) throw new ArgumentNullException(nameof(migrationBuilder));
 
-    ScriptDeploy(migrationBuilder, Path.Combine(this.DefaultMigrationsPath, this.Version, Path.Combine("Down", "PreDown")), "PreDown Scripts");
+    ScriptDeploy(migrationBuilder, Path.Combine(this.DefaultMigrationsPath, this.Version, "Down", "PreDown"), "PreDown Scripts");
   }
 
   /// <summary>
@@ -114,7 +125,17 @@ public abstract class SeedMigration : Migration
   {
     if (migrationBuilder == null) throw new ArgumentNullException(nameof(migrationBuilder));
 
-    ScriptDeploy(migrationBuilder, Path.Combine(this.DefaultMigrationsPath, this.Version, Path.Combine("Down", "PostDown")), "PostDown Scripts");
+    ScriptDeploy(migrationBuilder, Path.Combine(this.DefaultMigrationsPath, this.Version, "Down", "PostDown"), "PostDown Scripts");
+  }
+
+  /// <summary>
+  /// Print the message in the SQL output.
+  /// </summary>
+  /// <param name="message"></param>
+  /// <returns></returns>
+  protected virtual string PrintMessage(string message)
+  {
+    return message;
   }
 
   /// <summary>
@@ -123,16 +144,16 @@ public abstract class SeedMigration : Migration
   /// <param name="migrationBuilder"></param>
   /// <param name="path"></param>
   /// <param name="message"></param>
-  protected static void ScriptDeploy(MigrationBuilder migrationBuilder, string path, string message)
+  protected void ScriptDeploy(MigrationBuilder migrationBuilder, string path, string message)
   {
     if (migrationBuilder == null) throw new ArgumentNullException(nameof(migrationBuilder));
     if (path == null) throw new ArgumentNullException(nameof(path));
 
-    migrationBuilder.Sql($"do $$ begin raise notice '{message}'; end; $$;");
+    migrationBuilder.Sql(PrintMessage(message));
 
     if (!Directory.Exists(path) && !File.Exists(path))
     {
-      migrationBuilder.Sql($"do $$ begin raise notice 'Script does not exist {path}.'; end; $$;");
+      migrationBuilder.Sql(PrintMessage($"Script does not exist {path}."));
       return;
     }
 
@@ -157,9 +178,9 @@ public abstract class SeedMigration : Migration
   /// </summary>
   /// <param name="migrationBuilder"></param>
   /// <param name="path"></param>
-  private static void ExecuteScript(MigrationBuilder migrationBuilder, string path)
+  private void ExecuteScript(MigrationBuilder migrationBuilder, string path)
   {
-    migrationBuilder.Sql($"do $$ begin raise notice '---------------> {path}'; end; $$;");
+    migrationBuilder.Sql(PrintMessage($"---------------> {path}"));
     var sql = File.ReadAllText(path).Trim();
 
     if (!String.IsNullOrEmpty(sql))
