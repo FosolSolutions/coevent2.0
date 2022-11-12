@@ -1,4 +1,4 @@
-export interface IBaseModel {
+export interface IAuditColumnsModel {
   rowVersion: string;
   createdOn: string | Date;
   createdBy: string;

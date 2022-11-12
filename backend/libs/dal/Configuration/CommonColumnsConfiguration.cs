@@ -21,7 +21,7 @@ public class CommonColumnsConfiguration<TEntity, TKey> : AuditColumnsConfigurati
     builder.Property(m => m.Id).IsRequired().ValueGeneratedOnAdd();
     builder.Property(m => m.Name).IsRequired().HasMaxLength(50);
     builder.Property(m => m.Description).IsRequired().HasMaxLength(250).HasDefaultValueSql("''");
-    builder.Property(m => m.IsEnabled);
+    builder.Property(m => m.IsEnabled).IsRequired();
 
     builder.HasIndex(m => m.Name).IsUnique();
 

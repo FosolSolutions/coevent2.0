@@ -1,6 +1,8 @@
 using System.Security.Claims;
 using CoEvent.DAL;
+using CoEvent.DAL.Extensions;
 using CoEvent.Entities;
+using CoEvent.Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -25,6 +27,35 @@ public class UserService : BaseService<User, long>, IUserService
   #endregion
 
   #region Methods
+  /// <summary>
+  /// 
+  /// </summary>
+  /// <param name="filter"></param>
+  /// <returns></returns>
+  public override Paging<User> Find(PageFilter filter)
+  {
+    var values = (UserFilter)filter;
+    var query = this.Context.Set<User>().AsQueryable();
+
+    if (!String.IsNullOrWhiteSpace(values.Username))
+      query = query.Where(i => EF.Functions.Like(nameof(User.Username), $"%{values.Username}%"));
+
+    var total = query.Count();
+
+    if (filter.Sort?.Any() == true)
+      query = query.OrderByProperty(filter.Sort);
+    else
+      query = query.OrderBy(i => i.Username);
+
+    var items = query
+      .AsNoTracking()
+      .Skip(filter.Skip)
+      .Take(filter.Quantity)
+      .ToArray();
+
+    return new Paging<User>(filter, items, total);
+  }
+
   /// <summary>
   /// 
   /// </summary>

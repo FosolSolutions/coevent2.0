@@ -5,7 +5,7 @@ export interface IAccount {
   name: string;
   description: string;
   accountType: AccountTypes | '';
-  isDisabled: boolean;
+  isEnabled: boolean;
   ownerId: number | '';
   owner?: any; // TODO: Create IUserModel
   calendars: any[]; // TODO: Create ICalendarModel

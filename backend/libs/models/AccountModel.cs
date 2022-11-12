@@ -54,7 +54,7 @@ public class AccountModel : AuditColumnsModel
   /// Creates a new instance of an AccountModel object, initializes with specified parameters.
   /// </summary>
   /// <param name="account"></param>
-  public AccountModel(Entities.Account account)
+  public AccountModel(Entities.Account account) : base(account)
   {
     this.Id = account.Id;
     this.Name = account.Name;
@@ -67,6 +67,15 @@ public class AccountModel : AuditColumnsModel
   #endregion
 
   #region Methods
+  /// <summary>
+  /// 
+  /// </summary>
+  /// <param name="entity"></param>
+  public static implicit operator AccountModel(Entities.Account entity)
+  {
+    return new AccountModel(entity);
+  }
+
   /// <summary>
   /// 
   /// </summary>

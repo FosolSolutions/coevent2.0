@@ -45,6 +45,8 @@ elif [ "$action" = "db-drop" ]; then
   db-drop $s
 elif [ "$action" = "db-refresh" ]; then
   db-refresh $s
+elif [ "$action" = "db-redo" ]; then
+  db-redo $s
 
 # Other
 elif [ "$action" = "go" ]; then

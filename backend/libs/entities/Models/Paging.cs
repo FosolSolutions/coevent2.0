@@ -60,4 +60,19 @@ public class Paging<T> : PageFilter
   {
   }
   #endregion
+
+  #region Methods
+  /// <summary>
+  /// 
+  /// </summary>
+  /// <typeparam name="TModel"></typeparam>
+  /// <returns></returns>
+  public Paging<TModel> ToModel<TModel>()
+    where TModel : class
+  {
+    var type = typeof(TModel);
+    var cons = type.GetConstructor(new[] { typeof(T) }) ?? throw new InvalidOperationException($"Model does not contain a constructor for this type '{typeof(T).Name}'");
+    return new Paging<TModel>(this.Page, this.Quantity, this.Items.Select(i => (TModel)cons.Invoke(new object?[] { i })!), this.Total);
+  }
+  #endregion
 }

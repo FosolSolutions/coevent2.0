@@ -110,6 +110,11 @@ public class User : AuditColumns
   /// 
   /// </summary>
   public ICollection<UserAccount> AccountsManyToMany { get; } = new List<UserAccount>();
+
+  /// <summary>
+  /// get - Collection of applications.
+  /// </summary>
+  public virtual ICollection<Application> Applications { get; } = new List<Application>();
   #endregion
 
   #region Constructors

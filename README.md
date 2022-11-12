@@ -16,3 +16,11 @@ bash do up
 # Update the database and apply the latest migration.
 bash do db-update
 ```
+
+## Services
+
+| Service                                | Description           |
+| -------------------------------------- | --------------------- |
+| [Application](http://localhost:30080)  | React web application |
+| [Swagger](http://localhost:30001/docs) | API documentation     |
+| [API](http://localhost:30080/api)      | API                   |

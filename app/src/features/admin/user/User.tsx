@@ -122,14 +122,14 @@ export const User: React.FC<IUserProps> = ({ id }) => {
                 ></FormikText>
                 <FormikText name="lastName" label="Last Name:" value={values.lastName}></FormikText>
                 <FormikCheckbox
-                  name="isDisabled"
-                  label="Disabled:"
-                  checked={values.isDisabled}
+                  name="isEnabled"
+                  label="Enabled:"
+                  checked={values.isEnabled}
                 ></FormikCheckbox>
                 <FormikCheckbox
-                  name="isVerified"
+                  name="emailVerified"
                   label="Verified:"
-                  checked={values.isVerified}
+                  checked={values.emailVerified}
                 ></FormikCheckbox>
                 <FormikText
                   type="date"

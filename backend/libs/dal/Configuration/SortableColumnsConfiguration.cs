@@ -2,6 +2,7 @@ namespace CoEvent.DAL.Configuration;
 
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using CoEvent.Entities;
+using Microsoft.EntityFrameworkCore;
 
 /// <summary>
 /// 
@@ -16,7 +17,7 @@ public class SortableColumnsConfiguration<TEntity, TKey> : CommonColumnsConfigur
   /// <param name="builder"></param>
   public override void Configure(EntityTypeBuilder<TEntity> builder)
   {
-    builder.Property(m => m.SortOrder).IsRequired();
+    builder.Property(m => m.SortOrder).IsRequired().HasDefaultValue(0);
 
     base.Configure(builder);
   }

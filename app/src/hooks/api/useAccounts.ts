@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { IAccountModel, useBase } from '.';
+import { IAccountModel, IPaging, useBase } from '.';
 
 /**
  * Hook with Admin Account API endpoints.
@@ -11,10 +11,10 @@ export const useAccounts = () => {
 
   return React.useMemo(
     () => ({
-      getPage: async (page: number, quantity = 20): Promise<IAccountModel[]> => {
+      getPage: async (page: number, quantity = 20): Promise<IPaging<IAccountModel>> => {
         try {
           const response = await api.get(`/admin/accounts?page=${page}&qty=${quantity}`);
-          return response.data as IAccountModel[];
+          return response.data as IPaging<IAccountModel>;
         } catch (error) {
           // Handle error;
           return Promise.reject(error);

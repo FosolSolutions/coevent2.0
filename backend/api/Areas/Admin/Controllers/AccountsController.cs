@@ -48,7 +48,7 @@ public class AccountsController : ControllerBase
   [SwaggerOperation(Tags = new[] { "account-find" })]
   public IActionResult Find()
   {
-    var page = _accountService.Find(new AccountFilter(this.Request.GetDisplayUrl()));
+    var page = _accountService.Find<AccountModel>(new AccountFilter(this.Request.GetDisplayUrl()));
     return new JsonResult(page);
   }
 

@@ -1,9 +1,9 @@
-import { IBaseModel, UserTypes } from '..';
+import { IAuditColumnsModel, UserTypes } from '..';
 
 /**
  * IUserModel interface, represents a CoEvent user object.
  */
-export interface IUserModel extends IBaseModel {
+export interface IUserModel extends IAuditColumnsModel {
   id: number;
   username: string;
   email: string;
@@ -13,8 +13,8 @@ export interface IUserModel extends IBaseModel {
   middleName: string;
   lastName: string;
   userType: UserTypes;
-  isDisabled: boolean;
-  isVerified: boolean;
+  isEnabled: boolean;
+  emailVerified: boolean;
   verifiedOn?: Date | string;
   failedLogins: number;
   roles: any[]; // TODO: Create IRole

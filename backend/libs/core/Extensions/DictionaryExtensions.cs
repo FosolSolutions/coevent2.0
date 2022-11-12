@@ -20,6 +20,24 @@ public static class DictionaryExtensions
   }
 
   /// <summary>
+  /// Get the value from the dictionary for the specified 'keys' and return it as an int.
+  /// Checks each key in the order they are provided, first one found will return its result.
+  /// </summary>
+  /// <param name="dict"></param>
+  /// <param name="keys"></param>
+  /// <param name="defaultValue"></param>
+  /// <returns></returns>
+  public static int GetIntValue(this IDictionary<string, Microsoft.Extensions.Primitives.StringValues> dict, string[] keys, int defaultValue = 0)
+  {
+    foreach (var key in keys)
+    {
+      if (dict.TryGetValue(key, out Microsoft.Extensions.Primitives.StringValues dValue) && int.TryParse(dValue, out int value))
+        return value;
+    }
+    return defaultValue;
+  }
+
+  /// <summary>
   /// Get the value from the dictionary for the specified 'key' and return it as an int.
   /// </summary>
   /// <param name="dict"></param>

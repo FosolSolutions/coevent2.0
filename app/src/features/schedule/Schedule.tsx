@@ -1,62 +1,55 @@
-import { ScheduleDate } from './ScheduleDate';
+import { Button, ButtonVariant } from 'components';
+import { IScheduleModel, useApi } from 'hooks';
+import React from 'react';
+
+import { Months } from './Months';
 import * as styled from './ScheduleStyled';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IScheduleProps {}
 
 export const Schedule: React.FC<IScheduleProps> = () => {
+  const api = useApi();
+
+  const [schedule, setSchedule] = React.useState<IScheduleModel>();
+  const [filter, setFilter] = React.useState<string>('Sunday');
+
+  React.useEffect(() => {
+    api.schedules
+      .getPage(1)
+      .then((res) => {
+        const schedule = res.items[0];
+        setSchedule(schedule);
+        return api.events
+          .getPage(schedule.id, 1, 1000)
+          .then((res) => setSchedule({ ...schedule, events: res.items }));
+      })
+      .catch();
+  }, [api]);
+
   return (
     <styled.Schedule>
       <nav>
         <ul>
-          <li>Sunday</li>
-          <li>Thursday</li>
-          <li>Cleaning</li>
+          <li>
+            <Button variant={ButtonVariant.link} onClick={() => setFilter('Sunday')}>
+              Sunday
+            </Button>
+          </li>
+          <li>
+            <Button variant={ButtonVariant.link} onClick={() => setFilter('Thursday')}>
+              Thursday
+            </Button>
+          </li>
+          <li>
+            <Button variant={ButtonVariant.link} onClick={() => setFilter('Saturday')}>
+              Cleaning
+            </Button>
+          </li>
         </ul>
       </nav>
       <div className="schedule">
-        <div className="month">
-          <span>January</span>
-          <ScheduleDate date={new Date(2022, 0, 1)} />
-          <ScheduleDate date={new Date(2022, 0, 2)} />
-          <ScheduleDate date={new Date(2022, 0, 6)} />
-          <ScheduleDate date={new Date(2022, 0, 8)} />
-        </div>
-        <div className="month">
-          <span>February</span>
-          <div className="date"></div>
-          <div className="date"></div>
-          <div className="date"></div>
-          <div className="date"></div>
-        </div>
-        <div className="month">
-          <span>March</span>
-          <div className="date"></div>
-          <div className="date"></div>
-          <div className="date"></div>
-          <div className="date"></div>
-        </div>
-        <div className="month">
-          <span>April</span>
-          <div className="date"></div>
-          <div className="date"></div>
-          <div className="date"></div>
-          <div className="date"></div>
-        </div>
-        <div className="month">
-          <span>May</span>
-          <div className="date"></div>
-          <div className="date"></div>
-          <div className="date"></div>
-          <div className="date"></div>
-        </div>
-        <div className="month">
-          <span>June</span>
-          <div className="date"></div>
-          <div className="date"></div>
-          <div className="date"></div>
-          <div className="date"></div>
-        </div>
+        <Months schedule={schedule} filter={filter} />
       </div>
     </styled.Schedule>
   );

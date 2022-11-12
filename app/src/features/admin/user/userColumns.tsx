@@ -1,7 +1,7 @@
 import { IUserModel } from 'hooks/api';
 import { Column } from 'react-table';
 
-const disabledColumn = ({ value }: { value: boolean }) => (
+const enabledColumn = ({ value }: { value: boolean }) => (
   <input type="checkbox" defaultChecked={value} value={value ? 'true' : 'false'} />
 );
 
@@ -28,12 +28,12 @@ export const columns: Column<IUserModel>[] = [
   },
   {
     Header: 'Verified',
-    accessor: 'isVerified',
-    Cell: disabledColumn,
+    accessor: 'emailVerified',
+    Cell: enabledColumn,
   },
   {
-    Header: 'Disabled',
-    accessor: 'isDisabled',
-    Cell: disabledColumn,
+    Header: 'Enabled',
+    accessor: 'isEnabled',
+    Cell: enabledColumn,
   },
 ];

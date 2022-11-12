@@ -1,14 +1,14 @@
-import { AccountTypes, IBaseModel } from '..';
+import { AccountTypes, IAuditColumnsModel } from '..';
 
 /**
  * IAccountModel interface, represents a CoEvent account object.
  */
-export interface IAccountModel extends IBaseModel {
+export interface IAccountModel extends IAuditColumnsModel {
   id: number;
   name: string;
   description: string;
   accountType: AccountTypes;
-  isDisabled: boolean;
+  isEnabled: boolean;
   ownerId: number;
   owner?: any; // TODO: Create IUserModel
   calendars: any[]; // TODO: Create ICalendarModel

@@ -21,6 +21,14 @@ public interface IBaseService<TEntity, TKey> : IBaseService
   /// <summary>
   /// 
   /// </summary>
+  /// <typeparam name="TModel"></typeparam>
+  /// <param name="filter"></param>
+  /// <returns></returns>
+  Paging<TModel> Find<TModel>(PageFilter filter) where TModel : class;
+
+  /// <summary>
+  /// 
+  /// </summary>
   /// <param name="key"></param>
   /// <returns></returns>
   TEntity? FindByKey(params object[] key);

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { IUserModel, useBase } from '.';
+import { IPaging, IUserModel, useBase } from '.';
 
 /**
  * Hook with Admin User API endpoints.
@@ -11,10 +11,10 @@ export const useUsers = () => {
 
   return React.useMemo(
     () => ({
-      getPage: async (page: number, quantity = 20): Promise<IUserModel[]> => {
+      getPage: async (page: number, quantity = 20): Promise<IPaging<IUserModel>> => {
         try {
           const response = await api.get(`/admin/users?page=${page}&qty=${quantity}`);
-          return response.data as IUserModel[];
+          return response.data as IPaging<IUserModel>;
         } catch (error) {
           // Handle error;
           return Promise.reject(error);

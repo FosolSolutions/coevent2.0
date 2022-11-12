@@ -7,7 +7,7 @@ export const defaultAccount: IAccount = {
   name: '',
   description: '',
   accountType: AccountTypes.Free,
-  isDisabled: false,
+  isEnabled: false,
   ownerId: '',
   calendars: [],
   events: [],

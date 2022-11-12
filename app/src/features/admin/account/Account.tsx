@@ -99,9 +99,9 @@ export const Account: React.FC<IAccountProps> = ({ id }) => {
                   value={values.description}
                 ></FormikTextArea>
                 <FormikCheckbox
-                  name="isDisabled"
-                  label="Disabled:"
-                  checked={values.isDisabled}
+                  name="isEnabled"
+                  label="Enabled:"
+                  checked={values.isEnabled}
                 ></FormikCheckbox>
                 <FormikDropdown
                   name="accountType"

@@ -59,6 +59,18 @@ public abstract class BaseService<TEntity, TKey> : BaseService, IBaseService<TEn
   /// <summary>
   /// 
   /// </summary>
+  /// <typeparam name="TModel"></typeparam>
+  /// <param name="filter"></param>
+  /// <returns></returns>
+  public virtual Paging<TModel> Find<TModel>(PageFilter filter)
+    where TModel : class
+  {
+    return Find(filter).ToModel<TModel>();
+  }
+
+  /// <summary>
+  /// 
+  /// </summary>
   /// <param name="key"></param>
   /// <returns></returns>
   public virtual TEntity? FindByKey(params object[] key)

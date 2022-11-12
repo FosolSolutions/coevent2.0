@@ -24,4 +24,20 @@ public static class DateTimeExtensions
   {
     return Math.Floor((date.ToUniversalTime() - DateTime.UnixEpoch).TotalSeconds);
   }
+
+  /// <summary>
+  /// Find the first day in the month that matches the specified 'dayOfWeek'.
+  /// </summary>
+  /// <param name="date"></param>
+  /// <param name="dayOfWeek"></param>
+  /// <returns></returns>
+  public static int GetFirstDayOfWeekInMonth(this DateTime date, DayOfWeek dayOfWeek)
+  {
+    var month = date.AddDays(1 - date.Day);
+    while (month.DayOfWeek != dayOfWeek)
+    {
+      month = month.AddDays(1);
+    }
+    return month.Day;
+  }
 }

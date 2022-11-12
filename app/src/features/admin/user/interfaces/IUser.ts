@@ -10,8 +10,8 @@ export interface IUser {
   middleName: string;
   lastName: string;
   userType: UserTypes | '';
-  isDisabled: boolean;
-  isVerified: boolean;
+  isEnabled: boolean;
+  emailVerified: boolean;
   verifiedOn?: Date | string;
   failedLogins: number | '';
   roles: any[]; // TODO: Create IRole

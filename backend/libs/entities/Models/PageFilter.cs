@@ -58,7 +58,7 @@ public abstract class PageFilter
     var filter = new Dictionary<string, StringValues>(queryParams, StringComparer.OrdinalIgnoreCase);
 
     this.Page = filter.GetIntValue(nameof(this.Page), 1);
-    this.Quantity = filter.GetIntValue(nameof(this.Quantity), 10);
+    this.Quantity = filter.GetIntValue(new[] { "qty", nameof(this.Quantity) }, 10);
     this.Sort = filter.GetStringArrayValue(nameof(this.Sort));
   }
   #endregion

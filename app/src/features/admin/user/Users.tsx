@@ -17,7 +17,7 @@ export const Users = () => {
   const [users, setUsers] = React.useState<IUserModel[]>([]);
 
   React.useEffect(() => {
-    api.users.getPage(1).then((results) => setUsers(results));
+    api.users.getPage(1).then((results) => setUsers(results.items));
   }, [api]);
 
   return (
