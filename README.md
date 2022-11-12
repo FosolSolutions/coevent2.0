@@ -7,9 +7,12 @@ Scheduling for teams.
 To setup your environment run the bash commands.
 
 ```bash
-# Initializes your environment so that the solution can be run
+# Initializes your environment so that the solution can be run.
 bash do setup
 
-# Build and spin up the solution with docker compose
+# Build and spin up the solution with docker compose.
 bash do up
+
+# Update the database and apply the latest migration.
+bash do db-update
 ```
