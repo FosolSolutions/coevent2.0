@@ -15,8 +15,6 @@ namespace CoEvent.API.Areas.Admin.Controllers;
 [ApiController]
 [ApiVersion("1.0")]
 [Area("admin")]
-[Route("api/v{version:apiVersion}/[area]/[controller]")]
-[Route("api/[area]/[controller]")]
 [Route("v{version:apiVersion}/[area]/[controller]")]
 [Route("[area]/[controller]")]
 public class AccountsController : ControllerBase

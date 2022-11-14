@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CoEvent.DAL.Migrations
 {
     [DbContext(typeof(CoEventContext))]
-    [Migration("20221112204343_Initial")]
+    [Migration("20221114000901_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -224,9 +224,10 @@ namespace CoEvent.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OpeningId");
-
                     b.HasIndex("UserId");
+
+                    b.HasIndex("OpeningId", "UserId")
+                        .IsUnique();
 
                     b.ToTable("Application", (string)null);
                 });

@@ -18,7 +18,7 @@ export const defaultUser: IUser = {
   failedLogins: 0,
   roles: [],
   claims: [],
-  rowVersion: '',
+  version: '',
   createdOn: new Date(),
   createdBy: '',
   updatedOn: new Date(),

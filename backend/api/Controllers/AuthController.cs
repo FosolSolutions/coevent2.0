@@ -17,8 +17,6 @@ namespace CoEvent.API.Controllers;
 /// </summary>
 [ApiController]
 [ApiVersion("1.0")]
-[Route("api/v{version:apiVersion}/[controller]")]
-[Route("api/[controller]")]
 [Route("v{version:apiVersion}/[controller]")]
 [Route("[controller]")]
 public class AuthController : ControllerBase

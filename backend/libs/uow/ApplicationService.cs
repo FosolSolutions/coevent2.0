@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using CoEvent.DAL;
 using CoEvent.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace CoEvent.UoW;
@@ -24,5 +25,16 @@ public class ApplicationService : BaseService<Application, long>, IApplicationSe
   #endregion
 
   #region Methods
+  /// <summary>
+  /// 
+  /// </summary>
+  /// <param name="id"></param>
+  /// <returns></returns>
+  public override Application? FindById(long id)
+  {
+    return this.Context.Applications
+      .Include(m => m.User)
+      .FirstOrDefault(m => m.Id == id);
+  }
   #endregion
 }

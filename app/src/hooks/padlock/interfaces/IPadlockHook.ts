@@ -5,4 +5,5 @@ import { IPadlockState } from '.';
 export interface IPadlockHook extends IPadlockState {
   hasClaim: (claims: Claim | Array<Claim>) => boolean;
   hasRole: (roles: Role | Array<Role>) => boolean;
+  decode: () => any;
 }

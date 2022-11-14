@@ -35,7 +35,12 @@ public class ScheduleEventService : BaseService<ScheduleEvent, long>, IScheduleE
   public override Paging<ScheduleEvent> Find(PageFilter filter)
   {
     var values = (ScheduleEventFilter)filter;
-    var query = this.Context.Set<ScheduleEvent>().AsQueryable();
+    var query = this.Context.Set<ScheduleEvent>()
+      .Include(m => m.Activities)
+        .ThenInclude(m => m.Openings)
+        .ThenInclude(m => m.Applications)
+        .ThenInclude(m => m.User)
+      .AsQueryable();
 
     if (values.ScheduleId.HasValue)
       query = query.Where(i => i.ScheduleId == values.ScheduleId);

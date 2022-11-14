@@ -33,7 +33,7 @@ public class CommonColumnsModel<TKey> : AuditColumnsModel
   /// <summary>
   /// Creates a new instance of an CommonColumnsModel object.
   /// </summary>
-  protected CommonColumnsModel() { }
+  public CommonColumnsModel() { }
 
   /// <summary>
   /// Creates a new instance of a CommonColumnsModel object, initializes with specified parameters.

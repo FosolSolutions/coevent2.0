@@ -16,9 +16,9 @@ export interface IUser {
   failedLogins: number | '';
   roles: any[]; // TODO: Create IRole
   claims: any[]; // TODO: Create IClaim
-  rowVersion: string;
-  createdOn: string | Date;
-  createdBy: string;
-  updatedOn: string | Date;
-  updatedBy: string;
+  version?: string;
+  createdOn?: string | Date;
+  createdBy?: string;
+  updatedOn?: string | Date;
+  updatedBy?: string;
 }

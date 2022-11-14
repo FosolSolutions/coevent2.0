@@ -1,4 +1,5 @@
 import { Claim, IPadlockHook, IPadlockHookProps, PadlockContext, Role } from 'hooks';
+import jwtDecode from 'jwt-decode';
 import React from 'react';
 
 /**
@@ -27,9 +28,17 @@ export const usePadlock = ({ token }: IPadlockHookProps = {}): IPadlockHook => {
     return true;
   }, []);
 
+  /**
+   * Decode the access token.
+   */
+  const decode = React.useCallback(() => {
+    return context.token ? jwtDecode(context.token.accessToken) : undefined;
+  }, [context.token]);
+
   return {
     ...context,
     hasClaim,
     hasRole,
+    decode,
   };
 };

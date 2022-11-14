@@ -221,9 +221,10 @@ namespace CoEvent.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OpeningId");
-
                     b.HasIndex("UserId");
+
+                    b.HasIndex("OpeningId", "UserId")
+                        .IsUnique();
 
                     b.ToTable("Application", (string)null);
                 });

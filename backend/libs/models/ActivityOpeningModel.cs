@@ -42,7 +42,7 @@ public class ActivityOpeningModel : SortableColumnsModel<long>
   /// <summary>
   /// 
   /// </summary>
-  protected ActivityOpeningModel() { }
+  public ActivityOpeningModel() { }
 
   /// <summary>
   /// 
@@ -50,7 +50,7 @@ public class ActivityOpeningModel : SortableColumnsModel<long>
   /// <param name="entity"></param>
   public ActivityOpeningModel(Entities.ActivityOpening entity) : base(entity)
   {
-    this.ActivityId = entity.Id;
+    this.ActivityId = entity.ActivityId;
     this.Limit = entity.Limit;
     this.Question = entity.Question;
     this.ResponseRequired = entity.ResponseRequired;

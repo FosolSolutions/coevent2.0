@@ -25,6 +25,8 @@ public class ApplicationConfiguration : AuditColumnsConfiguration<Application>
     builder.HasOne(m => m.User).WithMany(m => m.Applications).HasForeignKey(m => m.UserId).OnDelete(DeleteBehavior.Cascade);
     builder.HasOne(m => m.Opening).WithMany(m => m.Applications).HasForeignKey(m => m.OpeningId).OnDelete(DeleteBehavior.Cascade);
 
+    builder.HasIndex(m => new { m.OpeningId, m.UserId }).IsUnique();
+
     base.Configure(builder);
   }
 }

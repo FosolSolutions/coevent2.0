@@ -37,7 +37,7 @@ public class ScheduleModel : SortableColumnsModel<long>
   /// <summary>
   /// Creates a new instance of a ScheduleModel object.
   /// </summary>
-  protected ScheduleModel() { }
+  public ScheduleModel() { }
 
   /// <summary>
   /// 

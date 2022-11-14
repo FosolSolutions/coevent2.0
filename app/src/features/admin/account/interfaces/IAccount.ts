@@ -18,9 +18,9 @@ export interface IAccount {
   roles: any[]; // TODO: Create IRoleModel
   claims: any[]; // TODO: Create IClaimModel
   userClaims: any[]; // TODO: Create IUserClaimModel
-  rowVersion: string;
-  createdOn: string | Date;
-  createdBy: string;
-  updatedOn: string | Date;
-  updatedBy: string;
+  version?: string;
+  createdOn?: string | Date;
+  createdBy?: string;
+  updatedOn?: string | Date;
+  updatedBy?: string;
 }

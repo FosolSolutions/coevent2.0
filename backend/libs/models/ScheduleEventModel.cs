@@ -37,7 +37,7 @@ public class ScheduleEventModel : SortableColumnsModel<long>
   /// <summary>
   /// 
   /// </summary>
-  protected ScheduleEventModel() { }
+  public ScheduleEventModel() { }
 
   /// <summary>
   /// 

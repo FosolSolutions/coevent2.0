@@ -37,7 +37,7 @@ public class EventActivityModel : SortableColumnsModel<long>
   /// <summary>
   /// 
   /// </summary>
-  protected EventActivityModel() { }
+  public EventActivityModel() { }
 
   /// <summary>
   /// 

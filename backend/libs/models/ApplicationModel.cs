@@ -42,7 +42,7 @@ public class ApplicationModel : AuditColumnsModel
   /// <summary>
   /// 
   /// </summary>
-  protected ApplicationModel() { }
+  public ApplicationModel() { }
 
   /// <summary>
   /// 
@@ -50,9 +50,26 @@ public class ApplicationModel : AuditColumnsModel
   /// <param name="entity"></param>
   public ApplicationModel(Entities.Application entity) : base(entity)
   {
-    this.UserId = entity.Id;
-    this.OpeningId = entity.Id;
+    this.Id = entity.Id;
+    this.UserId = entity.UserId;
+    this.User = entity.User != null ? new UserModel(entity.User) : null;
+    this.OpeningId = entity.OpeningId;
     this.Message = entity.Message;
+  }
+  #endregion
+
+  #region Methods
+  /// <summary>
+  /// 
+  /// </summary>
+  /// <param name="model"></param>
+  public static explicit operator Entities.Application(ApplicationModel model)
+  {
+    return new Entities.Application(model.UserId, model.OpeningId, model.Message)
+    {
+      Id = model.Id,
+      Version = model.Version,
+    };
   }
   #endregion
 }

@@ -37,7 +37,7 @@ public abstract class AuditColumnsModel
   /// <summary>
   /// 
   /// </summary>
-  protected AuditColumnsModel()
+  public AuditColumnsModel()
   {
   }
 

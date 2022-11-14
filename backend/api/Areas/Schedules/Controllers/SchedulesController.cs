@@ -15,8 +15,6 @@ namespace CoEvent.API.Areas.Admin.Controllers;
 [ApiController]
 [ApiVersion("1.0")]
 [Area("schedules")]
-[Route("api/v{version:apiVersion}/[controller]")]
-[Route("api/[controller]")]
 [Route("v{version:apiVersion}/[controller]")]
 [Route("[controller]")]
 public class SchedulesController : ControllerBase
@@ -57,12 +55,12 @@ public class SchedulesController : ControllerBase
   /// </summary>
   /// <param name="id"></param>
   /// <returns></returns>
-  [HttpGet("{id:int}")]
+  [HttpGet("{id:long}")]
   [Produces(MediaTypeNames.Application.Json)]
   [ProducesResponseType(typeof(ScheduleModel), 200)]
   [ProducesResponseType(typeof(ErrorResponseModel), 400)]
   [SwaggerOperation(Tags = new[] { "schedule-get" })]
-  public IActionResult Get(int id)
+  public IActionResult Get(long id)
   {
     var schedule = _scheduleService.FindById(id) ?? throw new KeyNotFoundException("Schedule not found");
     return new JsonResult(new ScheduleModel(schedule));

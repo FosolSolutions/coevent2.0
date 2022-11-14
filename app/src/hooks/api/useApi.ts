@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useAccounts, useAuth, useBase, useScheduleEvents, useUsers } from '.';
+import { useAccounts, useApplications, useAuth, useBase, useScheduleEvents, useUsers } from '.';
 import { useSchedules } from './useSchedules';
 
 /**
@@ -14,6 +14,7 @@ export const useApi = () => {
   const users = useUsers();
   const schedules = useSchedules();
   const events = useScheduleEvents();
+  const applications = useApplications();
 
   return React.useMemo(
     () => ({
@@ -23,8 +24,9 @@ export const useApi = () => {
       schedules,
       events,
       users,
+      applications,
     }),
-    [base, auth, schedules, events, accounts, users],
+    [base, auth, schedules, events, accounts, users, applications],
   );
 };
 

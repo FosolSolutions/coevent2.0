@@ -18,7 +18,7 @@ public class SortableColumnsModel<TKey> : CommonColumnsModel<TKey>
   /// <summary>
   /// Creates a new instance of an SortableColumnsModel object.
   /// </summary>
-  protected SortableColumnsModel() { }
+  public SortableColumnsModel() { }
 
   /// <summary>
   /// Creates a new instance of a SortableColumnsModel object, initializes with specified parameters.

@@ -19,7 +19,7 @@ export const defaultAccount: IAccount = {
   roles: [],
   claims: [],
   userClaims: [],
-  rowVersion: '',
+  version: '',
   createdOn: new Date(),
   createdBy: '',
   updatedOn: new Date(),

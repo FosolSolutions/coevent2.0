@@ -55,17 +55,37 @@ public class CoEventContext : DbContext
   /// </summary>
   public virtual DbSet<Claim> Claims { get; set; } = default!;
 
-  // public virtual DbSet<Application> Applications { get; set; } = default!;
+  /// <summary>
+  /// get/set - Table of 
+  /// </summary>
+  public virtual DbSet<Schedule> Schedules { get; set; } = default!;
+
+  /// <summary>
+  /// get/set - Table of 
+  /// </summary>
+  public virtual DbSet<ScheduleEvent> ScheduleEvents { get; set; } = default!;
+
+  /// <summary>
+  /// get/set - Table of 
+  /// </summary>
+  public virtual DbSet<EventActivity> EventActivities { get; set; } = default!;
+
+  /// <summary>
+  /// get/set - Table of 
+  /// </summary>
+  public virtual DbSet<ActivityOpening> ActivityOpenings { get; set; } = default!;
+
+  /// <summary>
+  /// get/set - Table of 
+  /// </summary>
+  public virtual DbSet<Application> Applications { get; set; } = default!;
+
   // public virtual DbSet<Calendar> Calendars { get; set; } = default!;
   // public virtual DbSet<Criteria> Criterias { get; set; } = default!;
   // public virtual DbSet<CriteriaTrait> CriteriaTraits { get; set; } = default!;
-  // public virtual DbSet<Event> Events { get; set; } = default!;
   // public virtual DbSet<EventOccurrence> EventOccurrences { get; set; } = default!;
-  // public virtual DbSet<Opening> Openings { get; set; } = default!;
   // public virtual DbSet<OpeningCriteria> OpeningCriterias { get; set; } = default!;
   // public virtual DbSet<OpeningOccurrence> OpeningOccurrences { get; set; } = default!;
-  // public virtual DbSet<Participant> Participants { get; set; } = default!;
-  // public virtual DbSet<Schedule> Schedules { get; set; } = default!;
   // public virtual DbSet<Survey> Surveys { get; set; } = default!;
   // public virtual DbSet<SurveyQuestion> SurveyQuestions { get; set; } = default!;
   // public virtual DbSet<Trait> Traits { get; set; } = default!;

@@ -387,9 +387,10 @@ namespace CoEvent.DAL.Migrations
                 column: "ActivityId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Application_OpeningId",
+                name: "IX_Application_OpeningId_UserId",
                 table: "Application",
-                column: "OpeningId");
+                columns: new[] { "OpeningId", "UserId" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Application_UserId",
