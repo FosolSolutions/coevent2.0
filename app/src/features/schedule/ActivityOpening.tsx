@@ -4,6 +4,7 @@ import React from 'react';
 import { useSchedules as useStore } from 'store/slices';
 
 import { Text } from './../../components/form/text/TextStyled';
+import * as styled from './ActivityOpeningStyled';
 import { ApplyButton } from './ApplyButton';
 
 export interface IActivityOpeningProps {
@@ -50,24 +51,31 @@ export const ActivityOpening: React.FC<IActivityOpeningProps> = ({ opening, show
   };
 
   return (
-    <div>
-      {showName && <span>{opening.name}</span>}
-      <div>
-        {application?.user?.displayName && <p>{application.user.displayName}</p>}
+    <styled.ActivityOpening className="opening">
+      {showName && (
+        <div className="header">
+          <span>{opening.name}</span>
+        </div>
+      )}
+      <div className="applicant">
+        {application?.user?.displayName && <span>{application.user.displayName}</span>}
+        {opening.question && (
+          <div className="question">
+            <label htmlFor={`message-${opening.id}`}>{opening.question}</label>
+            {!application && (
+              <Text
+                id={`message-${opening.id}`}
+                name="message"
+                variant={TextVariant.primary}
+                onChange={handleAnswerQuestion}
+                value={answer}
+              />
+            )}
+            {application?.message && <p>{application.message}</p>}
+          </div>
+        )}
         <ApplyButton canApply={!application} onClick={handleApplication} />
       </div>
-      <div>
-        {opening.question && <p>{opening.question}</p>}
-        {opening.question && !application && (
-          <Text
-            name="message"
-            variant={TextVariant.primary}
-            onChange={handleAnswerQuestion}
-            value={answer}
-          />
-        )}
-        {application?.message && <p>{application.message}</p>}
-      </div>
-    </div>
+    </styled.ActivityOpening>
   );
 };

@@ -3,10 +3,11 @@ import styled from 'styled-components';
 export const ApplyButton = styled.div`
   cursor: pointer;
 
-  svg.on path {
+  svg.on {
     color: ${(props) => props.theme.css.dangerColor};
   }
-  svg.off path {
+
+  svg.off {
     color: ${(props) => props.theme.css.primaryColor};
   }
 `;

@@ -21,12 +21,6 @@ export const Layout = styled.div`
     gap: 1em;
     justify-content: flex-end;
   }
-
-  main {
-    flex-grow: 1;
-    overflow: auto;
-    position: relative;
-  }
 `;
 
 export default Layout;

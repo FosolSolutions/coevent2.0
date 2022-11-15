@@ -21,10 +21,8 @@ export const schedulesSlice = createSlice({
 
       if (activity && opening) {
         // Replace the opening with the one provided.
-        activity.openings = [
-          ...activity.openings.filter((o) => o.id !== opening.id),
-          action.payload,
-        ];
+        const oi = activity.openings.findIndex((o) => o.id === opening.id);
+        if (oi >= 0) activity.openings[oi] = action.payload;
       }
     },
   },

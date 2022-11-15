@@ -23,7 +23,12 @@ body, button, input, textarea {
 main {
   display: flex;
   flex-direction: row;
+  flex-grow: 1;
+  align-content: center;
+  align-items: flex-start;
   align-self: center;
+  overflow: auto;
+  position: relative;
 }
 
 #root {
