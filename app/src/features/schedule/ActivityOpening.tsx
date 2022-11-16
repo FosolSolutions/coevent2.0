@@ -18,9 +18,11 @@ export const ActivityOpening: React.FC<IActivityOpeningProps> = ({ opening, show
 
   const [answer, setAnswer] = React.useState('');
 
-  const userId = padlock.decode()?.uid;
+  const userId = padlock.identity?.uid;
   let application = opening.applications.find((a) => a.userId === userId);
-  const canApply = padlock.hasClaim({ name: 'attribute', value: 'brother' });
+  const canApply = padlock.hasClaim(
+    opening.requirements.map((r) => ({ name: r.name, value: r.value })),
+  );
 
   const handleApplication = async () => {
     try {

@@ -33,6 +33,11 @@ public class ActivityOpeningModel : SortableColumnsModel<long>
   public bool ResponseRequired { get; set; }
 
   /// <summary>
+  /// get - Collection of requirements.
+  /// </summary>
+  public virtual IEnumerable<OpeningRequirementModel> Requirements { get; set; } = Array.Empty<OpeningRequirementModel>();
+
+  /// <summary>
   /// get - Collection of applications.
   /// </summary>
   public virtual IEnumerable<ApplicationModel> Applications { get; set; } = Array.Empty<ApplicationModel>();
@@ -54,6 +59,7 @@ public class ActivityOpeningModel : SortableColumnsModel<long>
     this.Limit = entity.Limit;
     this.Question = entity.Question;
     this.ResponseRequired = entity.ResponseRequired;
+    this.Requirements = entity.Requirements.Select(r => new OpeningRequirementModel(r)).ToArray();
     this.Applications = entity.Applications.Select(a => new ApplicationModel(a)).ToArray();
   }
   #endregion

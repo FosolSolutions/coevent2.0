@@ -152,7 +152,7 @@ export const User: React.FC<IUserProps> = ({ id }) => {
                     value={values.claims.filter((c) => c.name === 'attribute').map((c) => c.value)}
                     onChange={(e) => {
                       const values = [...e.currentTarget.selectedOptions].map((o) => ({
-                        userId: padlock.decode()?.uid,
+                        userId: padlock.identity?.uid,
                         accountId: 1,
                         name: 'attribute',
                         value: o.value,

@@ -6,6 +6,7 @@ export * from './IClaimModel';
 export * from './ICommonColumnsModel';
 export * from './IEventActivityModel';
 export * from './ILoginModel';
+export * from './IOpeningRequirementModel';
 export * from './IPaging';
 export * from './IPagingFilter';
 export * from './IParticipantLoginModel';

@@ -397,6 +397,30 @@ namespace CoEvent.DAL.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "OpeningRequirement",
+                columns: table => new
+                {
+                    OpeningId = table.Column<long>(type: "bigint", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    CreatedBy = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    Version = table.Column<byte[]>(type: "varbinary(max)", nullable: true, defaultValueSql: "0")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OpeningRequirement", x => new { x.OpeningId, x.Name, x.Value });
+                    table.ForeignKey(
+                        name: "FK_OpeningRequirement_ActivityOpening_OpeningId",
+                        column: x => x.OpeningId,
+                        principalTable: "ActivityOpening",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Account_AccountType_OwnerId_Name",
                 table: "Account",
@@ -518,6 +542,9 @@ namespace CoEvent.DAL.Migrations
             PreDown(migrationBuilder);
             migrationBuilder.DropTable(
                 name: "Application");
+
+            migrationBuilder.DropTable(
+                name: "OpeningRequirement");
 
             migrationBuilder.DropTable(
                 name: "RoleClaim");

@@ -1,5 +1,4 @@
 using CoEvent.Core.Extensions;
-using CoEvent.Entities;
 
 namespace CoEvent.Models;
 

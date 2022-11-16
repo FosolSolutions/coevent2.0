@@ -1,4 +1,9 @@
-import { IApplicationModel, IEventActivityModel, ISortableColumnsModel } from '.';
+import {
+  IApplicationModel,
+  IEventActivityModel,
+  IOpeningRequirementModel,
+  ISortableColumnsModel,
+} from '.';
 
 export interface IActivityOpeningModel extends ISortableColumnsModel<number> {
   activityId: number;
@@ -6,5 +11,6 @@ export interface IActivityOpeningModel extends ISortableColumnsModel<number> {
   limit: number;
   question: string;
   responseRequired: boolean;
+  requirements: IOpeningRequirementModel[];
   applications: IApplicationModel[];
 }

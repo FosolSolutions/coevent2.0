@@ -364,6 +364,50 @@ namespace CoEvent.DAL.Migrations
                     b.ToTable("EventActivity", (string)null);
                 });
 
+            modelBuilder.Entity("CoEvent.Entities.OpeningRequirement", b =>
+                {
+                    b.Property<long>("OpeningId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Value")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<string>("UpdatedBy")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<DateTime>("UpdatedOn")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<byte[]>("Version")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("varbinary(max)")
+                        .HasDefaultValueSql("0");
+
+                    b.HasKey("OpeningId", "Name", "Value");
+
+                    b.ToTable("OpeningRequirement", (string)null);
+                });
+
             modelBuilder.Entity("CoEvent.Entities.Role", b =>
                 {
                     b.Property<int>("Id")
@@ -900,6 +944,17 @@ namespace CoEvent.DAL.Migrations
                     b.Navigation("Event");
                 });
 
+            modelBuilder.Entity("CoEvent.Entities.OpeningRequirement", b =>
+                {
+                    b.HasOne("CoEvent.Entities.ActivityOpening", "Opening")
+                        .WithMany("Requirements")
+                        .HasForeignKey("OpeningId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Opening");
+                });
+
             modelBuilder.Entity("CoEvent.Entities.Role", b =>
                 {
                     b.HasOne("CoEvent.Entities.Account", "Account")
@@ -1025,6 +1080,8 @@ namespace CoEvent.DAL.Migrations
             modelBuilder.Entity("CoEvent.Entities.ActivityOpening", b =>
                 {
                     b.Navigation("Applications");
+
+                    b.Navigation("Requirements");
                 });
 
             modelBuilder.Entity("CoEvent.Entities.Claim", b =>

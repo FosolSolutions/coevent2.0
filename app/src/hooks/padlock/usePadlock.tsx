@@ -1,5 +1,4 @@
-import { IPadlockHook, IPadlockHookProps, ITokenClaim, PadlockContext, Token } from 'hooks';
-import jwtDecode from 'jwt-decode';
+import { IPadlockHook, IPadlockHookProps, ITokenClaim, PadlockContext } from 'hooks';
 import React from 'react';
 
 /**
@@ -11,13 +10,6 @@ export const usePadlock = ({ token }: IPadlockHookProps = {}): IPadlockHook => {
   const context = React.useContext(PadlockContext);
 
   /**
-   * Decode the access token.
-   */
-  const decode = React.useCallback(() => {
-    return context.token ? new Token(jwtDecode(context.token.accessToken)) : undefined;
-  }, [context.token]);
-
-  /**
    * Validate the current user account as at least one of the specified claims.
    * @param claims A claim or an array of claims.
    * @returns True if the current user account has at least one of the specified claims.
@@ -25,11 +17,14 @@ export const usePadlock = ({ token }: IPadlockHookProps = {}): IPadlockHook => {
   const hasClaim = React.useCallback(
     (claims: ITokenClaim | Array<ITokenClaim>) => {
       return (
-        context.identity?.claims.some((c) => {
+        claims === undefined ||
+        (Array.isArray(claims) && !claims.length) ||
+        (context.identity?.claims.some((c) => {
           return Array.isArray(claims)
             ? claims.some((c1) => c1.name === c.name && c1.value === c.value)
             : c.name === claims.name && c.value === claims.value;
-        }) ?? false
+        }) ??
+          false)
       );
     },
     [context.identity],
@@ -43,9 +38,12 @@ export const usePadlock = ({ token }: IPadlockHookProps = {}): IPadlockHook => {
   const hasRole = React.useCallback(
     (roles: string | Array<string>) => {
       return (
-        context.identity?.roles.some((r) =>
+        roles === undefined ||
+        (Array.isArray(roles) && !roles.length) ||
+        (context.identity?.roles.some((r) =>
           Array.isArray(roles) ? roles.some((r1) => r1 === r) : r === roles,
-        ) ?? false
+        ) ??
+          false)
       );
     },
     [context.identity],
@@ -55,6 +53,5 @@ export const usePadlock = ({ token }: IPadlockHookProps = {}): IPadlockHook => {
     ...context,
     hasClaim,
     hasRole,
-    decode,
   };
 };
