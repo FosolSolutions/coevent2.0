@@ -35,12 +35,12 @@ public class ActivityOpeningModel : SortableColumnsModel<long>
   /// <summary>
   /// get - Collection of requirements.
   /// </summary>
-  public virtual IEnumerable<OpeningRequirementModel> Requirements { get; set; } = Array.Empty<OpeningRequirementModel>();
+  public IEnumerable<OpeningRequirementModel> Requirements { get; set; } = Array.Empty<OpeningRequirementModel>();
 
   /// <summary>
   /// get - Collection of applications.
   /// </summary>
-  public virtual IEnumerable<ApplicationModel> Applications { get; set; } = Array.Empty<ApplicationModel>();
+  public IEnumerable<ApplicationModel> Applications { get; set; } = Array.Empty<ApplicationModel>();
   #endregion
 
   #region Constructors

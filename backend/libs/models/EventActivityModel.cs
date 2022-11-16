@@ -30,7 +30,7 @@ public class EventActivityModel : SortableColumnsModel<long>
   /// <summary>
   /// get - A collection of openings for this activity.
   /// </summary>
-  public virtual IEnumerable<ActivityOpeningModel> Openings { get; set; } = Array.Empty<ActivityOpeningModel>();
+  public IEnumerable<ActivityOpeningModel> Openings { get; set; } = Array.Empty<ActivityOpeningModel>();
   #endregion
 
   #region Constructors

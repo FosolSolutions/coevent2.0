@@ -9,5 +9,5 @@ import * as styled from './styled';
  * @returns LogoutButton component.
  */
 export const LogoutButton: React.FC<IconBaseProps> = (props) => {
-  return <styled.LogoutButton data-for="main-tooltip" data-tip="Logout" {...props} />;
+  return <styled.LogoutButton {...props} />;
 };

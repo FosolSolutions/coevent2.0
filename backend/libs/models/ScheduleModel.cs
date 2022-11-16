@@ -30,7 +30,7 @@ public class ScheduleModel : SortableColumnsModel<long>
   /// <summary>
   /// get - Collection of events.
   /// </summary>
-  public virtual IEnumerable<ScheduleEventModel> Events { get; set; } = Array.Empty<ScheduleEventModel>();
+  public IEnumerable<ScheduleEventModel> Events { get; set; } = Array.Empty<ScheduleEventModel>();
   #endregion
 
   #region Constructors

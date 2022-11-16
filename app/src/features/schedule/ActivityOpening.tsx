@@ -19,20 +19,23 @@ export const ActivityOpening: React.FC<IActivityOpeningProps> = ({ opening, show
   const [answer, setAnswer] = React.useState('');
 
   const userId = padlock.identity?.uid;
-  let application = opening.applications.find((a) => a.userId === userId);
-  const canApply = padlock.hasClaim(
-    opening.requirements.map((r) => ({ name: r.name, value: r.value })),
-  );
+  const alreadyFilled =
+    opening.limit <= opening.applications.length ||
+    opening.applications.some((a) => a.userId === padlock.identity?.uid);
+  const canApply =
+    !alreadyFilled &&
+    padlock.hasClaim(opening.requirements.map((r) => ({ name: r.name, value: r.value })));
 
   const handleApplication = async () => {
     try {
+      let application = opening.applications.find((a) => a.userId === userId);
       if (!state.schedule) throw new Error('The schedule was not found');
       const open = { ...opening };
 
       if (!application) {
         const model: IApplicationModel = {
           id: 0,
-          userId: 1,
+          userId: padlock.identity!.uid,
           openingId: opening.id,
           message: answer,
         };
@@ -59,12 +62,20 @@ export const ActivityOpening: React.FC<IActivityOpeningProps> = ({ opening, show
           <span>{opening.name}</span>
         </div>
       )}
-      <div className="applicant">
-        {application?.user?.displayName && <span>{application.user.displayName}</span>}
-        {opening.question && (
-          <div className="question">
-            <label htmlFor={`message-${opening.id}`}>{opening.question}</label>
-            {!application && (
+      {opening.applications.map((a) => (
+        <div key={a.id} className="applicant">
+          <span>{a.user?.displayName}</span>
+          {!!a.message && <p>{a.message}</p>}
+          {a.userId === padlock.identity?.uid && (
+            <ApplyButton active={true} onClick={handleApplication} />
+          )}
+        </div>
+      ))}
+      {canApply && (
+        <div className="applicant">
+          {opening.question && (
+            <div className="question">
+              <label htmlFor={`message-${opening.id}`}>{opening.question}</label>
               <Text
                 id={`message-${opening.id}`}
                 name="message"
@@ -72,12 +83,11 @@ export const ActivityOpening: React.FC<IActivityOpeningProps> = ({ opening, show
                 onChange={handleAnswerQuestion}
                 value={answer}
               />
-            )}
-            {application?.message && <p>{application.message}</p>}
-          </div>
-        )}
-        {canApply && <ApplyButton canApply={!application} onClick={handleApplication} />}
-      </div>
+            </div>
+          )}
+          <ApplyButton onClick={handleApplication} />
+        </div>
+      )}
     </styled.ActivityOpening>
   );
 };

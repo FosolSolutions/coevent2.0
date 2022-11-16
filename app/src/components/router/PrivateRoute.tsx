@@ -38,14 +38,14 @@ export const PrivateRoute = ({
   element,
   children,
 }: IPrivateRouteProps) => {
-  const auth = usePadlock();
+  const padlock = usePadlock();
 
-  if (!auth.authReady) <></>;
+  if (!padlock.authReady) <></>;
 
   if (
-    !auth.authenticated ||
-    (!!claims && !auth.hasClaim(claims)) ||
-    (!!roles && !auth.hasRole(roles))
+    !padlock.authenticated ||
+    (!!claims && !padlock.hasClaim(claims)) ||
+    (!!roles && !padlock.hasRole(roles))
   ) {
     const query = {
       redirect_uri: window.location.pathname,

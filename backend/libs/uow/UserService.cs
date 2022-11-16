@@ -117,8 +117,8 @@ public class UserService : BaseService<User, long>, IUserService
   /// <returns></returns>
   public override User Add(User entity)
   {
-    this.Context.AddRange(entity.RolesManyToMany);
-    this.Context.AddRange(entity.Claims);
+    this.Context.AddRange(entity.RolesManyToMany.Select(r => { r.User = null; r.Role = null; return r; }));
+    this.Context.AddRange(entity.Claims.Select(c => { c.User = null; return c; }));
     return base.Add(entity);
   }
 
@@ -133,14 +133,14 @@ public class UserService : BaseService<User, long>, IUserService
     user.Password = this.Context.Entry(user).OriginalValues[nameof(User.Password)] as string ?? "";
 
     var oRoles = this.Context.UserRoles.Where(r => r.UserId == user.Id).ToArray();
-    var addRoles = entity.RolesManyToMany.Except(oRoles);
-    var delRoles = oRoles.Except(entity.RolesManyToMany);
+    var addRoles = entity.RolesManyToMany.Except(oRoles).Select(r => { r.User = null; r.Role = null; return r; }).ToArray();
+    var delRoles = oRoles.Except(entity.RolesManyToMany).Select(r => { r.User = null; r.Role = null; return r; }).ToArray();
     this.Context.RemoveRange(delRoles);
     this.Context.AddRange(addRoles);
 
     var oClaims = this.Context.UserClaims.Where(c => c.UserId == user.Id).ToArray();
-    var addClaims = entity.Claims.Except(oClaims);
-    var delClaims = oClaims.Except(entity.Claims);
+    var addClaims = entity.Claims.Except(oClaims).Select(c => { c.User = null; return c; }).ToArray();
+    var delClaims = oClaims.Except(entity.Claims).Select(c => { c.User = null; return c; }).ToArray();
     this.Context.RemoveRange(delClaims);
     this.Context.AddRange(addClaims);
 

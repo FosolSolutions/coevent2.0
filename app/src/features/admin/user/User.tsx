@@ -9,7 +9,7 @@ import {
   Row,
 } from 'components';
 import { Formik } from 'formik';
-import { IRoleModel, IUserModel, useApi, usePadlock, UserClaim, UserStatus, UserType } from 'hooks';
+import { Attribute, IRoleModel, IUserModel, useApi, usePadlock, UserStatus, UserType } from 'hooks';
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -58,6 +58,14 @@ export const User: React.FC<IUserProps> = ({ id }) => {
     await api.users.remove(toModel(user));
     await new Promise((r) => setTimeout(r, 30 * 1000));
     navigate('/admin/users');
+  };
+
+  const impersonate = async () => {
+    if (!!user.key) {
+      const token = await api.auth.loginAsParticipant({ key: user.key });
+      padlock.login(token);
+      navigate('/');
+    }
   };
 
   return (
@@ -115,6 +123,9 @@ export const User: React.FC<IUserProps> = ({ id }) => {
                 <Row>
                   <FormikText name="displayName" label="Display Name:" required></FormikText>
                   <FormikText name="key" label="Key:" disabled={true}></FormikText>
+                  <Button variant={ButtonVariant.warning} onClick={impersonate} className="group">
+                    Impersonate
+                  </Button>
                 </Row>
                 <Row>
                   <FormikText name="firstName" label="First Name:"></FormikText>
@@ -143,16 +154,24 @@ export const User: React.FC<IUserProps> = ({ id }) => {
                     optionText="name"
                     multiple
                     options={roles}
+                    onChange={(e) => {
+                      const values = [...e.currentTarget.selectedOptions]
+                        .map((o) => {
+                          return roles.find((r) => r.id === parseInt(o.value));
+                        })
+                        .filter((r) => !!r);
+                      setFieldValue('roles', values);
+                    }}
                   ></FormikDropdown>
                   <FormikDropdown
                     name="attributes"
                     label="Attributes:"
                     multiple
-                    options={castEnumToOptions(UserClaim)}
+                    options={castEnumToOptions(Attribute)}
                     value={values.claims.filter((c) => c.name === 'attribute').map((c) => c.value)}
                     onChange={(e) => {
                       const values = [...e.currentTarget.selectedOptions].map((o) => ({
-                        userId: padlock.identity?.uid,
+                        userId: user.id,
                         accountId: 1,
                         name: 'attribute',
                         value: o.value,

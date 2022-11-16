@@ -4,22 +4,22 @@ import { FaMinusCircle, FaPlusCircle } from 'react-icons/fa';
 import * as styled from './styled';
 
 export interface IApplyButtonProps {
-  canApply?: boolean;
+  active?: boolean;
   onClick?: () => void;
 }
 
-export const ApplyButton: React.FC<IApplyButtonProps> = ({ canApply = true, onClick }) => {
+export const ApplyButton: React.FC<IApplyButtonProps> = ({ active = false, onClick }) => {
   return (
     <styled.ApplyButton
-      className={`btn ${canApply ? 'on' : 'off'}`}
+      className={`btn ${active ? 'on' : 'off'}`}
       onClick={() => {
         onClick?.();
       }}
     >
-      {canApply ? (
-        <FaPlusCircle className="off" title="Apply" size={30} />
+      {active ? (
+        <FaMinusCircle className="off" title="Withdraw" size={30} />
       ) : (
-        <FaMinusCircle className="on" title="Withdraw" size={30} />
+        <FaPlusCircle className="on" title="Apply" size={30} />
       )}
     </styled.ApplyButton>
   );

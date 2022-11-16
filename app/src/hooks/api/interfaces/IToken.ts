@@ -3,9 +3,10 @@ import { UserType } from '../constants';
 export interface IToken {
   nameid: string;
   uid: string;
-  accessType: UserType;
+  access_type: UserType;
   unique_name: string;
   email: string;
+  display_name: string;
   given_name: string;
   family_name: string;
   role?: string | string[];

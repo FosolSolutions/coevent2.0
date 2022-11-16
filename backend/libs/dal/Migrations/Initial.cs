@@ -10,8 +10,15 @@ namespace CoEvent.DAL.Migrations;
 /// </summary>
 public partial class Initial : SqlServerSeedMigration
 {
+  #region Variables
   private readonly HashPassword _hashPassword = new();
+  private long _scheduleId = 1;
+  private long _eventId = 1;
+  private long _activityId = 1;
+  private long _openingId = 1;
+  #endregion
 
+  #region Methods
   /// <summary>
   /// Insert the following data.
   /// </summary>
@@ -114,7 +121,7 @@ public partial class Initial : SqlServerSeedMigration
       });
   }
 
-  private static void AddSchedule(MigrationBuilder migrationBuilder)
+  private void AddSchedule(MigrationBuilder migrationBuilder)
   {
     var startOn = new DateTime(2023, 01, 01);
     var endOn = startOn.AddMonths(6).AddDays(DateTime.DaysInMonth(startOn.Year, 6) - 1);
@@ -131,7 +138,7 @@ public partial class Initial : SqlServerSeedMigration
         nameof(Schedule.UpdatedBy),
       },
       new object?[] {
-        1,
+        _scheduleId,
         $"Victoria Ecclesia {startOn.Year} - {startOn:MMM} to {endOn:MMM}",
         1,
         startOn,
@@ -141,13 +148,14 @@ public partial class Initial : SqlServerSeedMigration
         "seed",
       });
 
-    var result = AddMemorialEvents(migrationBuilder, (1, 1, 1), startOn, endOn);
-    result = AddLectureEvents(migrationBuilder, result, startOn, endOn);
-    result = AddBibleClassEvents(migrationBuilder, result, startOn, endOn);
-    result = AddHallCleaningEvents(migrationBuilder, result, startOn, endOn);
+    AddMemorialEvents(migrationBuilder, startOn, endOn);
+    AddLectureEvents(migrationBuilder, startOn, endOn);
+    AddBibleClassEvents(migrationBuilder, startOn, endOn);
+    AddHallCleaningEvents(migrationBuilder, startOn, endOn);
+    _scheduleId++;
   }
 
-  private static (long ScheduleId, long ActivityId, long EventId) AddMemorialEvents(MigrationBuilder migrationBuilder, (long ScheduleId, long ActivityId, long EventId) ids, DateTime startOn, DateTime endOn)
+  private void AddMemorialEvents(MigrationBuilder migrationBuilder, DateTime startOn, DateTime endOn)
   {
     var date = new DateTime(startOn.Year, startOn.Month, startOn.GetFirstDayOfWeekInMonth(DayOfWeek.Sunday), 11, 0, 0);
     while (date <= endOn)
@@ -165,9 +173,9 @@ public partial class Initial : SqlServerSeedMigration
           nameof(ScheduleEvent.UpdatedBy),
         },
         new object?[] {
-          ids.EventId,
+          _eventId,
           "Memorial",
-          ids.ScheduleId,
+          _scheduleId,
           date,
           date.AddHours(1.5),
           true,
@@ -175,33 +183,46 @@ public partial class Initial : SqlServerSeedMigration
           "seed",
         });
 
-      AddActivity(migrationBuilder, ids.ActivityId, ids.EventId, date, "Presiding");
-      AddOpening(migrationBuilder, ids.ActivityId++, "Preside", 1, "", false);
+      AddActivity(migrationBuilder, date, "Presiding");
+      AddOpening(migrationBuilder, "Preside", 1, "", false, "preside");
+      _activityId++;
+      _openingId++;
 
-      AddActivity(migrationBuilder, ids.ActivityId, ids.EventId, date, "Exhorting");
-      AddOpening(migrationBuilder, ids.ActivityId++, "Exhort", 1, "", false);
+      AddActivity(migrationBuilder, date, "Exhorting");
+      AddOpening(migrationBuilder, "Exhort", 1, "", false, "exhort");
+      _activityId++;
+      _openingId++;
 
-      AddActivity(migrationBuilder, ids.ActivityId, ids.EventId, date, "Pianist");
-      AddOpening(migrationBuilder, ids.ActivityId++, "Pianist", 1, "", false);
+      AddActivity(migrationBuilder, date, "Pianist");
+      AddOpening(migrationBuilder, "Pianist", 1, "", false, "piano");
+      _activityId++;
+      _openingId++;
 
-      AddActivity(migrationBuilder, ids.ActivityId, ids.EventId, date, "Doorman");
-      AddOpening(migrationBuilder, ids.ActivityId++, "Doorman", 1, "", false);
+      AddActivity(migrationBuilder, date, "Doorman");
+      AddOpening(migrationBuilder, "Doorman", 1, "", false, "doorman");
+      _activityId++;
+      _openingId++;
 
-      AddActivity(migrationBuilder, ids.ActivityId, ids.EventId, date, "Reading");
-      AddOpening(migrationBuilder, ids.ActivityId++, "Read", 2, "", false);
+      AddActivity(migrationBuilder, date, "Reading");
+      AddOpening(migrationBuilder, "Read", 2, "", false, "read");
+      _activityId++;
+      _openingId++;
 
-      AddActivity(migrationBuilder, ids.ActivityId, ids.EventId++, date, "Prayers");
-      AddOpening(migrationBuilder, ids.ActivityId, "Bread", 1, "", false);
-      AddOpening(migrationBuilder, ids.ActivityId, "Wine", 1, "", false);
-      AddOpening(migrationBuilder, ids.ActivityId++, "Close", 1, "", false);
+      AddActivity(migrationBuilder, date, "Prayers");
+      AddOpening(migrationBuilder, "Bread", 1, "", false, "pray");
+      _openingId++;
+      AddOpening(migrationBuilder, "Wine", 1, "", false, "pray");
+      _openingId++;
+      AddOpening(migrationBuilder, "Close", 1, "", false, "pray");
+      _openingId++;
+      _activityId++;
 
       date = date.AddDays(7);
+      _eventId++;
     }
-
-    return ids;
   }
 
-  private static (long ScheduleId, long ActivityId, long EventId) AddLectureEvents(MigrationBuilder migrationBuilder, (long ScheduleId, long ActivityId, long EventId) ids, DateTime startOn, DateTime endOn)
+  private void AddLectureEvents(MigrationBuilder migrationBuilder, DateTime startOn, DateTime endOn)
   {
     var date = new DateTime(startOn.Year, startOn.Month, startOn.GetFirstDayOfWeekInMonth(DayOfWeek.Sunday), 19, 0, 0);
     while (date <= endOn)
@@ -219,9 +240,9 @@ public partial class Initial : SqlServerSeedMigration
           nameof(ScheduleEvent.UpdatedBy),
         },
         new object?[] {
-          ids.EventId,
+          _eventId,
           "Bible Talk",
-          ids.ScheduleId,
+          _scheduleId,
           date,
           date.AddHours(1),
           true,
@@ -229,19 +250,17 @@ public partial class Initial : SqlServerSeedMigration
           "seed",
         });
 
-      AddActivity(migrationBuilder, ids.ActivityId, ids.EventId, date, "Presiding");
-      AddOpening(migrationBuilder, ids.ActivityId++, "Preside", 1, "", false);
-
-      AddActivity(migrationBuilder, ids.ActivityId, ids.EventId++, date, "Speaking");
-      AddOpening(migrationBuilder, ids.ActivityId++, "Speak", 1, "Title", true);
+      AddActivity(migrationBuilder, date, "Speaking");
+      AddOpening(migrationBuilder, "Speak", 1, "Title", true, "lecture");
+      _activityId++;
+      _openingId++;
 
       date = date.AddDays(7);
+      _eventId++;
     }
-
-    return ids;
   }
 
-  private static (long ScheduleId, long ActivityId, long EventId) AddBibleClassEvents(MigrationBuilder migrationBuilder, (long ScheduleId, long ActivityId, long EventId) ids, DateTime startOn, DateTime endOn)
+  private void AddBibleClassEvents(MigrationBuilder migrationBuilder, DateTime startOn, DateTime endOn)
   {
     var date = new DateTime(startOn.Year, startOn.Month, startOn.GetFirstDayOfWeekInMonth(DayOfWeek.Thursday), 19, 30, 0);
     while (date <= endOn)
@@ -259,9 +278,9 @@ public partial class Initial : SqlServerSeedMigration
           nameof(ScheduleEvent.UpdatedBy),
         },
         new object?[] {
-          ids.EventId,
+          _eventId,
           "Bible Class",
-          ids.ScheduleId,
+          _scheduleId,
           date,
           date.AddHours(1),
           true,
@@ -269,19 +288,17 @@ public partial class Initial : SqlServerSeedMigration
           "seed",
         });
 
-      AddActivity(migrationBuilder, ids.ActivityId, ids.EventId, date, "Presiding");
-      AddOpening(migrationBuilder, ids.ActivityId++, "Preside", 1, "", false);
-
-      AddActivity(migrationBuilder, ids.ActivityId, ids.EventId++, date, "Speaking");
-      AddOpening(migrationBuilder, ids.ActivityId++, "Speak", 1, "Title", true);
+      AddActivity(migrationBuilder, date, "Speaking");
+      AddOpening(migrationBuilder, "Speak", 1, "Title", true, "speak");
+      _activityId++;
+      _openingId++;
 
       date = date.AddDays(7);
+      _eventId++;
     }
-
-    return ids;
   }
 
-  private static (long ScheduleId, long ActivityId, long EventId) AddHallCleaningEvents(MigrationBuilder migrationBuilder, (long ScheduleId, long ActivityId, long EventId) ids, DateTime startOn, DateTime endOn)
+  private void AddHallCleaningEvents(MigrationBuilder migrationBuilder, DateTime startOn, DateTime endOn)
   {
     var date = new DateTime(startOn.Year, startOn.Month, startOn.GetFirstDayOfWeekInMonth(DayOfWeek.Saturday), 08, 00, 0);
     while (date <= endOn)
@@ -299,9 +316,9 @@ public partial class Initial : SqlServerSeedMigration
           nameof(ScheduleEvent.UpdatedBy),
         },
         new object?[] {
-          ids.EventId,
+          _eventId,
           "Hall Cleaning",
-          ids.ScheduleId,
+          _scheduleId,
           date,
           date.AddHours(2),
           true,
@@ -309,16 +326,17 @@ public partial class Initial : SqlServerSeedMigration
           "seed",
         });
 
-      AddActivity(migrationBuilder, ids.ActivityId, ids.EventId++, date, "Cleaning");
-      AddOpening(migrationBuilder, ids.ActivityId++, "Clean", 5, "", false);
+      AddActivity(migrationBuilder, date, "Cleaning");
+      AddOpening(migrationBuilder, "Clean", 6, "", false);
+      _activityId++;
+      _openingId++;
 
       date = date.AddDays(7);
+      _eventId++;
     }
-
-    return ids;
   }
 
-  private static void AddActivity(MigrationBuilder migrationBuilder, long activityId, long eventId, DateTime date, string name)
+  private void AddActivity(MigrationBuilder migrationBuilder, DateTime date, string name)
   {
     migrationBuilder.InsertData(
       nameof(EventActivity),
@@ -333,9 +351,9 @@ public partial class Initial : SqlServerSeedMigration
         nameof(EventActivity.UpdatedBy),
       },
       new object?[] {
-        activityId,
+        _activityId,
         name,
-        eventId,
+        _eventId,
         date,
         date.AddHours(1.5),
         true,
@@ -344,11 +362,12 @@ public partial class Initial : SqlServerSeedMigration
       });
   }
 
-  private static void AddOpening(MigrationBuilder migrationBuilder, long activityId, string name, int limit, string question, bool required)
+  private void AddOpening(MigrationBuilder migrationBuilder, string name, int limit, string question, bool required, string? attribute = null)
   {
     migrationBuilder.InsertData(
       nameof(ActivityOpening),
       new string[] {
+        nameof(ActivityOpening.Id),
         nameof(ActivityOpening.Name),
         nameof(ActivityOpening.ActivityId),
         nameof(ActivityOpening.Limit),
@@ -359,8 +378,9 @@ public partial class Initial : SqlServerSeedMigration
         nameof(ActivityOpening.UpdatedBy),
       },
       new object?[] {
+        _openingId,
         name,
-        activityId,
+        _activityId,
         limit,
         question,
         required,
@@ -368,7 +388,28 @@ public partial class Initial : SqlServerSeedMigration
         "seed",
         "seed",
       });
+
+    if (!String.IsNullOrWhiteSpace(attribute))
+    {
+      migrationBuilder.InsertData(
+        nameof(OpeningRequirement),
+        new string[] {
+          nameof(OpeningRequirement.OpeningId),
+          nameof(OpeningRequirement.Name),
+          nameof(OpeningRequirement.Value),
+          nameof(OpeningRequirement.CreatedBy),
+          nameof(OpeningRequirement.UpdatedBy),
+        },
+        new object?[] {
+          _openingId,
+          "attribute",
+          attribute,
+          "seed",
+          "seed",
+        });
+    }
   }
+  #endregion
 }
 
 

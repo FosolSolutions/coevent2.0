@@ -1,4 +1,4 @@
-export enum UserClaim {
+export enum Attribute {
   brother = 'brother',
   sister = 'sister',
   preside = 'preside',
@@ -8,4 +8,5 @@ export enum UserClaim {
   read = 'read',
   pray = 'pray',
   piano = 'piano',
+  doorman = 'doorman',
 }

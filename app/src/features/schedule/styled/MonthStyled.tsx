@@ -31,9 +31,5 @@ export const Month = styled.div`
     display: flex;
     flex-direction: column;
     gap: 1em;
-
-    &.hide {
-      display: none;
-    }
   }
 `;

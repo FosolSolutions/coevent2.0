@@ -29,22 +29,24 @@ export const Month: React.FC<IMonthProps> = ({ schedule, filter }) => {
 
   return (
     <styled.Month className="month">
-      <div className="header" onClick={handleResizeMonth}>
+      <div className="header" onClick={handleResizeMonth} title={show ? 'hide' : 'show'}>
         <div title={show ? 'hide' : 'show'}>{show ? <FaChevronUp /> : <FaChevronDown />}</div>
-        <h1>{date.toLocaleString('en-US', { month: 'long' })}</h1>
+        <h1>{date.toLocaleString('en-US', { month: 'long', year: 'numeric' })}</h1>
       </div>
       {!show && <hr />}
-      <div className={`events ${show ? 'show' : 'hide'}`}>
-        {schedule?.events
-          .filter(
-            (e) =>
-              moment(e.startOn).month() === filter.month &&
-              moment(e.startOn).format('dddd') === filter.dayOfWeek,
-          )
-          .map((e) => (
-            <ScheduleEvent key={e.id} event={e} />
-          ))}
-      </div>
+      {show && (
+        <div className="events">
+          {schedule?.events
+            .filter(
+              (e) =>
+                moment(e.startOn).month() === filter.month &&
+                moment(e.startOn).format('dddd') === filter.dayOfWeek,
+            )
+            .map((e) => (
+              <ScheduleEvent key={e.id} event={e} />
+            ))}
+        </div>
+      )}
     </styled.Month>
   );
 };

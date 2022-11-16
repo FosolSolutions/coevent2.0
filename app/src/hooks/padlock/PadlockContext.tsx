@@ -23,7 +23,6 @@ export const PadlockContext = React.createContext<IPadlockState>({
   state: {
     setAuthReady: () => {},
     setAuthenticated: () => {},
-    setToken: () => {},
     setUserInfo: () => {},
   },
   login: () => {},
@@ -50,9 +49,12 @@ export const PadlockProvider: React.FC<IPadlockProviderProps> = ({
 }) => {
   const [cookies, setCookies, removeCookie] = useCookies();
 
+  // The token is a ref because otherwise each refresh would rerender every component... (React state is annoying).
+  const tokenRef = React.useRef(initToken);
+  const token = tokenRef.current;
+
   const [oidc] = React.useState<IOIDCEndpoints>(initOIDC);
   const [authReady, setAuthReady] = React.useState<boolean>(initAuthReady);
-  const [token, setToken] = React.useState<IAuthToken | null | undefined>(initToken);
   const [authenticated, setAuthenticated] = React.useState<boolean>(
     initAuthenticated
       ? initAuthenticated
@@ -66,9 +68,11 @@ export const PadlockProvider: React.FC<IPadlockProviderProps> = ({
    */
   const storeToken = React.useCallback(
     (token: IAuthToken | null) => {
-      setCookies(COOKIE_NAME, token, { path: '/' });
-      setToken(token);
-      setIdentity(!!token?.accessToken ? new Token(jwtDecode(token.accessToken)) : undefined);
+      setCookies(COOKIE_NAME, token, { path: '/', sameSite: true });
+      tokenRef.current = token;
+      const identity = !!token?.accessToken ? new Token(jwtDecode(token.accessToken)) : undefined;
+      setIdentity(identity);
+      setUserInfo({ displayName: identity?.displayName, username: identity?.uid } as any);
       setAuthenticated(!!token ? moment.unix(token?.expiresIn ?? 0).isAfter(moment.now()) : false);
     },
     [setCookies],
@@ -124,7 +128,6 @@ export const PadlockProvider: React.FC<IPadlockProviderProps> = ({
         state: {
           setAuthReady,
           setAuthenticated,
-          setToken,
           setUserInfo,
         },
         login,
@@ -136,7 +139,7 @@ export const PadlockProvider: React.FC<IPadlockProviderProps> = ({
         autoRefreshToken={autoRefreshToken}
         loginPath={loginPath}
       >
-        {children}
+        {authReady && children}
       </SummonProvider>
     </PadlockContext.Provider>
   );

@@ -1,3 +1,4 @@
+import { usePadlock } from 'hooks';
 import React from 'react';
 
 import { HomeMenu, Loading, UserMenu } from '..';
@@ -16,14 +17,17 @@ interface ILayoutProps extends React.HTMLAttributes<HTMLDivElement> {
  * @returns Layout component.
  */
 export const Layout: React.FC<ILayoutProps> = ({ name, children, ...rest }) => {
+  const padlock = usePadlock();
   const [isLoading] = React.useState(false);
 
   return (
     <styled.Layout {...rest}>
-      <header>
-        <HomeMenu />
-        <UserMenu />
-      </header>
+      {padlock.authenticated && (
+        <header>
+          <HomeMenu />
+          <UserMenu />
+        </header>
+      )}
       <main>
         {children}
         {isLoading && <Loading />}

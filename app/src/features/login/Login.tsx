@@ -12,7 +12,7 @@ import * as styled from './LoginStyled';
  * @returns Login component.
  */
 export const Login = () => {
-  const auth = usePadlock();
+  const padlock = usePadlock();
   const api = useApi();
   const navigate = useNavigate();
   const redirect_uri = new URLSearchParams(window.location.search).get('redirect_uri');
@@ -32,7 +32,7 @@ export const Login = () => {
           try {
             if (values.key) {
               const token = await api.auth.loginAsParticipant({ key: values.key });
-              auth.login(token);
+              padlock.login(token);
               navigate(redirect_uri ?? '/');
             }
           } catch (error) {
@@ -67,7 +67,7 @@ export const Login = () => {
                 username: values.username,
                 password: values.password,
               });
-              auth.login(token);
+              padlock.login(token);
               navigate(redirect_uri ?? '/');
             }
           } catch (error) {

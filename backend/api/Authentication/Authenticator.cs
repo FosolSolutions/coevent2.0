@@ -108,10 +108,11 @@ public class Authenticator : IAuthenticator
     var refreshClaims = new List<Claim>()
     {
         new Claim(ClaimTypes.NameIdentifier, $"{user.Key}", typeof(string).FullName, CoEventIssuer.Issuer, CoEventIssuer.OriginalIssuer),
-        new Claim("uid", $"{user.Id}", typeof(long).FullName, CoEventIssuer.Issuer, CoEventIssuer.OriginalIssuer),
+        new Claim(CoEventClaimTypes.Id, $"{user.Id}", typeof(long).FullName, CoEventIssuer.Issuer, CoEventIssuer.OriginalIssuer),
         new Claim(CoEventClaimTypes.AccessType, Enum.GetName(user.UserType) ?? String.Empty, typeof(string).FullName, CoEventIssuer.Issuer, CoEventIssuer.OriginalIssuer),
         new Claim(ClaimTypes.Name, $"{user.Username}", typeof(string).FullName, CoEventIssuer.Issuer, CoEventIssuer.OriginalIssuer),
         new Claim(ClaimTypes.Email, $"{user.Email}", typeof(string).FullName, CoEventIssuer.Issuer, CoEventIssuer.OriginalIssuer),
+        new Claim(CoEventClaimTypes.DisplayName, $"{user.DisplayName}", typeof(string).FullName, CoEventIssuer.Issuer, CoEventIssuer.OriginalIssuer),
         new Claim(ClaimTypes.GivenName, $"{user.FirstName}", typeof(string).FullName, CoEventIssuer.Issuer, CoEventIssuer.OriginalIssuer),
         new Claim(ClaimTypes.Surname, $"{user.LastName}", typeof(string).FullName, CoEventIssuer.Issuer, CoEventIssuer.OriginalIssuer),
     };

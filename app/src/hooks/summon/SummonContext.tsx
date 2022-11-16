@@ -12,12 +12,14 @@ import React from 'react';
 import { toast } from 'react-toastify';
 
 import { defaultEnvelope, ISummonProviderProps, ISummonState } from '.';
-import * as styled from './SummonStyled';
 
 /**
  * SummonContext, provides shared state between AJAX requests.
  */
-export const SummonContext = React.createContext<ISummonState>({ summon: axios.create() });
+export const SummonContext = React.createContext<ISummonState>({
+  summon: axios.create(),
+  isLoading: false,
+});
 
 /**
  * SummonProvider, provides a way to initialize context.
@@ -33,16 +35,16 @@ export const SummonProvider: React.FC<ISummonProviderProps> = ({
   autoRefreshToken = true,
   children,
 }) => {
-  const auth = usePadlock();
+  const padlock = usePadlock();
   const [loadingToastId, setLoadingToastId] = React.useState<React.ReactText | undefined>();
   const [isLoading, setLoading] = React.useState(false); // TODO: Handle multiple requests.
   const [baseApiUrl] = React.useState(initBaseApiUrl);
   const [showError, setShowError] = React.useState(false);
   const [error, setError] = React.useState<IResponseError | undefined>(undefined);
 
-  const { accessToken, refreshToken } = auth?.token ?? {};
-  const { token: tokenUrl } = auth?.oidc ?? {};
-  const { authenticated, login, logout } = auth;
+  const { accessToken, refreshToken } = padlock?.token ?? {};
+  const { token: tokenUrl } = padlock?.oidc ?? {};
+  const { authenticated, login, logout } = padlock;
   const interval = calcRefreshInterval(accessToken);
 
   /**
@@ -193,7 +195,7 @@ export const SummonProvider: React.FC<ISummonProviderProps> = ({
     }
   }, [interval, autoRefreshToken]);
 
-  const props = { summon: instance };
+  const props = { summon: instance, isLoading };
 
   return (
     <SummonContext.Provider value={props}>
@@ -204,7 +206,6 @@ export const SummonProvider: React.FC<ISummonProviderProps> = ({
             )
           : children
         : null}
-      <styled.Summon id="summon-overlay" className={isLoading ? 'show' : undefined}></styled.Summon>
       <Dialog title="Error" data={error} open={showError} onClose={setShowError} />
     </SummonContext.Provider>
   );

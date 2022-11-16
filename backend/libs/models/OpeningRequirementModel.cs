@@ -40,7 +40,6 @@ public class OpeningRequirementModel : AuditColumnsModel
   public OpeningRequirementModel(Entities.OpeningRequirement requirement) : base(requirement)
   {
     this.OpeningId = requirement.OpeningId;
-    this.Opening = requirement.Opening != null ? new ActivityOpeningModel(requirement.Opening) : null;
     this.Name = requirement.Name;
     this.Value = requirement.Value;
   }

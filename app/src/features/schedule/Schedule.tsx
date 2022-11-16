@@ -10,21 +10,23 @@ export interface IScheduleProps {}
 
 export const Schedule: React.FC<IScheduleProps> = () => {
   const api = useApi();
-  const [state, store] = useStore();
+  const [{ schedule }, { storeSchedule }] = useStore();
 
   const [filter, setFilter] = React.useState<string>('Sunday');
 
   React.useEffect(() => {
-    api.schedules
-      .getPage({ page: 1 })
-      .then(async (res) => {
-        const schedule = res.items[0];
-        store.storeSchedule(schedule);
-        const res_1 = await api.events.getPage(schedule.id, { page: 1, quantity: 1000 });
-        return store.storeSchedule({ ...schedule, events: res_1.items });
-      })
-      .catch();
-  }, [api, store]);
+    if (!schedule) {
+      api.schedules
+        .getPage({ page: 1 })
+        .then(async (res) => {
+          const schedule = res.items[0];
+          storeSchedule(schedule);
+          const res_1 = await api.events.getPage(schedule.id, { page: 1, quantity: 1000 });
+          return storeSchedule({ ...schedule, events: res_1.items });
+        })
+        .catch();
+    }
+  }, [api.events, api.schedules, schedule, storeSchedule]);
 
   return (
     <styled.Schedule>
@@ -48,7 +50,7 @@ export const Schedule: React.FC<IScheduleProps> = () => {
         </ul>
       </nav>
       <div className="schedule">
-        <Months schedule={state.schedule} filter={new ScheduleFilter(filter)} />
+        <Months schedule={schedule} filter={new ScheduleFilter(filter)} />
       </div>
     </styled.Schedule>
   );

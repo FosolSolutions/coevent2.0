@@ -10,10 +10,11 @@ export class Token {
   nameid: string;
   uid: number;
   accessType: UserType;
-  unique_name: string;
+  uniqueName: string;
   email: string;
-  given_name: string;
-  family_name: string;
+  displayName: string;
+  givenName: string;
+  familyName: string;
   roles: string[];
   claims: ITokenClaim[];
 
@@ -25,11 +26,12 @@ export class Token {
     this.aud = token.aud;
     this.nameid = token.nameid;
     this.uid = parseInt(token.uid);
-    this.accessType = token.accessType;
-    this.unique_name = token.unique_name;
+    this.accessType = token.access_type;
+    this.uniqueName = token.unique_name;
+    this.displayName = token.display_name;
     this.email = token.email;
-    this.given_name = token.given_name;
-    this.family_name = token.family_name;
+    this.givenName = token.given_name;
+    this.familyName = token.family_name;
     this.roles = token.role ? (Array.isArray(token.role) ? token.role : [token.role]) : [];
     this.claims = token.attribute
       ? Array.isArray(token.attribute)

@@ -16,7 +16,6 @@ export interface IPadlockState {
   state: {
     setAuthReady: React.Dispatch<React.SetStateAction<boolean>>;
     setAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
-    setToken: React.Dispatch<React.SetStateAction<IAuthToken | null | undefined>>;
     setUserInfo: React.Dispatch<React.SetStateAction<IUserInfo | undefined>>;
   };
   login: (token: IAuthToken) => void;

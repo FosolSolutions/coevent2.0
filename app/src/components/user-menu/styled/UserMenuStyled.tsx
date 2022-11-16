@@ -11,6 +11,7 @@ export const UserMenu = styled.div`
     margin-right: 10px;
     font-size: 0.75em;
     font-weight: normal;
+    white-space: nowrap;
   }
 `;
 
