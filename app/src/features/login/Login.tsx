@@ -1,7 +1,8 @@
 import { Button, FormikText, Logo } from 'components';
 import { Formik } from 'formik';
 import { useApi, usePadlock } from 'hooks';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { IParticipantLoginForm, IUserLoginForm } from '.';
 import * as styled from './LoginStyled';
@@ -15,10 +16,24 @@ export const Login = () => {
   const padlock = usePadlock();
   const api = useApi();
   const navigate = useNavigate();
-  const redirect_uri = new URLSearchParams(window.location.search).get('redirect_uri');
+  const [params] = useSearchParams();
 
+  const redirect_uri = params.get('redirect_uri');
+  const key = params.get('key');
   const defaultParticipantValues: IParticipantLoginForm = { key: '' };
   const defaultUserValues: IUserLoginForm = { username: '', password: '' };
+
+  React.useEffect(() => {
+    // If the participant key is in query param, then login automatically.
+    const login = async () => {
+      if (!!key) {
+        const token = await api.auth.loginAsParticipant({ key });
+        padlock.login(token);
+        navigate(redirect_uri ?? '/');
+      }
+    };
+    login();
+  }, [api.auth, key, navigate, padlock, redirect_uri]);
 
   return (
     <styled.Login>

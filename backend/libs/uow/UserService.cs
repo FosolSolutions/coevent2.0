@@ -117,6 +117,7 @@ public class UserService : BaseService<User, long>, IUserService
   /// <returns></returns>
   public override User Add(User entity)
   {
+    if (entity.Key == Guid.Empty) entity.Key = Guid.NewGuid();
     this.Context.AddRange(entity.RolesManyToMany.Select(r => { r.User = null; r.Role = null; return r; }));
     this.Context.AddRange(entity.Claims.Select(c => { c.User = null; return c; }));
     return base.Add(entity);

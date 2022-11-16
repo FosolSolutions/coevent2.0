@@ -20,9 +20,9 @@ export const HomeMenu = () => {
       <styled.HomeButton onClick={() => navigate('/')} title="home">
         <FaHome />
       </styled.HomeButton>
-      <styled.MenuButton onClick={() => navigate('/calendar')}>Calendar</styled.MenuButton>
+      <styled.MenuButton onClick={() => navigate('/calendars')}>Calendar</styled.MenuButton>
       <Menu menuButton={<styled.MenuButton>Schedules</styled.MenuButton>} transition>
-        <MenuLink to="/schedule">Victoria Ecclesia</MenuLink>
+        <MenuLink to="/schedules">Victoria Ecclesia</MenuLink>
       </Menu>
       {isAdmin && (
         <Menu menuButton={<styled.MenuButton>Administration</styled.MenuButton>} transition>

@@ -1,6 +1,7 @@
 import { Button, ButtonVariant } from 'components';
 import { useApi } from 'hooks';
 import React from 'react';
+import { useParams } from 'react-router-dom';
 import { useSchedules as useStore } from 'store/slices';
 
 import { Months, ScheduleFilter } from './Months';
@@ -11,22 +12,24 @@ export interface IScheduleProps {}
 export const Schedule: React.FC<IScheduleProps> = () => {
   const api = useApi();
   const [{ schedule }, { storeSchedule }] = useStore();
+  const { id } = useParams();
 
   const [filter, setFilter] = React.useState<string>('Sunday');
+
+  const scheduleId = !!id ? parseInt(id) : 1;
 
   React.useEffect(() => {
     if (!schedule) {
       api.schedules
-        .getPage({ page: 1 })
+        .get(scheduleId)
         .then(async (res) => {
-          const schedule = res.items[0];
-          storeSchedule(schedule);
-          const res_1 = await api.events.getPage(schedule.id, { page: 1, quantity: 1000 });
-          return storeSchedule({ ...schedule, events: res_1.items });
+          storeSchedule(res);
+          const res_1 = await api.events.getPage(res.id, { page: 1, quantity: 1000 });
+          return storeSchedule({ ...res, events: res_1.items });
         })
         .catch();
     }
-  }, [api.events, api.schedules, schedule, storeSchedule]);
+  }, [api.events, api.schedules, schedule, scheduleId, storeSchedule]);
 
   return (
     <styled.Schedule>
@@ -50,7 +53,7 @@ export const Schedule: React.FC<IScheduleProps> = () => {
         </ul>
       </nav>
       <div className="schedule">
-        <Months schedule={schedule} filter={new ScheduleFilter(filter)} />
+        {!!schedule && <Months schedule={schedule} filter={new ScheduleFilter(filter)} />}
       </div>
     </styled.Schedule>
   );
