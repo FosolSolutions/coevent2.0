@@ -1,4 +1,5 @@
-import { SummonProvider, tokenExpired } from 'hooks';
+import { SummonProvider, Token, tokenExpired } from 'hooks';
+import jwtDecode from 'jwt-decode';
 import moment from 'moment';
 import React from 'react';
 import { useCookies } from 'react-cookie';
@@ -47,6 +48,8 @@ export const PadlockProvider: React.FC<IPadlockProviderProps> = ({
   loginPath,
   children,
 }) => {
+  const [cookies, setCookies, removeCookie] = useCookies();
+
   const [oidc] = React.useState<IOIDCEndpoints>(initOIDC);
   const [authReady, setAuthReady] = React.useState<boolean>(initAuthReady);
   const [token, setToken] = React.useState<IAuthToken | null | undefined>(initToken);
@@ -56,7 +59,7 @@ export const PadlockProvider: React.FC<IPadlockProviderProps> = ({
       : moment.unix(token?.expiresIn ?? 0).isAfter(moment.now()),
   );
   const [userInfo, setUserInfo] = React.useState<IUserInfo | undefined>(initUserInfo);
-  const [cookies, setCookies, removeCookie] = useCookies();
+  const [identity, setIdentity] = React.useState<Token | undefined>();
 
   /**
    * Store the token and user authenticated state.
@@ -65,7 +68,8 @@ export const PadlockProvider: React.FC<IPadlockProviderProps> = ({
     (token: IAuthToken | null) => {
       setCookies(COOKIE_NAME, token, { path: '/' });
       setToken(token);
-      setAuthenticated(moment.unix(token?.expiresIn ?? 0).isAfter(moment.now()));
+      setIdentity(!!token?.accessToken ? new Token(jwtDecode(token.accessToken)) : undefined);
+      setAuthenticated(!!token ? moment.unix(token?.expiresIn ?? 0).isAfter(moment.now()) : false);
     },
     [setCookies],
   );
@@ -86,8 +90,6 @@ export const PadlockProvider: React.FC<IPadlockProviderProps> = ({
   const logout = React.useCallback(() => {
     removeCookie(COOKIE_NAME);
     storeToken(null);
-    setToken(null);
-    setAuthenticated(false);
   }, [storeToken, removeCookie]);
 
   // Logout if the token expires.
@@ -117,6 +119,7 @@ export const PadlockProvider: React.FC<IPadlockProviderProps> = ({
         authReady,
         authenticated,
         token,
+        identity,
         userInfo,
         state: {
           setAuthReady,

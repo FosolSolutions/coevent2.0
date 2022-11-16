@@ -9,6 +9,7 @@ export interface IToken {
   given_name: string;
   family_name: string;
   role?: string | string[];
+  attribute?: string | string[];
   nbf: number;
   exp: number;
   iat: number;

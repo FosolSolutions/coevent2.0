@@ -4,8 +4,8 @@ import React from 'react';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 
 import { ScheduleFilter } from './Months';
-import * as styled from './MonthStyled';
 import { ScheduleEvent } from './ScheduleEvent';
+import * as styled from './styled';
 
 export interface IMonthProps {
   schedule?: IScheduleModel;

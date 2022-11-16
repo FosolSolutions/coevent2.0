@@ -1,11 +1,10 @@
-import { TextVariant } from 'components';
+import { Text, TextVariant } from 'components';
 import { IActivityOpeningModel, IApplicationModel, useApplications, usePadlock } from 'hooks';
 import React from 'react';
 import { useSchedules as useStore } from 'store/slices';
 
-import { Text } from './../../components/form/text/TextStyled';
-import * as styled from './ActivityOpeningStyled';
 import { ApplyButton } from './ApplyButton';
+import * as styled from './styled';
 
 export interface IActivityOpeningProps {
   showName?: boolean;
@@ -19,8 +18,9 @@ export const ActivityOpening: React.FC<IActivityOpeningProps> = ({ opening, show
 
   const [answer, setAnswer] = React.useState('');
 
-  const userId = parseInt(padlock.decode().uid ?? '');
+  const userId = padlock.decode()?.uid;
   let application = opening.applications.find((a) => a.userId === userId);
+  const canApply = padlock.hasClaim({ name: 'attribute', value: 'brother' });
 
   const handleApplication = async () => {
     try {
@@ -74,7 +74,7 @@ export const ActivityOpening: React.FC<IActivityOpeningProps> = ({ opening, show
             {application?.message && <p>{application.message}</p>}
           </div>
         )}
-        <ApplyButton canApply={!application} onClick={handleApplication} />
+        {canApply && <ApplyButton canApply={!application} onClick={handleApplication} />}
       </div>
     </styled.ActivityOpening>
   );

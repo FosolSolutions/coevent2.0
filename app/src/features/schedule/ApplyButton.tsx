@@ -1,7 +1,7 @@
 import React from 'react';
 import { FaMinusCircle, FaPlusCircle } from 'react-icons/fa';
 
-import * as styled from './ApplyButtonStyled';
+import * as styled from './styled';
 
 export interface IApplyButtonProps {
   canApply?: boolean;

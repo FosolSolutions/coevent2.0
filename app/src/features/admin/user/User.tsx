@@ -9,16 +9,7 @@ import {
   Row,
 } from 'components';
 import { Formik } from 'formik';
-import {
-  IRoleModel,
-  IToken,
-  IUserModel,
-  useApi,
-  usePadlock,
-  UserClaim,
-  UserStatus,
-  UserType,
-} from 'hooks';
+import { IRoleModel, IUserModel, useApi, usePadlock, UserClaim, UserStatus, UserType } from 'hooks';
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -161,7 +152,7 @@ export const User: React.FC<IUserProps> = ({ id }) => {
                     value={values.claims.filter((c) => c.name === 'attribute').map((c) => c.value)}
                     onChange={(e) => {
                       const values = [...e.currentTarget.selectedOptions].map((o) => ({
-                        userId: parseInt(padlock.decode<IToken>()?.uid ?? ''),
+                        userId: padlock.decode()?.uid,
                         accountId: 1,
                         name: 'attribute',
                         value: o.value,

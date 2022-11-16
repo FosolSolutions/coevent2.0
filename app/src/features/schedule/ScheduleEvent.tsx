@@ -3,7 +3,7 @@ import moment from 'moment';
 import { Fragment } from 'react';
 
 import { EventActivity } from './EventActivity';
-import * as styled from './ScheduleEventStyled';
+import * as styled from './styled';
 
 export interface IScheduleEventProps {
   event: IScheduleEventModel;

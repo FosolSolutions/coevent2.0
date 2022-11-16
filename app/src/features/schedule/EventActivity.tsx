@@ -1,7 +1,7 @@
 import { IEventActivityModel } from 'hooks';
 
 import { ActivityOpening } from './ActivityOpening';
-import * as styled from './EventActivityStyled';
+import * as styled from './styled';
 
 export interface IEventActivityProps {
   activity: IEventActivityModel;

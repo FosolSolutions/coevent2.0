@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { RoleClaim, usePadlock, UserClaim } from 'hooks';
+import { ITokenClaim, usePadlock } from 'hooks';
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 
@@ -11,11 +11,11 @@ interface IPrivateRouteProps {
   /**
    * A role the user belongs to.
    */
-  roles?: RoleClaim | Array<RoleClaim>;
+  roles?: string | Array<string>;
   /**
    * A claim the user has.
    */
-  claims?: UserClaim | Array<UserClaim>;
+  claims?: ITokenClaim | Array<ITokenClaim>;
   /**
    * The element to load if authorized.
    */

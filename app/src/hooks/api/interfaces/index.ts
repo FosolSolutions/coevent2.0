@@ -15,6 +15,7 @@ export * from './IScheduleEventModel';
 export * from './IScheduleModel';
 export * from './ISortableColumnsModel';
 export * from './IToken';
+export * from './ITokenClaim';
 export * from './ITokenModel';
 export * from './IUserClaimModel';
 export * from './IUserModel';

@@ -4,7 +4,7 @@ import React from 'react';
 import { useSchedules as useStore } from 'store/slices';
 
 import { Months, ScheduleFilter } from './Months';
-import * as styled from './ScheduleStyled';
+import * as styled from './styled';
 
 export interface IScheduleProps {}
 
