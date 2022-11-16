@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { HomeMenu, Loading, UserMenu } from '..';
-import * as styled from './LayoutStyled';
+import * as styled from './styled/LayoutStyled';
 
 interface ILayoutProps extends React.HTMLAttributes<HTMLDivElement> {
   /**

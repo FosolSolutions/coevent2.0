@@ -3,10 +3,9 @@ import { useFormikContext } from 'formik';
 import { Dropdown, IDropdownProps } from '..';
 import * as styled from './FormikDropdownStyled';
 
-export interface IFormikDropdownProps extends IDropdownProps {
+export interface IFormikDropdownProps<T> extends IDropdownProps<T> {
   name: string;
   label?: string;
-  value?: string | number | readonly string[];
 }
 
 export const FormikDropdown = <T,>({
@@ -14,23 +13,25 @@ export const FormikDropdown = <T,>({
   name,
   label,
   value,
+  multiple,
   children,
   className,
   disabled,
   onChange,
   onBlur,
   ...rest
-}: IFormikDropdownProps) => {
+}: IFormikDropdownProps<T>) => {
   const { values, errors, touched, handleBlur, handleChange, isSubmitting } = useFormikContext<T>();
   const error = (errors as any)[name] && (touched as any)[name] && (errors as any)[name];
   return (
     <styled.FormikDropdown>
       {label && <label htmlFor={`dpn-${name}`}>{label}</label>}
       <div>
-        <Dropdown
+        <Dropdown<T>
           id={id ?? `dpn-${name}`}
           name={name}
-          value={value ?? (values as any)[name] ?? ''}
+          multiple={multiple}
+          value={value ?? (values as any)[name] ?? (multiple ? [] : '')}
           onChange={onChange ?? handleChange}
           onBlur={onBlur ?? handleBlur}
           className={error ? `${className} error` : className}

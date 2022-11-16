@@ -13,8 +13,10 @@ export const useApplications = () => {
     () => ({
       get: async (id: number): Promise<IApplicationModel> => {
         try {
-          const response = await api.get(`/schedules/activities/openings/applications/${id}`);
-          return response.data as IApplicationModel;
+          const response = await api.get<IApplicationModel>(
+            `/schedules/activities/openings/applications/${id}`,
+          );
+          return response.data;
         } catch (error) {
           // Handle error;
           return Promise.reject(error);
@@ -22,8 +24,11 @@ export const useApplications = () => {
       },
       add: async (model: IApplicationModel): Promise<IApplicationModel> => {
         try {
-          const response = await api.post('/schedules/activities/openings/applications', model);
-          return response.data as IApplicationModel;
+          const response = await api.post<IApplicationModel>(
+            '/schedules/activities/openings/applications',
+            model,
+          );
+          return response.data;
         } catch (error) {
           // Handle error;
           return Promise.reject(error);
@@ -31,11 +36,11 @@ export const useApplications = () => {
       },
       update: async (model: IApplicationModel): Promise<IApplicationModel> => {
         try {
-          const response = await api.put(
+          const response = await api.put<IApplicationModel>(
             `/schedules/activities/openings/applications/${model.id}`,
             model,
           );
-          return response.data as IApplicationModel;
+          return response.data;
         } catch (error) {
           // Handle error;
           return Promise.reject(error);
@@ -43,11 +48,11 @@ export const useApplications = () => {
       },
       remove: async (model: IApplicationModel): Promise<IApplicationModel> => {
         try {
-          const response = await api.delete(
+          const response = await api.delete<IApplicationModel>(
             `/schedules/activities/openings/applications/${model.id}`,
             { data: model },
           );
-          return response.data as IApplicationModel;
+          return response.data;
         } catch (error) {
           // Handle error;
           return Promise.reject(error);

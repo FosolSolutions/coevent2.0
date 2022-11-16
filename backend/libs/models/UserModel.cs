@@ -1,3 +1,4 @@
+using CoEvent.Core.Extensions;
 using CoEvent.Entities;
 
 namespace CoEvent.Models;
@@ -46,7 +47,37 @@ public class UserModel : AuditColumnsModel
   /// <summary>
   /// get/set - 
   /// </summary>
-  public UserType UserType { get; set; }
+  public string FirstName { get; set; } = "";
+
+  /// <summary>
+  /// get/set - 
+  /// </summary>
+  public string MiddleName { get; set; } = "";
+
+  /// <summary>
+  /// get/set - 
+  /// </summary>
+  public string LastName { get; set; } = "";
+
+  /// <summary>
+  /// get/set - 
+  /// </summary>
+  public Entities.UserType UserType { get; set; }
+
+  /// <summary>
+  /// get/set - Any array of user claims.
+  /// </summary>
+  public IEnumerable<UserClaimModel> Claims { get; set; } = Array.Empty<UserClaimModel>();
+
+  /// <summary>
+  /// get/set - Any array of roles.
+  /// </summary>
+  public IEnumerable<RoleModel> Roles { get; set; } = Array.Empty<RoleModel>();
+
+  /// <summary>
+  /// get/set - 
+  /// </summary>
+  public IEnumerable<AccountModel> Accounts { get; set; } = Array.Empty<AccountModel>();
   #endregion
 
   #region Constructors
@@ -67,8 +98,14 @@ public class UserModel : AuditColumnsModel
     this.Email = user.Email;
     this.DisplayName = user.DisplayName;
     this.IsEnabled = user.IsEnabled;
+    this.FirstName = user.FirstName;
+    this.MiddleName = user.MiddleName;
+    this.LastName = user.LastName;
     this.UserType = user.UserType;
     this.EmailVerified = user.EmailVerified;
+    this.Claims = user.Claims.Select(c => new UserClaimModel(c)).ToArray();
+    this.Roles = user.Roles.Select(r => new RoleModel(r)).ToArray();
+    this.Accounts = user.Accounts.Select(a => new AccountModel(a)).ToArray();
   }
   #endregion
 
@@ -88,15 +125,23 @@ public class UserModel : AuditColumnsModel
   /// <param name="model"></param>
   public static explicit operator Entities.User(UserModel model)
   {
-    return new Entities.User(model.Username, model.Email, model.Key)
+    var user = new Entities.User(model.Username, model.Email, model.Key)
     {
       Id = model.Id,
       DisplayName = model.DisplayName,
       IsEnabled = model.IsEnabled,
+      FirstName = model.FirstName,
+      MiddleName = model.MiddleName,
+      LastName = model.LastName,
       UserType = model.UserType,
       EmailVerified = model.EmailVerified,
       Version = model.Version,
     };
+
+    model.Claims.ForEach(c => user.Claims.Add((Entities.UserClaim)c));
+    model.Roles.ForEach(r => user.RolesManyToMany.Add(new Entities.UserRole(user, (Entities.Role)r)));
+    model.Accounts.ForEach(a => user.AccountsManyToMany.Add(new Entities.UserAccount(user, (Entities.Account)a)));
+    return user;
   }
   #endregion
 }

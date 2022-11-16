@@ -61,7 +61,6 @@ public class AccountService : BaseService<Account, int>, IAccountService
   /// </summary>
   /// <param name="key"></param>
   /// <returns></returns>
-  /// <exception cref="NotImplementedException"></exception>
   public Account? FindByKey(Guid key)
   {
     return this.Context.Accounts

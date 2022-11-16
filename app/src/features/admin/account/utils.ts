@@ -1,4 +1,4 @@
-import { AccountTypes, IAccountModel } from 'hooks/api';
+import { AccountType, IAccountModel } from 'hooks/api';
 
 import { IAccount } from '.';
 
@@ -6,7 +6,7 @@ export const defaultAccount: IAccount = {
   id: 0,
   name: '',
   description: '',
-  accountType: AccountTypes.Free,
+  accountType: AccountType.Free,
   isEnabled: false,
   ownerId: '',
   calendars: [],
@@ -49,7 +49,7 @@ export const toForm = (model: IAccountModel): IAccount => {
 export const toModel = (values: IAccount): IAccountModel => {
   const { accountType, ownerId, ...rest } = values;
   return {
-    accountType: accountType as AccountTypes,
+    accountType: accountType as AccountType,
     ownerId: parseInt(`${ownerId}`),
     ...rest,
   };

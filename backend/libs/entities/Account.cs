@@ -29,27 +29,32 @@ public class Account : CommonColumns<int>
   /// <summary>
   /// 
   /// </summary>
-  public virtual ICollection<User> Users { get; } = new List<User>();
+  public ICollection<User> Users { get; } = new List<User>();
 
   /// <summary>
   /// 
   /// </summary>
-  public virtual ICollection<UserAccount> UsersManyToMany { get; } = new List<UserAccount>();
+  public ICollection<UserAccount> UsersManyToMany { get; } = new List<UserAccount>();
 
   /// <summary>
   /// 
   /// </summary>
-  public virtual ICollection<Role> Roles { get; } = new List<Role>();
+  public ICollection<Role> Roles { get; } = new List<Role>();
 
   /// <summary>
   /// 
   /// </summary>
-  public virtual ICollection<Claim> Claims { get; } = new List<Claim>();
+  public ICollection<UserClaim> UserClaims { get; } = new List<UserClaim>();
 
   /// <summary>
   /// 
   /// </summary>
-  public virtual ICollection<Schedule> Schedules { get; } = new List<Schedule>();
+  public ICollection<Claim> Claims { get; } = new List<Claim>();
+
+  /// <summary>
+  /// 
+  /// </summary>
+  public ICollection<Schedule> Schedules { get; } = new List<Schedule>();
   #endregion
 
   #region Constructors

@@ -1,6 +1,7 @@
 import React from 'react';
+import { toQueryString } from 'utils';
 
-import { IAccountModel, IPaging, useBase } from '.';
+import { IAccountModel, IPaging, IPagingFilter, useBase } from '.';
 
 /**
  * Hook with Admin Account API endpoints.
@@ -11,10 +12,12 @@ export const useAccounts = () => {
 
   return React.useMemo(
     () => ({
-      getPage: async (page: number, quantity = 20): Promise<IPaging<IAccountModel>> => {
+      getPage: async (filter: IPagingFilter): Promise<IPaging<IAccountModel>> => {
         try {
-          const response = await api.get(`/admin/accounts?page=${page}&qty=${quantity}`);
-          return response.data as IPaging<IAccountModel>;
+          const response = await api.get<IPaging<IAccountModel>>(
+            `/admin/accounts?${toQueryString(filter)}`,
+          );
+          return response.data;
         } catch (error) {
           // Handle error;
           return Promise.reject(error);
@@ -22,8 +25,8 @@ export const useAccounts = () => {
       },
       get: async (id: number): Promise<IAccountModel> => {
         try {
-          const response = await api.get(`/admin/accounts/${id}`);
-          return response.data as IAccountModel;
+          const response = await api.get<IAccountModel>(`/admin/accounts/${id}`);
+          return response.data;
         } catch (error) {
           // Handle error;
           return Promise.reject(error);
@@ -31,8 +34,8 @@ export const useAccounts = () => {
       },
       add: async (model: IAccountModel): Promise<IAccountModel> => {
         try {
-          const response = await api.post('/admin/accounts', model);
-          return response.data as IAccountModel;
+          const response = await api.post<IAccountModel>('/admin/accounts', model);
+          return response.data;
         } catch (error) {
           // Handle error;
           return Promise.reject(error);
@@ -40,8 +43,8 @@ export const useAccounts = () => {
       },
       update: async (model: IAccountModel): Promise<IAccountModel> => {
         try {
-          const response = await api.put(`/admin/accounts/${model.id}`, model);
-          return response.data as IAccountModel;
+          const response = await api.put<IAccountModel>(`/admin/accounts/${model.id}`, model);
+          return response.data;
         } catch (error) {
           // Handle error;
           return Promise.reject(error);
@@ -49,8 +52,10 @@ export const useAccounts = () => {
       },
       remove: async (model: IAccountModel): Promise<IAccountModel> => {
         try {
-          const response = await api.delete(`/admin/accounts/${model.id}`, { data: model });
-          return response.data as IAccountModel;
+          const response = await api.delete<IAccountModel>(`/admin/accounts/${model.id}`, {
+            data: model,
+          });
+          return response.data;
         } catch (error) {
           // Handle error;
           return Promise.reject(error);

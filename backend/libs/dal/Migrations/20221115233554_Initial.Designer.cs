@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CoEvent.DAL.Migrations
 {
     [DbContext(typeof(CoEventContext))]
-    [Migration("20221114000901_Initial")]
+    [Migration("20221115233554_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -243,11 +243,6 @@ namespace CoEvent.DAL.Migrations
                     b.Property<int>("AccountId")
                         .HasColumnType("int");
 
-                    b.Property<string>("ClaimType")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
                     b.Property<string>("CreatedBy")
                         .IsRequired()
                         .HasMaxLength(250)
@@ -257,6 +252,26 @@ namespace CoEvent.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)")
+                        .HasDefaultValueSql("''");
+
+                    b.Property<bool>("IsEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("SortOrder")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
 
                     b.Property<string>("UpdatedBy")
                         .IsRequired()
@@ -268,11 +283,6 @@ namespace CoEvent.DAL.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<string>("Value")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
                     b.Property<byte[]>("Version")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAdd()
@@ -281,9 +291,7 @@ namespace CoEvent.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AccountId");
-
-                    b.HasIndex("ClaimType", "Value")
+                    b.HasIndex("AccountId", "Name")
                         .IsUnique();
 
                     b.ToTable("Claim", (string)null);
@@ -742,6 +750,55 @@ namespace CoEvent.DAL.Migrations
                     b.ToTable("UserAccount", (string)null);
                 });
 
+            modelBuilder.Entity("CoEvent.Entities.UserClaim", b =>
+                {
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("AccountId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Value")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<string>("UpdatedBy")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<DateTime>("UpdatedOn")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<byte[]>("Version")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("varbinary(max)")
+                        .HasDefaultValueSql("0");
+
+                    b.HasKey("UserId", "AccountId", "Name", "Value");
+
+                    b.HasIndex("AccountId");
+
+                    b.ToTable("UserClaim", (string)null);
+                });
+
             modelBuilder.Entity("CoEvent.Entities.UserRole", b =>
                 {
                     b.Property<long>("UserId")
@@ -749,6 +806,32 @@ namespace CoEvent.DAL.Migrations
 
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<string>("UpdatedBy")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<DateTime>("UpdatedOn")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<byte[]>("Version")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("varbinary(max)")
+                        .HasDefaultValueSql("0");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -891,6 +974,25 @@ namespace CoEvent.DAL.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("CoEvent.Entities.UserClaim", b =>
+                {
+                    b.HasOne("CoEvent.Entities.Account", "Account")
+                        .WithMany("UserClaims")
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CoEvent.Entities.User", "User")
+                        .WithMany("Claims")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Account");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("CoEvent.Entities.UserRole", b =>
                 {
                     b.HasOne("CoEvent.Entities.Role", "Role")
@@ -917,6 +1019,8 @@ namespace CoEvent.DAL.Migrations
                     b.Navigation("Roles");
 
                     b.Navigation("Schedules");
+
+                    b.Navigation("UserClaims");
 
                     b.Navigation("UsersManyToMany");
                 });
@@ -958,6 +1062,8 @@ namespace CoEvent.DAL.Migrations
                     b.Navigation("AccountsManyToMany");
 
                     b.Navigation("Applications");
+
+                    b.Navigation("Claims");
 
                     b.Navigation("OwnedAccounts");
 

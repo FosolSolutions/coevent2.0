@@ -1,6 +1,7 @@
 import React from 'react';
+import { toQueryString } from 'utils';
 
-import { IPaging, IScheduleModel, useBase } from '.';
+import { IPaging, IPagingFilter, IScheduleModel, useBase } from '.';
 
 /**
  * Hook with Admin Schedule API endpoints.
@@ -11,10 +12,12 @@ export const useSchedules = () => {
 
   return React.useMemo(
     () => ({
-      getPage: async (page: number, quantity = 20): Promise<IPaging<IScheduleModel>> => {
+      getPage: async (filter: IPagingFilter): Promise<IPaging<IScheduleModel>> => {
         try {
-          const response = await api.get(`/schedules?page=${page}&qty=${quantity}`);
-          return response.data as IPaging<IScheduleModel>;
+          const response = await api.get<IPaging<IScheduleModel>>(
+            `/schedules?${toQueryString(filter)}`,
+          );
+          return response.data;
         } catch (error) {
           // Handle error;
           return Promise.reject(error);
@@ -22,8 +25,8 @@ export const useSchedules = () => {
       },
       get: async (id: number): Promise<IScheduleModel> => {
         try {
-          const response = await api.get(`/schedules/${id}`);
-          return response.data as IScheduleModel;
+          const response = await api.get<IScheduleModel>(`/schedules/${id}`);
+          return response.data;
         } catch (error) {
           // Handle error;
           return Promise.reject(error);
@@ -31,8 +34,8 @@ export const useSchedules = () => {
       },
       add: async (model: IScheduleModel): Promise<IScheduleModel> => {
         try {
-          const response = await api.post('/schedules', model);
-          return response.data as IScheduleModel;
+          const response = await api.post<IScheduleModel>('/schedules', model);
+          return response.data;
         } catch (error) {
           // Handle error;
           return Promise.reject(error);
@@ -40,8 +43,8 @@ export const useSchedules = () => {
       },
       update: async (model: IScheduleModel): Promise<IScheduleModel> => {
         try {
-          const response = await api.put(`/schedules/${model.id}`, model);
-          return response.data as IScheduleModel;
+          const response = await api.put<IScheduleModel>(`/schedules/${model.id}`, model);
+          return response.data;
         } catch (error) {
           // Handle error;
           return Promise.reject(error);
@@ -49,8 +52,10 @@ export const useSchedules = () => {
       },
       remove: async (model: IScheduleModel): Promise<IScheduleModel> => {
         try {
-          const response = await api.delete(`/schedules/${model.id}`, { data: model });
-          return response.data as IScheduleModel;
+          const response = await api.delete<IScheduleModel>(`/schedules/${model.id}`, {
+            data: model,
+          });
+          return response.data;
         } catch (error) {
           // Handle error;
           return Promise.reject(error);

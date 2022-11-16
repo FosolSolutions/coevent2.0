@@ -56,6 +56,11 @@ public class CoEventContext : DbContext
   public virtual DbSet<Claim> Claims { get; set; } = default!;
 
   /// <summary>
+  /// get/set - Table of claims.
+  /// </summary>
+  public virtual DbSet<UserClaim> UserClaims { get; set; } = default!;
+
+  /// <summary>
   /// get/set - Table of 
   /// </summary>
   public virtual DbSet<Schedule> Schedules { get; set; } = default!;

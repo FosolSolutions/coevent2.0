@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { IOIDCEndpoints, IPadlockProps, IToken, IUserInfo } from '.';
+import { IAuthToken, IOIDCEndpoints, IPadlockProps, IUserInfo } from '.';
 
 export interface IPadlockProviderProps extends IPadlockProps, React.HTMLAttributes<HTMLElement> {
   /**
@@ -10,7 +10,7 @@ export interface IPadlockProviderProps extends IPadlockProps, React.HTMLAttribut
   /**
    * Token state which will contain access token and refresh token.
    */
-  token?: IToken | null;
+  token?: IAuthToken | null;
   /**
    * Whether authentication is initialized and ready.
    */

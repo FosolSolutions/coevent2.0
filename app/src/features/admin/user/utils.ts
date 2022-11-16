@@ -1,21 +1,22 @@
-import { IUserModel, UserTypes } from 'hooks/api';
+import { IUserModel, UserStatus, UserType } from 'hooks/api';
 
 import { IUser } from '.';
 
 export const defaultUser: IUser = {
   id: 0,
+  key: '',
   username: '',
   email: '',
-  key: '',
+  emailVerified: false,
   displayName: '',
   firstName: '',
   middleName: '',
   lastName: '',
-  userType: UserTypes.User,
+  userType: UserType.User,
+  status: UserStatus.Preapproved,
   isEnabled: false,
-  emailVerified: false,
-  verifiedOn: '',
   failedLogins: 0,
+  accounts: [],
   roles: [],
   claims: [],
   version: '',
@@ -27,17 +28,12 @@ export const defaultUser: IUser = {
 
 /**
  * Casts an IUserModel object into an IUser object.
- * @param values IUserModel object to cast.
+ * @param model IUserModel object to cast.
  * @returns A new instance of an IUser.
  */
 export const toForm = (model: IUserModel): IUser => {
-  const { username, email, key, verifiedOn, ...rest } = model;
   return {
-    username: username ?? '',
-    email: email ?? '',
-    key: key ?? '',
-    verifiedOn: verifiedOn ?? '',
-    ...rest,
+    ...model,
   };
 };
 
@@ -47,12 +43,12 @@ export const toForm = (model: IUserModel): IUser => {
  * @returns A new instance of an IUserModel.
  */
 export const toModel = (values: IUser): IUserModel => {
-  const { userType, failedLogins, key, verifiedOn, ...rest } = values;
+  const { failedLogins, key, userType, status, ...rest } = values;
   return {
-    userType: userType as UserTypes,
+    userType: userType as UserType,
+    status: status as UserStatus,
     failedLogins: parseInt(`${failedLogins}`),
     key: key !== '' ? key : undefined,
-    verifiedOn: key !== '' ? verifiedOn : undefined,
     ...rest,
   };
 };

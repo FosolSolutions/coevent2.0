@@ -26,5 +26,5 @@ public interface IUserService : IBaseService<User, long>
   /// </summary>
   /// <param name="userId"></param>
   /// <returns></returns>
-  IEnumerable<Claim> GetClaims(long userId);
+  IEnumerable<Claim> GetRoleClaims(long userId);
 }

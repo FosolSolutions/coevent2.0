@@ -1,6 +1,7 @@
 import React from 'react';
+import { toQueryString } from 'utils';
 
-import { IPaging, IScheduleEventModel, useBase } from '.';
+import { IPaging, IPagingFilter, IScheduleEventModel, useBase } from '.';
 
 /**
  * Hook with Admin ScheduleEvent API endpoints.
@@ -13,14 +14,13 @@ export const useScheduleEvents = () => {
     () => ({
       getPage: async (
         scheduleId: number,
-        page: number,
-        quantity = 20,
+        filter: IPagingFilter,
       ): Promise<IPaging<IScheduleEventModel>> => {
         try {
-          const response = await api.get(
-            `/schedules/${scheduleId}/events?page=${page}&qty=${quantity}`,
+          const response = await api.get<IPaging<IScheduleEventModel>>(
+            `/schedules/${scheduleId}/events?${toQueryString(filter)}`,
           );
-          return response.data as IPaging<IScheduleEventModel>;
+          return response.data;
         } catch (error) {
           // Handle error;
           return Promise.reject(error);
@@ -28,8 +28,8 @@ export const useScheduleEvents = () => {
       },
       get: async (id: number): Promise<IScheduleEventModel> => {
         try {
-          const response = await api.get(`/schedules/events/${id}`);
-          return response.data as IScheduleEventModel;
+          const response = await api.get<IScheduleEventModel>(`/schedules/events/${id}`);
+          return response.data;
         } catch (error) {
           // Handle error;
           return Promise.reject(error);
@@ -37,8 +37,8 @@ export const useScheduleEvents = () => {
       },
       add: async (model: IScheduleEventModel): Promise<IScheduleEventModel> => {
         try {
-          const response = await api.post('/schedules/events', model);
-          return response.data as IScheduleEventModel;
+          const response = await api.post<IScheduleEventModel>('/schedules/events', model);
+          return response.data;
         } catch (error) {
           // Handle error;
           return Promise.reject(error);
@@ -46,8 +46,11 @@ export const useScheduleEvents = () => {
       },
       update: async (model: IScheduleEventModel): Promise<IScheduleEventModel> => {
         try {
-          const response = await api.put(`/schedules/events/${model.id}`, model);
-          return response.data as IScheduleEventModel;
+          const response = await api.put<IScheduleEventModel>(
+            `/schedules/events/${model.id}`,
+            model,
+          );
+          return response.data;
         } catch (error) {
           // Handle error;
           return Promise.reject(error);
@@ -55,8 +58,10 @@ export const useScheduleEvents = () => {
       },
       remove: async (model: IScheduleEventModel): Promise<IScheduleEventModel> => {
         try {
-          const response = await api.delete(`/schedules/events/${model.id}`, { data: model });
-          return response.data as IScheduleEventModel;
+          const response = await api.delete<IScheduleEventModel>(`/schedules/events/${model.id}`, {
+            data: model,
+          });
+          return response.data;
         } catch (error) {
           // Handle error;
           return Promise.reject(error);

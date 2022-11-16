@@ -12,7 +12,7 @@ import {
   User,
   Users,
 } from 'features';
-import { Claim, usePadlock } from 'hooks';
+import { RoleClaim, usePadlock } from 'hooks';
 import React from 'react';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 
@@ -47,27 +47,27 @@ export const AppRouter = () => {
       <Route path="/schedule" element={<PrivateRoute element={<Schedule />} />} />
       <Route
         path="/admin/calendars"
-        element={<PrivateRoute claims={Claim.administrator} element={<Calendars />} />}
+        element={<PrivateRoute roles={RoleClaim.administrator} element={<Calendars />} />}
       />
       <Route
         path="/admin/accounts"
-        element={<PrivateRoute claims={Claim.administrator} element={<Accounts />} />}
+        element={<PrivateRoute roles={RoleClaim.administrator} element={<Accounts />} />}
       />
       <Route
         path="/admin/accounts/:id"
-        element={<PrivateRoute claims={Claim.administrator} element={<Account />} />}
+        element={<PrivateRoute roles={RoleClaim.administrator} element={<Account />} />}
       />
       <Route
         path="/admin/users"
-        element={<PrivateRoute claims={Claim.administrator} element={<Users />} />}
+        element={<PrivateRoute roles={RoleClaim.administrator} element={<Users />} />}
       />
       <Route
         path="/admin/users/:id"
-        element={<PrivateRoute claims={Claim.administrator} element={<User />} />}
+        element={<PrivateRoute roles={RoleClaim.administrator} element={<User />} />}
       />
       <Route
         path="/admin/roles"
-        element={<PrivateRoute claims={Claim.administrator} element={<Draft />} />}
+        element={<PrivateRoute roles={RoleClaim.administrator} element={<Draft />} />}
       />
       <Route path="/" element={<Home />} />
       <Route path="*" element={<NotFound />} />

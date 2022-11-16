@@ -35,7 +35,7 @@ public class ActivityOpening : SortableColumns<long>
   /// <summary>
   /// get - Collection of applications.
   /// </summary>
-  public virtual ICollection<Application> Applications { get; } = new List<Application>();
+  public ICollection<Application> Applications { get; } = new List<Application>();
   #endregion
 
   #region Constructors

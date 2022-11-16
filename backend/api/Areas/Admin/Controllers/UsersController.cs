@@ -94,7 +94,8 @@ public class UsersController : ControllerBase
   [SwaggerOperation(Tags = new[] { "user-update" })]
   public IActionResult Update(UserModel model)
   {
-    var user = _userService.UpdateAndSave((Entities.User)model);
+    _userService.UpdateAndSave((Entities.User)model);
+    var user = _userService.FindById(model.Id) ?? throw new KeyNotFoundException("User does not exist");
     return new JsonResult(new UserModel(user));
   }
 

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Loading } from '..';
-import * as styled from './LayoutStyled';
+import * as styled from './styled/LayoutStyled';
 
 interface ILayoutAnonymousProps extends React.HTMLAttributes<HTMLDivElement> {
   /**

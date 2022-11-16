@@ -1,4 +1,5 @@
-import { IAuditColumnsModel, UserTypes } from '..';
+import { UserStatus, UserType } from '..';
+import { IAccountModel, IAuditColumnsModel, IRoleModel, IUserClaimModel } from '.';
 
 /**
  * IUserModel interface, represents a CoEvent user object.
@@ -6,17 +7,18 @@ import { IAuditColumnsModel, UserTypes } from '..';
 export interface IUserModel extends IAuditColumnsModel {
   id: number;
   username: string;
-  email: string;
   key?: string;
+  email: string;
+  emailVerified: boolean;
   displayName: string;
   firstName: string;
   middleName: string;
   lastName: string;
-  userType: UserTypes;
+  userType: UserType;
+  status: UserStatus;
   isEnabled: boolean;
-  emailVerified: boolean;
-  verifiedOn?: Date | string;
   failedLogins: number;
-  roles: any[]; // TODO: Create IRole
-  claims: any[]; // TODO: Create IClaim
+  accounts: IAccountModel[];
+  roles: IRoleModel[];
+  claims: IUserClaimModel[];
 }

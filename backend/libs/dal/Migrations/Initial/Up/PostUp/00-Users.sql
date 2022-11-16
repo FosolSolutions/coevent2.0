@@ -24,12 +24,12 @@ INSERT INTO dbo.[User] (
   , '24e8ae15-848f-44ee-8a79-e014f89c538e' -- Key
   , '' -- Password
   , 'Administrator' -- DisplayName
-  , 'System'
-  , ''
-  , 'Administrator'
+  , 'System' -- FirstName
+  , '' -- MiddleName
+  , 'Administrator' -- LastName
   , 1 -- IsEnabled
   , 0 -- FailedLogins
-  , 0 -- UserType.User
+  , 1 -- UserType.User
   , 1 -- EmailVerified
   , null -- VerfiedOn
   , 'seed' -- CreatedBy

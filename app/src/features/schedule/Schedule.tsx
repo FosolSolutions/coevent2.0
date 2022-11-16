@@ -16,11 +16,11 @@ export const Schedule: React.FC<IScheduleProps> = () => {
 
   React.useEffect(() => {
     api.schedules
-      .getPage(1)
+      .getPage({ page: 1 })
       .then(async (res) => {
         const schedule = res.items[0];
         store.storeSchedule(schedule);
-        const res_1 = await api.events.getPage(schedule.id, 1, 1000);
+        const res_1 = await api.events.getPage(schedule.id, { page: 1, quantity: 1000 });
         return store.storeSchedule({ ...schedule, events: res_1.items });
       })
       .catch();

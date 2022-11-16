@@ -4,10 +4,10 @@ import React from 'react';
 import { useCookies } from 'react-cookie';
 
 import {
+  IAuthToken,
   IOIDCEndpoints,
   IPadlockProviderProps,
   IPadlockState,
-  IToken,
   IUserInfo,
 } from './interfaces';
 
@@ -49,7 +49,7 @@ export const PadlockProvider: React.FC<IPadlockProviderProps> = ({
 }) => {
   const [oidc] = React.useState<IOIDCEndpoints>(initOIDC);
   const [authReady, setAuthReady] = React.useState<boolean>(initAuthReady);
-  const [token, setToken] = React.useState<IToken | null | undefined>(initToken);
+  const [token, setToken] = React.useState<IAuthToken | null | undefined>(initToken);
   const [authenticated, setAuthenticated] = React.useState<boolean>(
     initAuthenticated
       ? initAuthenticated
@@ -62,7 +62,7 @@ export const PadlockProvider: React.FC<IPadlockProviderProps> = ({
    * Store the token and user authenticated state.
    */
   const storeToken = React.useCallback(
-    (token: IToken | null) => {
+    (token: IAuthToken | null) => {
       setCookies(COOKIE_NAME, token, { path: '/' });
       setToken(token);
       setAuthenticated(moment.unix(token?.expiresIn ?? 0).isAfter(moment.now()));
@@ -74,7 +74,7 @@ export const PadlockProvider: React.FC<IPadlockProviderProps> = ({
    * Store the token and update state to indicate the user is authenticated.
    */
   const login = React.useCallback(
-    (token: IToken) => {
+    (token: IAuthToken) => {
       storeToken(token);
     },
     [storeToken],
@@ -100,7 +100,7 @@ export const PadlockProvider: React.FC<IPadlockProviderProps> = ({
   // If a token wasn't provided check the cookie.
   React.useEffect(() => {
     if (!token) {
-      const token = cookies[COOKIE_NAME] as IToken;
+      const token = cookies[COOKIE_NAME] as IAuthToken;
       if (token && !tokenExpired(token?.accessToken)) {
         login(token);
       }

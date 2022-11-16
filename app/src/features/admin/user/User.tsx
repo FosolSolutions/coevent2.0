@@ -2,12 +2,23 @@ import {
   Button,
   ButtonVariant,
   castEnumToOptions,
+  Col,
   FormikCheckbox,
   FormikDropdown,
   FormikText,
+  Row,
 } from 'components';
 import { Formik } from 'formik';
-import { IUserModel, useApi, UserTypes } from 'hooks';
+import {
+  IRoleModel,
+  IToken,
+  IUserModel,
+  useApi,
+  usePadlock,
+  UserClaim,
+  UserStatus,
+  UserType,
+} from 'hooks';
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -27,10 +38,20 @@ export interface IUserProps {
 
 export const User: React.FC<IUserProps> = ({ id }) => {
   const params = useParams();
-  id = parseInt(params.id ?? `${id}`);
   const api = useApi();
-  const [user, setUser] = React.useState<IUser>(defaultUser);
   const navigate = useNavigate();
+  const padlock = usePadlock();
+
+  const [user, setUser] = React.useState<IUser>(defaultUser);
+  const [roles, setRoles] = React.useState<IRoleModel[]>([]);
+
+  id = parseInt(params.id ?? `${id}`);
+
+  React.useEffect(() => {
+    api.roles.getPage({ quantity: 100 }).then((data) => {
+      setRoles(data.items);
+    });
+  }, [api.roles]);
 
   React.useEffect(() => {
     if (id) {
@@ -86,65 +107,72 @@ export const User: React.FC<IUserProps> = ({ id }) => {
             }
           }}
         >
-          {({ values, handleSubmit, isSubmitting, setSubmitting }) => (
+          {({ values, handleSubmit, isSubmitting, setSubmitting, setFieldValue, handleChange }) => (
             <form onSubmit={handleSubmit} autoComplete="off">
-              <div>
-                <FormikText
-                  name="username"
-                  label="Username:"
-                  value={values.username}
-                  required
-                  autoComplete="off"
-                ></FormikText>
-                <FormikText
-                  type="email"
-                  name="email"
-                  label="Email:"
-                  value={values.email}
-                  required
-                ></FormikText>
-                <FormikText name="key" label="Key:" value={values.key} disabled={true}></FormikText>
-                <FormikText
-                  name="displayName"
-                  label="Display Name:"
-                  value={values.displayName}
-                  required
-                ></FormikText>
-                <FormikText
-                  name="firstName"
-                  label="First Name:"
-                  value={values.firstName}
-                ></FormikText>
-                <FormikText
-                  name="middleName"
-                  label="Middle Name:"
-                  value={values.middleName}
-                ></FormikText>
-                <FormikText name="lastName" label="Last Name:" value={values.lastName}></FormikText>
-                <FormikCheckbox
-                  name="isEnabled"
-                  label="Enabled:"
-                  checked={values.isEnabled}
-                ></FormikCheckbox>
-                <FormikCheckbox
-                  name="emailVerified"
-                  label="Verified:"
-                  checked={values.emailVerified}
-                ></FormikCheckbox>
-                <FormikText
-                  type="date"
-                  name="verifiedOn"
-                  label="Verified On:"
-                  value={`${values.verifiedOn}`}
-                ></FormikText>
-                <FormikDropdown
-                  name="userType"
-                  label="Type:"
-                  required
-                  options={castEnumToOptions(UserTypes)}
-                ></FormikDropdown>
-              </div>
-              <div>
+              <Col>
+                <Row>
+                  <FormikText
+                    name="username"
+                    label="Username:"
+                    required
+                    autoComplete="off"
+                  ></FormikText>
+                  <FormikText type="email" name="email" label="Email:" required></FormikText>
+                  <FormikCheckbox name="emailVerified" label="Email Verified:"></FormikCheckbox>
+                  <FormikCheckbox name="isEnabled" label="Enabled:"></FormikCheckbox>
+                </Row>
+                <Row>
+                  <FormikText name="displayName" label="Display Name:" required></FormikText>
+                  <FormikText name="key" label="Key:" disabled={true}></FormikText>
+                </Row>
+                <Row>
+                  <FormikText name="firstName" label="First Name:"></FormikText>
+                  <FormikText name="middleName" label="Middle Name:"></FormikText>
+                  <FormikText name="lastName" label="Last Name:"></FormikText>
+                </Row>
+                <Row>
+                  <FormikDropdown
+                    name="status"
+                    label="Status:"
+                    required
+                    options={castEnumToOptions(UserStatus)}
+                  ></FormikDropdown>
+                  <FormikDropdown
+                    name="userType"
+                    label="Type:"
+                    required
+                    options={castEnumToOptions(UserType)}
+                  ></FormikDropdown>
+                </Row>
+                <Row>
+                  <FormikDropdown
+                    name="roles"
+                    label="Roles:"
+                    optionValue="id"
+                    optionText="name"
+                    multiple
+                    options={roles}
+                  ></FormikDropdown>
+                  <FormikDropdown
+                    name="attributes"
+                    label="Attributes:"
+                    multiple
+                    options={castEnumToOptions(UserClaim)}
+                    value={values.claims.filter((c) => c.name === 'attribute').map((c) => c.value)}
+                    onChange={(e) => {
+                      const values = [...e.currentTarget.selectedOptions].map((o) => ({
+                        userId: parseInt(padlock.decode<IToken>()?.uid ?? ''),
+                        accountId: 1,
+                        name: 'attribute',
+                        value: o.value,
+                      }));
+                      setFieldValue('claims', values);
+                      handleChange(e);
+                    }}
+                  ></FormikDropdown>
+                </Row>
+              </Col>
+              <Row>
                 <Button type="submit" variant={ButtonVariant.primary} disabled={isSubmitting}>
                   Save
                 </Button>
@@ -168,7 +196,7 @@ export const User: React.FC<IUserProps> = ({ id }) => {
                 >
                   Cancel
                 </Button>
-              </div>
+              </Row>
             </form>
           )}
         </Formik>

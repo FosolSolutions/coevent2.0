@@ -1,5 +1,5 @@
-import { IToken } from '.';
+import { IAuthToken } from '.';
 
 export interface IPadlockHookProps {
-  token?: IToken | null;
+  token?: IAuthToken | null;
 }

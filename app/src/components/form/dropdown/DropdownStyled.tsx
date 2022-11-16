@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import { DropdownVariant, IDropdownProps } from '.';
 
-export const Dropdown = styled.select<IDropdownProps>`
+export const Dropdown = styled.select<IDropdownProps<any>>`
   margin: 1px 2px 1px 2px;
   text-decoration: ${(props) => (props.variant === DropdownVariant.link ? 'underline' : 'none')};
   display: inline-block;

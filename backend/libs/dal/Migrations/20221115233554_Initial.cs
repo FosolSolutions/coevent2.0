@@ -80,14 +80,16 @@ namespace CoEvent.DAL.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ClaimType = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Value = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     AccountId = table.Column<int>(type: "int", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
                     CreatedBy = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
                     UpdatedBy = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
-                    Version = table.Column<byte[]>(type: "varbinary(max)", nullable: true, defaultValueSql: "0")
+                    Version = table.Column<byte[]>(type: "varbinary(max)", nullable: true, defaultValueSql: "0"),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false, defaultValueSql: "''"),
+                    IsEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    SortOrder = table.Column<int>(type: "int", nullable: false, defaultValue: 0)
                 },
                 constraints: table =>
                 {
@@ -189,6 +191,37 @@ namespace CoEvent.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "UserClaim",
+                columns: table => new
+                {
+                    UserId = table.Column<long>(type: "bigint", nullable: false),
+                    AccountId = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    CreatedBy = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    Version = table.Column<byte[]>(type: "varbinary(max)", nullable: true, defaultValueSql: "0")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserClaim", x => new { x.UserId, x.AccountId, x.Name, x.Value });
+                    table.ForeignKey(
+                        name: "FK_UserClaim_Account_AccountId",
+                        column: x => x.AccountId,
+                        principalTable: "Account",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_UserClaim_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "RoleClaim",
                 columns: table => new
                 {
@@ -217,7 +250,12 @@ namespace CoEvent.DAL.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<long>(type: "bigint", nullable: false),
-                    RoleId = table.Column<int>(type: "int", nullable: false)
+                    RoleId = table.Column<int>(type: "int", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    CreatedBy = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    Version = table.Column<byte[]>(type: "varbinary(max)", nullable: true, defaultValueSql: "0")
                 },
                 constraints: table =>
                 {
@@ -398,14 +436,9 @@ namespace CoEvent.DAL.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Claim_AccountId",
+                name: "IX_Claim_AccountId_Name",
                 table: "Claim",
-                column: "AccountId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Claim_ClaimType_Value",
-                table: "Claim",
-                columns: new[] { "ClaimType", "Value" },
+                columns: new[] { "AccountId", "Name" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -468,6 +501,11 @@ namespace CoEvent.DAL.Migrations
                 column: "AccountId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_UserClaim_AccountId",
+                table: "UserClaim",
+                column: "AccountId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserRole_RoleId",
                 table: "UserRole",
                 column: "RoleId");
@@ -486,6 +524,9 @@ namespace CoEvent.DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "UserAccount");
+
+            migrationBuilder.DropTable(
+                name: "UserClaim");
 
             migrationBuilder.DropTable(
                 name: "UserRole");

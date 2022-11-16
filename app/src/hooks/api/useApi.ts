@@ -1,6 +1,16 @@
 import React from 'react';
 
-import { useAccounts, useApplications, useAuth, useBase, useScheduleEvents, useUsers } from '.';
+import {
+  useAccounts,
+  useApplications,
+  useAuth,
+  useBase,
+  useClaims,
+  useRoles,
+  useScheduleEvents,
+  useUserClaims,
+  useUsers,
+} from '.';
 import { useSchedules } from './useSchedules';
 
 /**
@@ -15,6 +25,9 @@ export const useApi = () => {
   const schedules = useSchedules();
   const events = useScheduleEvents();
   const applications = useApplications();
+  const roles = useRoles();
+  const claims = useClaims();
+  const userClaims = useUserClaims();
 
   return React.useMemo(
     () => ({
@@ -25,8 +38,11 @@ export const useApi = () => {
       events,
       users,
       applications,
+      roles,
+      claims,
+      userClaims,
     }),
-    [base, auth, schedules, events, accounts, users, applications],
+    [base, auth, schedules, events, accounts, users, applications, roles, claims, userClaims],
   );
 };
 

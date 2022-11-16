@@ -1,6 +1,7 @@
 import React from 'react';
+import { toQueryString } from 'utils';
 
-import { IPaging, IUserModel, useBase } from '.';
+import { IPaging, IPagingFilter, IUserModel, useBase } from '.';
 
 /**
  * Hook with Admin User API endpoints.
@@ -11,10 +12,12 @@ export const useUsers = () => {
 
   return React.useMemo(
     () => ({
-      getPage: async (page: number, quantity = 20): Promise<IPaging<IUserModel>> => {
+      getPage: async (filter: IPagingFilter): Promise<IPaging<IUserModel>> => {
         try {
-          const response = await api.get(`/admin/users?page=${page}&qty=${quantity}`);
-          return response.data as IPaging<IUserModel>;
+          const response = await api.get<IPaging<IUserModel>>(
+            `/admin/users?${toQueryString(filter)}`,
+          );
+          return response.data;
         } catch (error) {
           // Handle error;
           return Promise.reject(error);
@@ -22,8 +25,8 @@ export const useUsers = () => {
       },
       get: async (id: number): Promise<IUserModel> => {
         try {
-          const response = await api.get(`/admin/users/${id}`);
-          return response.data as IUserModel;
+          const response = await api.get<IUserModel>(`/admin/users/${id}`);
+          return response.data;
         } catch (error) {
           // Handle error;
           return Promise.reject(error);
@@ -31,8 +34,8 @@ export const useUsers = () => {
       },
       add: async (model: IUserModel): Promise<IUserModel> => {
         try {
-          const response = await api.post('/admin/users', model);
-          return response.data as IUserModel;
+          const response = await api.post<IUserModel>('/admin/users', model);
+          return response.data;
         } catch (error) {
           // Handle error;
           return Promise.reject(error);
@@ -40,8 +43,8 @@ export const useUsers = () => {
       },
       update: async (model: IUserModel): Promise<IUserModel> => {
         try {
-          const response = await api.put(`/admin/users/${model.id}`, model);
-          return response.data as IUserModel;
+          const response = await api.put<IUserModel>(`/admin/users/${model.id}`, model);
+          return response.data;
         } catch (error) {
           // Handle error;
           return Promise.reject(error);
@@ -49,8 +52,10 @@ export const useUsers = () => {
       },
       remove: async (model: IUserModel): Promise<IUserModel> => {
         try {
-          const response = await api.delete(`/admin/users/${model.id}`, { data: model });
-          return response.data as IUserModel;
+          const response = await api.delete<IUserModel>(`/admin/users/${model.id}`, {
+            data: model,
+          });
+          return response.data;
         } catch (error) {
           // Handle error;
           return Promise.reject(error);

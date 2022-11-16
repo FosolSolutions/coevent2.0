@@ -1,21 +1,23 @@
-import { UserTypes } from 'hooks/api';
+import { IAccountModel, IRoleModel, IUserClaimModel, UserStatus, UserType } from 'hooks/api';
 
 export interface IUser {
   id: number;
   username: string;
-  email: string;
   key?: string;
+  email: string;
+  emailVerified: boolean;
   displayName: string;
   firstName: string;
   middleName: string;
   lastName: string;
-  userType: UserTypes | '';
+  userType: UserType | '';
+  status: UserStatus | '';
   isEnabled: boolean;
-  emailVerified: boolean;
   verifiedOn?: Date | string;
   failedLogins: number | '';
-  roles: any[]; // TODO: Create IRole
-  claims: any[]; // TODO: Create IClaim
+  accounts: IAccountModel[];
+  roles: IRoleModel[];
+  claims: IUserClaimModel[];
   version?: string;
   createdOn?: string | Date;
   createdBy?: string;

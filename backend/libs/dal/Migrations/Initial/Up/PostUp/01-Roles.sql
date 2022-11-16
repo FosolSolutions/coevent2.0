@@ -18,6 +18,15 @@ INSERT INTO dbo.[Role] (
   , 1 -- IsEnabled
   , 'seed' -- CreatedBy
   , 'seed' -- UpdatedBy
+), (
+  2 -- Id
+  , 'Participant' -- Name
+  , '663b0950-ea08-4018-af53-97fb73291406' -- Key
+  , 1 -- AccountId
+  , 0 -- SortOrder
+  , 1 -- IsEnabled
+  , 'seed' -- CreatedBy
+  , 'seed' -- UpdatedBy
 )
 
 SET IDENTITY_INSERT dbo.[Role] OFF

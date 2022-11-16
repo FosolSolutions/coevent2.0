@@ -1,7 +1,7 @@
 /**
- * UserTypes enum, provides a way to identify different user types.
+ * UserType enum, provides a way to identify different user types.
  */
-export enum UserTypes {
+export enum UserType {
   /**
    * This user is a free user with no personal account.
    */

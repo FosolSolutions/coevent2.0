@@ -30,7 +30,7 @@ public class EventActivity : SortableColumns<long>
   /// <summary>
   /// get - A collection of openings for this activity.
   /// </summary>
-  public virtual ICollection<ActivityOpening> Openings { get; } = new List<ActivityOpening>();
+  public ICollection<ActivityOpening> Openings { get; } = new List<ActivityOpening>();
   #endregion
 
   #region Constructors

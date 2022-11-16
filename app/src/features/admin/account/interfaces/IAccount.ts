@@ -1,10 +1,10 @@
-import { AccountTypes } from 'hooks/api';
+import { AccountType } from 'hooks/api';
 
 export interface IAccount {
   id: number;
   name: string;
   description: string;
-  accountType: AccountTypes | '';
+  accountType: AccountType | '';
   isEnabled: boolean;
   ownerId: number | '';
   owner?: any; // TODO: Create IUserModel

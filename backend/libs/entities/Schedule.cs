@@ -30,7 +30,7 @@ public class Schedule : SortableColumns<long>
   /// <summary>
   /// get - Collection of events.
   /// </summary>
-  public virtual ICollection<ScheduleEvent> Events { get; } = new List<ScheduleEvent>();
+  public ICollection<ScheduleEvent> Events { get; } = new List<ScheduleEvent>();
   #endregion
 
   #region Constructors

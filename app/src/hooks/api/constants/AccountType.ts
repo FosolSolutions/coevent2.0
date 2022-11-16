@@ -1,7 +1,7 @@
 /**
- * AccountTypes enum, provides a way to identify different account types.
+ * AccountType enum, provides a way to identify different account types.
  */
-export enum AccountTypes {
+export enum AccountType {
   /**
    * This account is a free account with no subscription.
    */

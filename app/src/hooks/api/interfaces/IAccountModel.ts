@@ -1,4 +1,4 @@
-import { AccountTypes, IAuditColumnsModel } from '..';
+import { AccountType, IAuditColumnsModel } from '..';
 
 /**
  * IAccountModel interface, represents a CoEvent account object.
@@ -7,7 +7,7 @@ export interface IAccountModel extends IAuditColumnsModel {
   id: number;
   name: string;
   description: string;
-  accountType: AccountTypes;
+  accountType: AccountType;
   isEnabled: boolean;
   ownerId: number;
   owner?: any; // TODO: Create IUserModel

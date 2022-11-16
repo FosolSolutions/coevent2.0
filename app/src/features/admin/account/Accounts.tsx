@@ -17,7 +17,7 @@ export const Accounts = () => {
   const [accounts, setAccounts] = React.useState<IAccountModel[]>([]);
 
   React.useEffect(() => {
-    api.accounts.getPage(1).then((results) => setAccounts(results.items));
+    api.accounts.getPage({ page: 1 }).then((results) => setAccounts(results.items));
   }, [api]);
 
   return (

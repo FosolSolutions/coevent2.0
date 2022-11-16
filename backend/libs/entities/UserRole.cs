@@ -1,9 +1,11 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace CoEvent.Entities;
 
 /// <summary>
 /// 
 /// </summary>
-public class UserRole
+public class UserRole : AuditColumns
 {
   #region Properties
   /// <summary>
@@ -51,6 +53,26 @@ public class UserRole
   {
     this.UserId = userId;
     this.RoleId = roleId;
+  }
+
+  /// <summary>
+  /// 
+  /// </summary>
+  /// <param name="obj"></param>
+  /// <returns></returns>
+  public override bool Equals(object? obj)
+  {
+    if (obj is not UserRole entity) return false;
+    return (this.UserId, this.RoleId).Equals((entity.UserId, entity.RoleId));
+  }
+
+  /// <summary>
+  /// 
+  /// </summary>
+  /// <returns></returns>
+  public override int GetHashCode()
+  {
+    return HashCode.Combine(UserId, RoleId);
   }
   #endregion
 }

@@ -9,7 +9,7 @@ import {
   FormikTextArea,
 } from 'components';
 import { Formik } from 'formik';
-import { AccountTypes, IAccountModel, useApi } from 'hooks';
+import { AccountType, IAccountModel, useApi } from 'hooks';
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -107,7 +107,7 @@ export const Account: React.FC<IAccountProps> = ({ id }) => {
                   name="accountType"
                   label="Type:"
                   required
-                  options={castEnumToOptions(AccountTypes)}
+                  options={castEnumToOptions(AccountType)}
                 ></FormikDropdown>
                 <FormikSelect
                   name="ownerId"

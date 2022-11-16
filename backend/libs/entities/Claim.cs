@@ -3,24 +3,9 @@ namespace CoEvent.Entities;
 /// <summary>
 /// 
 /// </summary>
-public class Claim : AuditColumns
+public class Claim : SortableColumns<int>
 {
   #region Properties
-  /// <summary>
-  /// get/set - The primary key.
-  /// </summary>
-  public int Id { get; set; }
-
-  /// <summary>
-  /// get/set - The type of claim.
-  /// </summary>
-  public string ClaimType { get; set; } = "";
-
-  /// <summary>
-  /// get/set - The value of the claim.
-  /// </summary>
-  public string Value { get; set; } = "";
-
   /// <summary>
   /// get/set - Foreign key to the account this claim belongs to.
   /// </summary>
@@ -34,12 +19,12 @@ public class Claim : AuditColumns
   /// <summary>
   /// get - Collection of roles.
   /// </summary>
-  public virtual ICollection<Role> Roles { get; } = new List<Role>();
+  public ICollection<Role> Roles { get; } = new List<Role>();
 
   /// <summary>
   /// get - Collection of roles (many-to-many).
   /// </summary>
-  public virtual ICollection<RoleClaim> RolesManyToMany { get; } = new List<RoleClaim>();
+  public ICollection<RoleClaim> RolesManyToMany { get; } = new List<RoleClaim>();
   #endregion
 
   #region Constructors
@@ -51,13 +36,10 @@ public class Claim : AuditColumns
   /// <summary>
   /// Creates a new instance of a Claim object, initializes with specified parameters.
   /// </summary>
-  /// <param name="type"></param>
-  /// <param name="value"></param>
+  /// <param name="name"></param>
   /// <param name="account"></param>
-  public Claim(string type, string value, Account account)
+  public Claim(string name, Account account) : base(name)
   {
-    this.ClaimType = type;
-    this.Value = value;
     this.Account = account ?? throw new ArgumentNullException(nameof(account));
     this.AccountId = account.Id;
   }
@@ -65,13 +47,10 @@ public class Claim : AuditColumns
   /// <summary>
   /// Creates a new instance of a Claim object, initializes with specified parameters.
   /// </summary>
-  /// <param name="type"></param>
-  /// <param name="value"></param>
+  /// <param name="name"></param>
   /// <param name="accountId"></param>
-  public Claim(string type, string value, int accountId)
+  public Claim(string name, int accountId) : base(name)
   {
-    this.ClaimType = type;
-    this.Value = value;
     this.AccountId = accountId;
   }
   #endregion
@@ -81,9 +60,9 @@ public class Claim : AuditColumns
   /// Converts the specified 'claim' to a KeyValuePair object.
   /// </summary>
   /// <param name="claim"></param>
-  public static implicit operator KeyValuePair<string, string>(Claim claim)
+  public static implicit operator KeyValuePair<int, string>(Claim claim)
   {
-    return new KeyValuePair<string, string>(claim.ClaimType, claim.Value);
+    return new KeyValuePair<int, string>(claim.AccountId, claim.Name);
   }
   #endregion
 }

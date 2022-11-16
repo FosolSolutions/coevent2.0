@@ -76,12 +76,12 @@ public class UserModel
   /// <summary>
   /// get/set -
   /// </summary>
-  public ICollection<string> Roles { get; set; } = new List<string>();
+  public IEnumerable<string> Roles { get; set; } = Array.Empty<string>();
 
   /// <summary>
   /// get/set -
   /// </summary>
-  public ICollection<KeyValuePair<string, string>> Claims { get; set; } = new List<KeyValuePair<string, string>>();
+  public IEnumerable<ClaimModel> Claims { get; set; } = Array.Empty<ClaimModel>();
   #endregion
 
   #region Constructors
@@ -110,7 +110,8 @@ public class UserModel
     this.EmailVerified = user.EmailVerified;
     this.VerifiedOn = user.VerifiedOn;
     this.Roles = user.Roles.Select(r => r.Name).ToArray();
-    this.Claims = user.Roles.SelectMany(r => r.Claims.Select(c => (KeyValuePair<string, string>)c).ToArray()).ToArray();
+    this.Claims = user.Roles.SelectMany(r => r.Claims.Select(c => new ClaimModel(c)))
+      .Concat(user.Claims.Select(c => new ClaimModel(c))).ToArray();
   }
   #endregion
 }

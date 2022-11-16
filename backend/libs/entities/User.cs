@@ -89,12 +89,17 @@ public class User : AuditColumns
   /// <summary>
   /// 
   /// </summary>
-  public virtual ICollection<Role> Roles { get; set; } = new List<Role>();
+  public ICollection<UserClaim> Claims { get; } = new List<UserClaim>();
 
   /// <summary>
   /// 
   /// </summary>
-  public virtual ICollection<UserRole> RolesManyToMany { get; set; } = new List<UserRole>();
+  public ICollection<Role> Roles { get; } = new List<Role>();
+
+  /// <summary>
+  /// 
+  /// </summary>
+  public ICollection<UserRole> RolesManyToMany { get; } = new List<UserRole>();
 
   /// <summary>
   /// 
@@ -114,7 +119,7 @@ public class User : AuditColumns
   /// <summary>
   /// get - Collection of applications.
   /// </summary>
-  public virtual ICollection<Application> Applications { get; } = new List<Application>();
+  public ICollection<Application> Applications { get; } = new List<Application>();
   #endregion
 
   #region Constructors

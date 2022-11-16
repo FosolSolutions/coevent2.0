@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using CoEvent.Core.Extensions;
 using CoEvent.DAL;
 using CoEvent.DAL.Extensions;
 using CoEvent.Entities;
@@ -59,13 +60,26 @@ public class UserService : BaseService<User, long>, IUserService
   /// <summary>
   /// 
   /// </summary>
+  /// <param name="id"></param>
+  /// <returns></returns>
+  public override User? FindById(long id)
+  {
+    return this.Context.Users
+      .Include(u => u.Roles).ThenInclude(r => r.Claims)
+      .Include(u => u.Claims)
+      .FirstOrDefault(u => u.Id == id);
+  }
+
+  /// <summary>
+  /// 
+  /// </summary>
   /// <param name="key"></param>
   /// <returns></returns>
-  /// <exception cref="NotImplementedException"></exception>
   public User? FindByKey(Guid key)
   {
     return this.Context.Users
       .Include(u => u.Roles).ThenInclude(r => r.Claims)
+      .Include(u => u.Claims)
       .FirstOrDefault(u => u.Key == key);
   }
 
@@ -74,11 +88,11 @@ public class UserService : BaseService<User, long>, IUserService
   /// </summary>
   /// <param name="username"></param>
   /// <returns></returns>
-  /// <exception cref="NotImplementedException"></exception>
   public User? FindByUsername(string username)
   {
     return this.Context.Users
       .Include(u => u.Roles).ThenInclude(r => r.Claims)
+      .Include(u => u.Claims)
       .FirstOrDefault(u => u.Username == username);
   }
 
@@ -87,14 +101,50 @@ public class UserService : BaseService<User, long>, IUserService
   /// </summary>
   /// <param name="userId"></param>
   /// <returns></returns>
-  /// <exception cref="NotImplementedException"></exception>
-  public IEnumerable<Entities.Claim> GetClaims(long userId)
+  public IEnumerable<Entities.Claim> GetRoleClaims(long userId)
   {
     return this.Context.UserRoles
       .AsNoTracking()
       .Include(ur => ur.Role).ThenInclude(r => r!.Claims)
       .Where(ur => ur.UserId == userId)
       .SelectMany(ur => ur.Role!.Claims);
+  }
+
+  /// <summary>
+  /// 
+  /// </summary>
+  /// <param name="entity"></param>
+  /// <returns></returns>
+  public override User Add(User entity)
+  {
+    this.Context.AddRange(entity.RolesManyToMany);
+    this.Context.AddRange(entity.Claims);
+    return base.Add(entity);
+  }
+
+  /// <summary>
+  /// 
+  /// </summary>
+  /// <param name="entity"></param>
+  /// <returns></returns>
+  public override User Update(User entity)
+  {
+    var user = base.Update(entity);
+    user.Password = this.Context.Entry(user).OriginalValues[nameof(User.Password)] as string ?? "";
+
+    var oRoles = this.Context.UserRoles.Where(r => r.UserId == user.Id).ToArray();
+    var addRoles = entity.RolesManyToMany.Except(oRoles);
+    var delRoles = oRoles.Except(entity.RolesManyToMany);
+    this.Context.RemoveRange(delRoles);
+    this.Context.AddRange(addRoles);
+
+    var oClaims = this.Context.UserClaims.Where(c => c.UserId == user.Id).ToArray();
+    var addClaims = entity.Claims.Except(oClaims);
+    var delClaims = oClaims.Except(entity.Claims);
+    this.Context.RemoveRange(delClaims);
+    this.Context.AddRange(addClaims);
+
+    return user;
   }
   #endregion
 }

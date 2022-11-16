@@ -105,8 +105,7 @@ public class Authenticator : IAuthenticator
   /// <returns></returns>
   public async Task<TokenModel> AuthenticateAsync(Entities.User user)
   {
-    var claims = _dbService.GetClaims(user.Id).Select(c => new Claim(c.ClaimType, c.Value, typeof(string).FullName, CoEventIssuer.Account(c.AccountId), CoEventIssuer.OriginalIssuer)).ToList();
-    var refreshClaims = new[]
+    var refreshClaims = new List<Claim>()
     {
         new Claim(ClaimTypes.NameIdentifier, $"{user.Key}", typeof(string).FullName, CoEventIssuer.Issuer, CoEventIssuer.OriginalIssuer),
         new Claim("uid", $"{user.Id}", typeof(long).FullName, CoEventIssuer.Issuer, CoEventIssuer.OriginalIssuer),
@@ -116,9 +115,10 @@ public class Authenticator : IAuthenticator
         new Claim(ClaimTypes.GivenName, $"{user.FirstName}", typeof(string).FullName, CoEventIssuer.Issuer, CoEventIssuer.OriginalIssuer),
         new Claim(ClaimTypes.Surname, $"{user.LastName}", typeof(string).FullName, CoEventIssuer.Issuer, CoEventIssuer.OriginalIssuer),
     };
-    claims.AddRange(refreshClaims);
-    var identity = new ClaimsIdentity(claims, JwtBearerDefaults.AuthenticationScheme);
-    return await AuthenticationAsync(identity, refreshClaims);
+    refreshClaims.AddRange(_dbService.GetRoleClaims(user.Id).Select(c => new Claim(ClaimTypes.Role, c.Name, typeof(string).FullName, CoEventIssuer.Account(c.AccountId), CoEventIssuer.OriginalIssuer)));
+    refreshClaims.AddRange(user.Claims.Select(c => new Claim(c.Name, c.Value, typeof(string).FullName, CoEventIssuer.Account(c.AccountId), CoEventIssuer.OriginalIssuer)));
+    var identity = new ClaimsIdentity(refreshClaims, JwtBearerDefaults.AuthenticationScheme);
+    return await AuthenticationAsync(identity, refreshClaims.ToArray());
   }
 
   private async Task<TokenModel> AuthenticationAsync(ClaimsIdentity identity, params Claim[] refreshClaims)
