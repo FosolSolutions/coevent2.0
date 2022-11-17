@@ -1,0 +1,23 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: database
+  annotations:
+    description: Storage volume
+  labels:
+    name: database
+    part-of: coevent
+    version: 1.0.0
+    component: database
+    created-by: jeremy.foster
+    branch: dev
+spec:
+  ports:
+    - name: 1433-tcp
+      protocol: TCP
+      port: 1433
+      targetPort: 1433
+  selector:
+    name: database
+  type: ClusterIP
+  sessionAffinity: None

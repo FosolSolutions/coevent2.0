@@ -1,0 +1,56 @@
+---
+kind: ImageStream
+apiVersion: image.openshift.io/v1
+metadata:
+  name: database
+  annotations:
+    description: Destination for built images.
+  labels:
+    name: database
+    part-of: coevent
+    version: 1.0.0
+    component: database
+    created-by: jeremy.foster
+
+---
+# The build config that will be created will be named for the branch you created it for.
+kind: BuildConfig
+apiVersion: build.openshift.io/v1
+metadata:
+  name: database.main
+  annotations:
+    description: Build image from Dockerfile in git repo.
+  labels:
+    name: database
+    part-of: coevent
+    version: 1.0.0
+    component: database
+    created-by: jeremy.foster
+    branch: main
+spec:
+  completionDeadlineSeconds: 2700
+  triggers:
+    - type: ImageChange
+    - type: ConfigChange
+  runPolicy: Serial
+  source:
+    git:
+      uri: https://github.com/fosolsolutions/coevent2.0.git
+      ref: main
+    contextDir: ./db
+  strategy:
+    type: Docker
+    dockerStrategy:
+      imageOptimizationPolicy: SkipLayers
+      dockerfilePath: Dockerfile
+  output:
+    to:
+      kind: ImageStreamTag
+      name: database:latest
+  resources:
+    requests:
+      cpu: 250m
+      memory: 250Mi
+    limits:
+      cpu: 1500m
+      memory: 2Gi

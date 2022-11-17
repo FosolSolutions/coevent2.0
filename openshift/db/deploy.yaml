@@ -1,0 +1,79 @@
+kind: DeploymentConfig
+apiVersion: apps.openshift.io/v1
+metadata:
+  name: database
+  annotations:
+    description: Storage volume
+  labels:
+    name: database
+    part-of: coevent
+    version: 1.0.0
+    component: database
+    created-by: jeremy.foster
+    branch: dev
+spec:
+  strategy:
+    type: Recreate
+  triggers:
+    - type: ConfigChange
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+          - database
+        from:
+          kind: ImageStreamTag
+          name: database:latest
+  replicas: 1
+  selector:
+    name: database
+  template:
+    metadata:
+      name: database
+      labels:
+        name: database
+    spec:
+      volumes:
+        - name: database
+          persistentVolumeClaim:
+            claimName: database
+      containers:
+        - name: database
+          image: ""
+          ports:
+            - containerPort: 1433
+              protocol: TCP
+          env:
+            - name: ACCEPT_EULA
+              value: "Y"
+            - name: MSSQL_PID
+              value: ${MSSQL_PID}
+            - name: TZ
+              value: ${TIMEZONE}
+            - name: MSSQL_SA_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: database
+                  key: MSSQL_SA_PASSWORD
+            - name: DB_NAME
+              value: ${DB_NAME}
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: database
+                  key: DB_USER
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: database
+                  key: DB_PASSWORD
+          resources:
+            limits:
+              cpu: 2
+              memory: 2Gi
+            requests:
+              cpu: 250m
+              memory: 250Mi
+          volumeMounts:
+            - name: database
+              mountPath: /var/opt/mssql

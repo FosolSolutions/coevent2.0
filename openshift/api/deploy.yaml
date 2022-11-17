@@ -1,0 +1,223 @@
+---
+# How the app will be deployed to the pod.
+kind: DeploymentConfig
+apiVersion: apps.openshift.io/v1
+metadata:
+  name: api
+  namespace: default
+  annotations:
+    description: Defines how to deploy api
+  labels:
+    name: api
+    part-of: coevent
+    version: 1.0.0
+    component: api
+    managed-by: kustomize
+    created-by: jeremy.foster
+spec:
+  replicas: 3
+  test: false
+  selector:
+    part-of: coevent
+    component: api
+  strategy:
+    rollingParams:
+      intervalSeconds: 1
+      maxSurge: 25%
+      maxUnavailable: 25%
+      timeoutSeconds: 600
+      updatePeriodSeconds: 1
+    type: Rolling
+  triggers:
+    - type: ConfigChange
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+          - api
+        from:
+          kind: ImageStreamTag
+          name: api:latest
+  template:
+    metadata:
+      name: api
+      labels:
+        part-of: coevent
+        component: api
+    spec:
+      volumes:
+        - name: file-storage
+          persistentVolumeClaim:
+            claimName: file-storage
+        - name: av-storage
+          persistentVolumeClaim:
+            claimName: av-storage
+      containers:
+        - name: api
+          image: ""
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          volumeMounts:
+            - name: file-storage
+              mountPath: /data
+            - name: av-storage
+              mountPath: /av
+          resources:
+            requests:
+              cpu: 20m
+              memory: 250Mi
+            limits:
+              cpu: 100m
+              memory: 500Mi
+          env:
+            - name: ASPNETCORE_URLS
+              value: http://+:8080
+
+            - name: Storage__UploadPath
+              value: /data
+            - name: Storage__CapturePath
+              value: /av
+
+            - name: Keycloak__Authority
+              valueFrom:
+                configMapKeyRef:
+                  name: api
+                  key: KEYCLOAK_AUTHORITY
+            - name: Keycloak__Realm
+              valueFrom:
+                configMapKeyRef:
+                  name: api
+                  key: KEYCLOAK_REALM
+            - name: Keycloak__Audience
+              valueFrom:
+                configMapKeyRef:
+                  name: api
+                  key: KEYCLOAK_AUDIENCE
+            - name: Keycloak__ClientId
+              valueFrom:
+                configMapKeyRef:
+                  name: api
+                  key: KEYCLOAK_CLIENTID
+
+            - name: Keycloak__ServiceAccount__Authority
+              valueFrom:
+                configMapKeyRef:
+                  name: api
+                  key: KEYCLOAK_CLIENT_AUTHORITY
+            - name: Keycloak__ServiceAccount__Realm
+              valueFrom:
+                configMapKeyRef:
+                  name: api
+                  key: KEYCLOAK_REALM
+            - name: Keycloak__ServiceAccount__Audience
+              valueFrom:
+                configMapKeyRef:
+                  name: api
+                  key: KEYCLOAK_CLIENT_AUDIENCE
+            - name: Keycloak__ServiceAccount__Secret
+              valueFrom:
+                secretKeyRef:
+                  name: api
+                  key: KEYCLOAK_CLIENT_SECRET
+
+            - name: KAFKA_BOOTSTRAP_SERVERS
+              valueFrom:
+                configMapKeyRef:
+                  name: api
+                  key: KAFKA_BOOTSTRAP_SERVERS
+
+            - name: ConnectionStrings__TNO
+              valueFrom:
+                configMapKeyRef:
+                  name: api
+                  key: CONNECTION_STRING
+            - name: DB_POSTGRES_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: crunchy-pguser-admin
+                  key: user
+            - name: DB_POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: crunchy-pguser-admin
+                  key: password
+
+            - name: ELASTIC_URIS
+              valueFrom:
+                configMapKeyRef:
+                  name: api
+                  key: ELASTIC_URIS
+            - name: ELASTIC_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: elastic
+                  key: USERNAME
+            - name: ELASTIC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: elastic
+                  key: PASSWORD
+
+            - name: AZURE_STORAGE_CONTAINER_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: api
+                  key: AZURE_STORAGE_CONTAINER_NAME
+            - name: AZURE_STORAGE_CONNECTION_STRING
+              valueFrom:
+                secretKeyRef:
+                  name: api
+                  key: AZURE_STORAGE_CONNECTION_STRING
+
+            - name: COGNITIVE_SERVICES_SPEECH_SUBSCRIPTION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: api
+                  key: COGNITIVE_SERVICES_SPEECH_SUBSCRIPTION_KEY
+            - name: COGNITIVE_SERVICES_SPEECH_REGION
+              valueFrom:
+                secretKeyRef:
+                  name: api
+                  key: COGNITIVE_SERVICES_SPEECH_REGION
+
+            - name: AZURE_VIDEO_ANALYZER_SUBSCRIPTION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: api
+                  key: AZURE_VIDEO_ANALYZER_SUBSCRIPTION_KEY
+            - name: AZURE_VIDEO_ANALYZER_ACCOUNT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: api
+                  key: AZURE_VIDEO_ANALYZER_ACCOUNT_ID
+            - name: AZURE_VIDEO_ANALYZER_LOCATION
+              valueFrom:
+                secretKeyRef:
+                  name: api
+                  key: AZURE_VIDEO_ANALYZER_LOCATION
+          livenessProbe:
+            httpGet:
+              path: "/health"
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 30
+            timeoutSeconds: 30
+            periodSeconds: 30
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: "/health"
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 30
+            timeoutSeconds: 60
+            periodSeconds: 30
+            successThreshold: 1
+            failureThreshold: 3
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      securityContext: {}
+      terminationGracePeriodSeconds: 30

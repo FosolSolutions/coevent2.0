@@ -1,0 +1,87 @@
+---
+# How the app will be deployed to the pod.
+kind: DeploymentConfig
+apiVersion: apps.openshift.io/v1
+metadata:
+  name: editor
+  namespace: default
+  annotations:
+    description: Defines how to deploy editor
+  labels:
+    name: app
+    part-of: coevent
+    version: 1.0.0
+    component: app
+    managed-by: kustomize
+    created-by: jeremy.foster
+spec:
+  replicas: 3
+  selector:
+    name: app
+    part-of: coevent
+    component: app
+  strategy:
+    rollingParams:
+      intervalSeconds: 1
+      maxSurge: 25%
+      maxUnavailable: 25%
+      timeoutSeconds: 600
+      updatePeriodSeconds: 1
+    type: Rolling
+  triggers:
+    - type: ConfigChange
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+          - app
+        from:
+          kind: ImageStreamTag
+          name: app:latest
+  test: false
+  template:
+    metadata:
+      name: app
+      labels:
+        name: app
+        part-of: coevent
+        component: app
+    spec:
+      containers:
+        - name: app
+          image: ""
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 50m
+              memory: 50Mi
+            limits:
+              cpu: 125m
+              memory: 250Mi
+          livenessProbe:
+            httpGet:
+              path: "/nginx-status"
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 30
+            timeoutSeconds: 60
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: "/nginx-status"
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 10
+            timeoutSeconds: 60
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
