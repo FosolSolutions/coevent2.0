@@ -1,5 +1,8 @@
+import 'react-toastify/dist/ReactToastify.css';
+
 import { usePadlock } from 'hooks';
 import React from 'react';
+import { ToastContainer } from 'react-toastify';
 
 import { HomeMenu, Loading, UserMenu } from '..';
 import * as styled from './styled/LayoutStyled';
@@ -31,6 +34,7 @@ export const Layout: React.FC<ILayoutProps> = ({ name, children, ...rest }) => {
       <main>
         {children}
         {isLoading && <Loading />}
+        <ToastContainer />
       </main>
     </styled.Layout>
   );

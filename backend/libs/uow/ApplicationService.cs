@@ -86,7 +86,7 @@ public class ApplicationService : BaseService<Application, long>, IApplicationSe
       .Include(u => u.Claims)
       .FirstOrDefault(u => u.Id == entity.UserId) ?? throw new KeyNotFoundException("User does not exist");
 
-    if (opening.Limit <= opening.Applications.Count) throw new InvalidOperationException("Opening has already been filled");
+    if (entity.Id == 0 && opening.Limit <= opening.Applications.Count) throw new InvalidOperationException("Opening has already been filled");
     if (opening.Requirements.Any() &&
       !opening.Requirements.All(r => user.Claims.Any(c =>
         c.AccountId == opening.Activity!.Event!.Schedule!.AccountId &&

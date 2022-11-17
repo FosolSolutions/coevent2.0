@@ -24,6 +24,7 @@ public class UserConfiguration : AuditColumnsConfiguration<User>
     builder.Property(m => m.DisplayName).IsRequired().HasMaxLength(100).HasDefaultValueSql("''");
     builder.Property(m => m.FirstName).IsRequired().HasMaxLength(100).HasDefaultValueSql("''");
     builder.Property(m => m.LastName).IsRequired().HasMaxLength(100).HasDefaultValueSql("''");
+    builder.Property(m => m.Phone).IsRequired().HasMaxLength(20).HasDefaultValueSql("''");
     builder.Property(m => m.IsEnabled);
     builder.Property(m => m.Status).HasDefaultValue(UserStatus.Registered);
     builder.Property(m => m.EmailVerified);

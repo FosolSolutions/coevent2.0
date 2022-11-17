@@ -6,6 +6,7 @@ import {
   useAuth,
   useBase,
   useClaims,
+  useMail,
   useRoles,
   useScheduleEvents,
   useUserClaims,
@@ -28,6 +29,7 @@ export const useApi = () => {
   const roles = useRoles();
   const claims = useClaims();
   const userClaims = useUserClaims();
+  const mail = useMail();
 
   return React.useMemo(
     () => ({
@@ -41,8 +43,9 @@ export const useApi = () => {
       roles,
       claims,
       userClaims,
+      mail,
     }),
-    [base, auth, schedules, events, accounts, users, applications, roles, claims, userClaims],
+    [base, auth, schedules, events, accounts, users, applications, roles, claims, userClaims, mail],
   );
 };
 

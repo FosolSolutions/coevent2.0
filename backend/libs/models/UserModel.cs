@@ -61,6 +61,11 @@ public class UserModel : AuditColumnsModel
   /// <summary>
   /// get/set - 
   /// </summary>
+  public string Phone { get; set; } = "";
+
+  /// <summary>
+  /// get/set - 
+  /// </summary>
   public Entities.UserType UserType { get; set; }
 
   /// <summary>
@@ -100,6 +105,7 @@ public class UserModel : AuditColumnsModel
     this.FirstName = user.FirstName;
     this.MiddleName = user.MiddleName;
     this.LastName = user.LastName;
+    this.Phone = user.Phone;
     this.UserType = user.UserType;
     this.EmailVerified = user.EmailVerified;
     this.Claims = user.Claims.Select(c => new UserClaimModel(c)).ToArray();
@@ -132,6 +138,7 @@ public class UserModel : AuditColumnsModel
       FirstName = model.FirstName,
       MiddleName = model.MiddleName,
       LastName = model.LastName,
+      Phone = model.Phone,
       UserType = model.UserType,
       EmailVerified = model.EmailVerified,
       Version = model.Version,

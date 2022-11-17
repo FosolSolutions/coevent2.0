@@ -10,4 +10,8 @@ export const ApplyButton = styled.div`
   svg.on {
     color: ${(props) => props.theme.css.primaryColor};
   }
+
+  &:hover svg {
+    filter: brightness(200%);
+  }
 `;

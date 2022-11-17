@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CoEvent.DAL.Migrations
 {
     [DbContext(typeof(CoEventContext))]
-    [Migration("20221116035944_Initial")]
+    [Migration("20221117161649_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -707,6 +707,13 @@ namespace CoEvent.DAL.Migrations
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)")
+                        .HasDefaultValueSql("''");
 
                     b.Property<int>("Status")
                         .ValueGeneratedOnAdd()

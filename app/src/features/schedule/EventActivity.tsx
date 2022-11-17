@@ -1,3 +1,4 @@
+import { Show } from 'components';
 import { IEventActivityModel } from 'hooks';
 
 import { ActivityOpening } from './ActivityOpening';
@@ -5,23 +6,25 @@ import * as styled from './styled';
 
 export interface IEventActivityProps {
   activity: IEventActivityModel;
-  showOpeningName?: boolean;
+  name?: string;
 }
 
 export const EventActivity: React.FC<IEventActivityProps> = ({
   activity,
-  showOpeningName = false,
+  name = activity.name,
 }) => {
   return (
     <styled.EventActivityStyled className="activity">
-      <div className="header">
-        <span>{activity.name}</span>
-      </div>
+      <Show on={!!name}>
+        <div>
+          <h3>{name}</h3>
+        </div>
+      </Show>
       {activity.openings.map((o) => (
         <ActivityOpening
           key={o.id}
           opening={{ ...o, activity }}
-          showName={showOpeningName || activity.openings.length > 1}
+          name={activity.openings.length > 1 ? undefined : ''}
         />
       ))}
     </styled.EventActivityStyled>

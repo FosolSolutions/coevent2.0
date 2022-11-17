@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 using CoEvent.API.Extensions;
 using CoEvent.API.Middleware;
 using CoEvent.Core.Extensions;
+using CoEvent.Mail;
 using CoEvent.Swagger;
 using CoEvent.UoW;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -26,10 +27,11 @@ builder.Services.AddControllers()
 builder.Services.AddRouting(options =>
 {
   options.LowercaseUrls = true;
-});
-builder.Services.AddSwaggerDocs();
-builder.Services.AddCoEventAuthentication(config);
-builder.Services.AddCoEventUoW(config);
+})
+  .AddSwaggerDocs()
+  .AddCoEventAuthentication(config)
+  .AddCoEventUoW(config)
+  .AddMail(config);
 
 builder.Services.Configure<ForwardedHeadersOptions>(options =>
 {

@@ -69,7 +69,11 @@ Authentication__Audience=http://localhost:$portAppHttp/
 Authentication__PrivateKey=$privateKey
 Authentication__SaltLength=$saltLength
 Authentication__AccessTokenExpiresIn=00:05:00
-Authentication__RefreshTokenExpiresIn=01:00:00" >> ./backend/api/.env
+Authentication__RefreshTokenExpiresIn=01:00:00
+
+# Mail
+Mail__FromEmail=
+Mail__Password=" >> ./backend/api/.env
     echo "./backend/api/.env created"
   fi
 }

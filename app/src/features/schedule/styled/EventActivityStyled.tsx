@@ -4,12 +4,22 @@ export const EventActivityStyled = styled.div`
   min-width: 100px;
   padding: 0.25em;
   border-radius: 0.25em;
+  overflow: hidden;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+  flex: 1 1 auto;
+
+  h3 {
+    margin: 0;
+  }
 
   :hover {
-    span {
-      color: ${(props) => props.theme.css.activeColor};
-    }
-
     background-color: ${(props) => props.theme.css.light};
+  }
+
+  .opening:last-child {
+    height: 100%;
   }
 `;

@@ -203,7 +203,7 @@ public partial class Initial : SqlServerSeedMigration
       _activityId++;
       _openingId++;
 
-      AddActivity(migrationBuilder, date, "Reading");
+      AddActivity(migrationBuilder, date, "Readings");
       AddOpening(migrationBuilder, "Read", 2, "", false, "read");
       _activityId++;
       _openingId++;

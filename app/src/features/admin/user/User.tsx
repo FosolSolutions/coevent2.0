@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { AxiosError } from 'axios';
 import {
   Button,
   ButtonVariant,
@@ -12,6 +14,7 @@ import { Formik } from 'formik';
 import { Attribute, IRoleModel, IUserModel, useApi, usePadlock, UserStatus, UserType } from 'hooks';
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import { IUser } from '.';
 import * as styled from './styled';
@@ -39,32 +42,58 @@ export const User: React.FC<IUserProps> = ({ id }) => {
   id = parseInt(params.id ?? `${id}`);
 
   React.useEffect(() => {
-    api.roles.getPage({ quantity: 100 }).then((data) => {
-      setRoles(data.items);
-    });
+    api.roles
+      .getPage({ quantity: 100 })
+      .then((data) => {
+        setRoles(data.items);
+      })
+      .catch((error: any | AxiosError) => {
+        toast.error(error.message);
+      });
   }, [api.roles]);
 
   React.useEffect(() => {
     if (id) {
-      api.users.get(id).then((data) => {
-        setUser(toForm(data));
-      }); // TODO: Handle error.
+      api.users
+        .get(id)
+        .then((data) => {
+          setUser(toForm(data));
+        })
+        .catch((error: any | AxiosError) => {
+          toast.error(error.message);
+        });
     } else {
       setUser(defaultUser);
     }
   }, [api, id]);
 
   const handleDelete = async () => {
-    await api.users.remove(toModel(user));
-    await new Promise((r) => setTimeout(r, 30 * 1000));
-    navigate('/admin/users');
+    try {
+      await api.users.remove(toModel(user));
+      navigate('/admin/users');
+    } catch (ex: any | AxiosError) {
+      toast.error(ex.message);
+    }
   };
 
   const impersonate = async () => {
     if (!!user.key) {
-      const token = await api.auth.loginAsParticipant({ key: user.key });
-      padlock.login(token);
-      navigate('/');
+      try {
+        const token = await api.auth.loginAsParticipant({ key: user.key });
+        padlock.login(token);
+        navigate('/');
+      } catch (ex: any | AxiosError) {
+        toast.error(ex.message);
+      }
+    }
+  };
+
+  const invite = async () => {
+    try {
+      const res = await api.mail.invite(toModel(user));
+      toast.success(`Invitation sent to ${res.to.email}`);
+    } catch (ex: any | AxiosError) {
+      toast.error(ex.message);
     }
   };
 
@@ -126,12 +155,16 @@ export const User: React.FC<IUserProps> = ({ id }) => {
                   <Button variant={ButtonVariant.warning} onClick={impersonate} className="group">
                     Impersonate
                   </Button>
+                  <Button variant={ButtonVariant.info} onClick={invite} className="group">
+                    Invite
+                  </Button>
                 </Row>
                 <Row>
                   <FormikText name="firstName" label="First Name:"></FormikText>
                   <FormikText name="middleName" label="Middle Name:"></FormikText>
                   <FormikText name="lastName" label="Last Name:"></FormikText>
                 </Row>
+                <FormikText name="phone" label="Phone:"></FormikText>
                 <Row>
                   <FormikDropdown
                     name="status"

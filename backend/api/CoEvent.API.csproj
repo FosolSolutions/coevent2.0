@@ -21,6 +21,7 @@
     <ProjectReference Include="..\libs\uow\CoEvent.UoW.csproj" />
     <ProjectReference Include="..\libs\models\CoEvent.Models.csproj" />
     <ProjectReference Include="..\libs\core\CoEvent.Core.csproj" />
+    <ProjectReference Include="..\libs\mail\CoEvent.Mail.csproj" />
   </ItemGroup>
 
 </Project>

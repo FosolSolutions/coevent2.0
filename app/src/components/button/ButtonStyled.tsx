@@ -163,6 +163,14 @@ export const Button = styled.button<IButtonProps>`
       }
     }};
   }
+
+  &.icon {
+    padding: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
 `;
 
 export default Button;

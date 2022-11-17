@@ -57,6 +57,11 @@ public class User : AuditColumns
   public string LastName { get; set; } = "";
 
   /// <summary>
+  /// get/set - 
+  /// </summary>
+  public string Phone { get; set; } = "";
+
+  /// <summary>
   /// 
   /// </summary>
   public bool IsEnabled { get; set; }

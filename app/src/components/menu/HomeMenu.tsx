@@ -26,10 +26,10 @@ export const HomeMenu = () => {
       </Menu>
       {isAdmin && (
         <Menu menuButton={<styled.MenuButton>Administration</styled.MenuButton>} transition>
-          <MenuLink to="/admin/calendars">Calendars</MenuLink>
-          <MenuLink to="/admin/accounts">Accounts</MenuLink>
+          {/* <MenuLink to="/admin/calendars">Calendars</MenuLink>
+          <MenuLink to="/admin/accounts">Accounts</MenuLink> */}
           <MenuLink to="/admin/users">Users</MenuLink>
-          <MenuLink to="/admin/roles">Roles</MenuLink>
+          {/* <MenuLink to="/admin/roles">Roles</MenuLink> */}
         </Menu>
       )}
     </styled.Menu>
