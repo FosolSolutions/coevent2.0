@@ -154,7 +154,6 @@ public class AuthController : ControllerBase
   /// </summary>
   /// <param name="returnUrl"></param>
   /// <returns></returns>
-  [Authorize]
   [HttpGet("logout")]
   [Produces(MediaTypeNames.Application.Json)]
   [ProducesResponseType(typeof(object), 200)]

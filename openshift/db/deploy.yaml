@@ -45,18 +45,25 @@ spec:
               protocol: TCP
           env:
             - name: ACCEPT_EULA
-              value: "Y"
+              valueFrom:
+                secretKeyRef:
+                  name: database
+                  key: ACCEPT_EULA
             - name: MSSQL_PID
-              value: ${MSSQL_PID}
-            - name: TZ
-              value: ${TIMEZONE}
+              valueFrom:
+                secretKeyRef:
+                  name: database
+                  key: MSSQL_PID
             - name: MSSQL_SA_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: database
                   key: MSSQL_SA_PASSWORD
             - name: DB_NAME
-              value: ${DB_NAME}
+              valueFrom:
+                secretKeyRef:
+                  name: database
+                  key: DB_NAME
             - name: DB_USER
               valueFrom:
                 secretKeyRef:

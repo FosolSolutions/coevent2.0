@@ -2,12 +2,11 @@ kind: Service
 apiVersion: v1
 metadata:
   name: api
-  namespace: default
   annotations:
     description: Exposes and load balances the application pods.
   labels:
     name: api
-    part-of: tno
+    part-of: coevent
     version: 1.0.0
     component: api
     managed-by: kustomize
@@ -19,7 +18,7 @@ spec:
       protocol: TCP
       targetPort: 8080
   selector:
-    part-of: tno
+    part-of: coevent
     component: api
   sessionAffinity: None
   type: ClusterIP

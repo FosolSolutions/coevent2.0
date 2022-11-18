@@ -6,6 +6,7 @@
 . ./scripts/setup.sh
 . ./scripts/help.sh
 . ./scripts/database.sh
+. ./scripts/oc.sh
 
 action=${1-"help"}
 
@@ -47,6 +48,10 @@ elif [ "$action" = "db-refresh" ]; then
   db-refresh $s
 elif [ "$action" = "db-redo" ]; then
   db-redo $s
+
+# Openshift
+elif [ "$action" = "db-connect" ]; then
+  db-connect ${2-prod} ${3-} ${4-} 
 
 # Other
 elif [ "$action" = "go" ]; then

@@ -3,7 +3,6 @@ kind: Route
 apiVersion: route.openshift.io/v1
 metadata:
   name: app
-  namespace: default
   labels:
     name: app
     part-of: coevent

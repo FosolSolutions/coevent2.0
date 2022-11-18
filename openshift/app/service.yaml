@@ -4,7 +4,6 @@ kind: Service
 apiVersion: v1
 metadata:
   name: app
-  namespace: default
   annotations:
     description: Exposes and load balances the application pods.
   labels:
