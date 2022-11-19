@@ -69,9 +69,15 @@ public class MailClient
           <ul>
             <li>Works on mobile devices</li>
             <li>Highlights recommended series</li>
-            <li>Provides a way for everyone to request a topic or submit questions</li>
+            <li>Provides a way for everyone to request a topic or submit questions for each event</li>
           </ul>
         </div>
+        <p>
+          To volunteer, click on an available empty circle icon.
+          The filter at the top of the page will show you events for Sunday, Thursday, or Cleaning.
+          If you are unable to volunteer due to technical issues, please reach out to me.
+          Many hands make light work.
+        </p>
         <p>
 					Please use the following link to access the Victoria Ecclesial Volunteer Schedule - <a href=""{model.Url}login?key={model.To.Key}&redirect_uri=/schedules/{model.Schedule.Id}"">VOLUNTEER LINK</a><br/>
 					This link is specifically generated for you, please do not forward it to someone else.
