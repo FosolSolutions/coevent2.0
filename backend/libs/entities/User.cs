@@ -29,6 +29,11 @@ public class User : AuditColumns
   /// <summary>
   /// 
   /// </summary>
+  public DateTime? EmailVerifiedOn { get; set; }
+
+  /// <summary>
+  /// 
+  /// </summary>
   public Guid Key { get; set; }
 
   /// <summary>
@@ -72,6 +77,11 @@ public class User : AuditColumns
   public int FailedLogins { get; set; }
 
   /// <summary>
+  /// get/set - 
+  /// </summary>
+  public Gender? Gender { get; set; }
+
+  /// <summary>
   /// 
   /// </summary>
   public UserType UserType { get; set; }
@@ -85,11 +95,6 @@ public class User : AuditColumns
   /// 
   /// </summary>
   public DateTime? LastLoginOn { get; set; }
-
-  /// <summary>
-  /// 
-  /// </summary>
-  public DateTime? VerifiedOn { get; set; }
 
   /// <summary>
   /// 

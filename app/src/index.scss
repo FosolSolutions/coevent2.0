@@ -61,6 +61,11 @@ ul {
   align-self: flex-end;
 }
 
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 // *************************************************
 // Tooltip Customization
 // *************************************************

@@ -9,4 +9,5 @@ export enum Attribute {
   pray = 'pray',
   piano = 'piano',
   doorman = 'doorman',
+  ab = 'ab',
 }

@@ -18,6 +18,21 @@ public class ScheduleEvent : SortableColumns<long>
   public Schedule? Schedule { get; set; }
 
   /// <summary>
+  /// get/set - Foreign key to series.
+  /// </summary>
+  public int? SeriesId { get; set; }
+
+  /// <summary>
+  /// get/set - Event series.
+  /// </summary>
+  public EventSeries? Series { get; set; }
+
+  /// <summary>
+  /// get/set - Comma separated list of tags to identify this event.
+  /// </summary>
+  public string Tags { get; set; } = "";
+
+  /// <summary>
   /// get/set - The date and time this schedule begins.
   /// </summary>
   public DateTime StartOn { get; set; }

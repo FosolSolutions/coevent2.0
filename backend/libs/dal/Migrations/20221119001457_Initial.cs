@@ -22,6 +22,7 @@ namespace CoEvent.DAL.Migrations
                     Username = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false, defaultValueSql: "''"),
                     EmailVerified = table.Column<bool>(type: "bit", nullable: false),
+                    EmailVerifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Key = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DisplayName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false, defaultValueSql: "''"),
@@ -31,10 +32,10 @@ namespace CoEvent.DAL.Migrations
                     Phone = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false, defaultValueSql: "''"),
                     IsEnabled = table.Column<bool>(type: "bit", nullable: false),
                     FailedLogins = table.Column<int>(type: "int", nullable: false),
+                    Gender = table.Column<int>(type: "int", nullable: true),
                     UserType = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
                     LastLoginOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    VerifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
                     CreatedBy = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
@@ -97,6 +98,34 @@ namespace CoEvent.DAL.Migrations
                     table.PrimaryKey("PK_Claim", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Claim_Account_AccountId",
+                        column: x => x.AccountId,
+                        principalTable: "Account",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EventSeries",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AccountId = table.Column<int>(type: "int", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    CreatedBy = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    Version = table.Column<byte[]>(type: "varbinary(max)", nullable: true, defaultValueSql: "0"),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false, defaultValueSql: "''"),
+                    IsEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    SortOrder = table.Column<int>(type: "int", nullable: false, defaultValue: 0)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EventSeries", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EventSeries_Account_AccountId",
                         column: x => x.AccountId,
                         principalTable: "Account",
                         principalColumn: "Id",
@@ -282,6 +311,8 @@ namespace CoEvent.DAL.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ScheduleId = table.Column<long>(type: "bigint", nullable: false),
+                    SeriesId = table.Column<int>(type: "int", nullable: true),
+                    Tags = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false, defaultValueSql: "''"),
                     StartOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
@@ -298,6 +329,12 @@ namespace CoEvent.DAL.Migrations
                 {
                     table.PrimaryKey("PK_ScheduleEvent", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_ScheduleEvent_EventSeries_SeriesId",
+                        column: x => x.SeriesId,
+                        principalTable: "EventSeries",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_ScheduleEvent_Schedule_ScheduleId",
                         column: x => x.ScheduleId,
                         principalTable: "Schedule",
@@ -312,6 +349,7 @@ namespace CoEvent.DAL.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     EventId = table.Column<long>(type: "bigint", nullable: false),
+                    Format = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false, defaultValueSql: "''"),
                     StartOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
@@ -472,6 +510,12 @@ namespace CoEvent.DAL.Migrations
                 column: "EventId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_EventSeries_AccountId_Name",
+                table: "EventSeries",
+                columns: new[] { "AccountId", "Name" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Role_AccountId",
                 table: "Role",
                 column: "AccountId");
@@ -502,6 +546,11 @@ namespace CoEvent.DAL.Migrations
                 name: "IX_ScheduleEvent_ScheduleId",
                 table: "ScheduleEvent",
                 column: "ScheduleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ScheduleEvent_SeriesId",
+                table: "ScheduleEvent",
+                column: "SeriesId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_User_Email",
@@ -573,6 +622,9 @@ namespace CoEvent.DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "ScheduleEvent");
+
+            migrationBuilder.DropTable(
+                name: "EventSeries");
 
             migrationBuilder.DropTable(
                 name: "Schedule");

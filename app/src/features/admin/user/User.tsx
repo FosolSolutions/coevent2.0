@@ -100,6 +100,9 @@ export const User: React.FC<IUserProps> = ({ id }) => {
   return (
     <styled.User>
       <div>
+        <Button variant={ButtonVariant.secondary} onClick={() => navigate('/admin/users')}>
+          Back
+        </Button>
         <h1>{id === 0 && 'Add '}User</h1>
         <div>
           {id !== 0 && (
@@ -146,12 +149,6 @@ export const User: React.FC<IUserProps> = ({ id }) => {
                     autoComplete="off"
                   ></FormikText>
                   <FormikText type="email" name="email" label="Email:" required></FormikText>
-                  <FormikCheckbox name="emailVerified" label="Email Verified:"></FormikCheckbox>
-                  <FormikCheckbox name="isEnabled" label="Enabled:"></FormikCheckbox>
-                </Row>
-                <Row>
-                  <FormikText name="displayName" label="Display Name:" required></FormikText>
-                  <FormikText name="key" label="Key:" disabled={true}></FormikText>
                   <Button variant={ButtonVariant.warning} onClick={impersonate} className="group">
                     Impersonate
                   </Button>
@@ -160,11 +157,18 @@ export const User: React.FC<IUserProps> = ({ id }) => {
                   </Button>
                 </Row>
                 <Row>
-                  <FormikText name="firstName" label="First Name:"></FormikText>
-                  <FormikText name="middleName" label="Middle Name:"></FormikText>
-                  <FormikText name="lastName" label="Last Name:"></FormikText>
+                  <FormikCheckbox name="isEnabled" label="Enabled:"></FormikCheckbox>
+                  <FormikText
+                    type="date"
+                    name="emailVerifiedOn"
+                    label="Email Verified On"
+                  ></FormikText>
+                  <FormikCheckbox name="emailVerified" label="Email Verified:"></FormikCheckbox>
                 </Row>
-                <FormikText name="phone" label="Phone:"></FormikText>
+                <Row>
+                  <FormikText name="displayName" label="Display Name:" required></FormikText>
+                  <FormikText name="key" label="Key:" disabled={true}></FormikText>
+                </Row>
                 <Row>
                   <FormikDropdown
                     name="status"
@@ -214,6 +218,12 @@ export const User: React.FC<IUserProps> = ({ id }) => {
                     }}
                   ></FormikDropdown>
                 </Row>
+                <Row>
+                  <FormikText name="firstName" label="First Name:"></FormikText>
+                  <FormikText name="middleName" label="Middle Name:"></FormikText>
+                  <FormikText name="lastName" label="Last Name:"></FormikText>
+                </Row>
+                <FormikText name="phone" label="Phone:"></FormikText>
               </Col>
               <Row>
                 <Button type="submit" variant={ButtonVariant.primary} disabled={isSubmitting}>

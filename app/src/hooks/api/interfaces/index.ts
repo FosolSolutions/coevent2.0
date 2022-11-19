@@ -5,6 +5,7 @@ export * from './IAuditColumnsModel';
 export * from './IClaimModel';
 export * from './ICommonColumnsModel';
 export * from './IEventActivityModel';
+export * from './IEventSeriesModel';
 export * from './ILoginModel';
 export * from './IOpeningRequirementModel';
 export * from './IPaging';

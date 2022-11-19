@@ -2,8 +2,9 @@
 import { AxiosError } from 'axios';
 import { Button, Show, Spinner, Text, TextVariant } from 'components';
 import { IActivityOpeningModel, IApplicationModel, useApi, usePadlock } from 'hooks';
+import moment from 'moment';
 import React from 'react';
-import { FaArrowAltCircleRight } from 'react-icons/fa';
+import { FaSave } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import { useSchedules as useStore } from 'store/slices';
 
@@ -52,9 +53,19 @@ export const ActivityOpening: React.FC<IActivityOpeningProps> = ({
         };
         const res = await api.applications.add(model);
         open.applications = [...open.applications, res];
+        toast.success(
+          `Thank you for volunteering to ${opening.name} on ${moment(
+            opening.activity!.startOn,
+          ).format('MMM DD')}`,
+        );
       } else {
         await api.applications.remove(application);
         open.applications = open.applications.filter((a) => a.id !== application!.id);
+        toast.info(
+          `Your name has been removed from ${opening.name} on ${moment(
+            opening.activity!.startOn,
+          ).format('MMM DD')}`,
+        );
       }
       store.updateOpening(open);
     } catch (ex: any | AxiosError) {
@@ -121,7 +132,7 @@ export const ActivityOpening: React.FC<IActivityOpeningProps> = ({
                     className="icon"
                     onClick={() => handleUpdateApplication(a)}
                   >
-                    <FaArrowAltCircleRight size={30} />
+                    <FaSave size={30} />
                   </Button>
                 </div>
               </Show>

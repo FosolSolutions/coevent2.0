@@ -165,6 +165,13 @@ public abstract class SeedMigration : Migration
       {
         ExecuteScript(migrationBuilder, file_name);
       }
+
+      // Also loop through child folders.
+      var folders = System.IO.Directory.GetDirectories(path).OrderBy(n => n);
+      foreach (var folder in folders)
+      {
+        ScriptDeploy(migrationBuilder, folder, message);
+      }
     }
     else
     {

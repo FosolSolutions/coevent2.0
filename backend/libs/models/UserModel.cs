@@ -34,6 +34,11 @@ public class UserModel : AuditColumnsModel
   public bool EmailVerified { get; set; }
 
   /// <summary>
+  /// get/set - When the email was verified.
+  /// </summary>
+  public DateTime? EmailVerifiedOn { get; set; }
+
+  /// <summary>
   /// get/set - 
   /// </summary>
   public string DisplayName { get; set; } = "";
@@ -62,6 +67,11 @@ public class UserModel : AuditColumnsModel
   /// get/set - 
   /// </summary>
   public string Phone { get; set; } = "";
+
+  /// <summary>
+  /// get/set - 
+  /// </summary>
+  public Entities.Gender? Gender { get; set; }
 
   /// <summary>
   /// get/set - 
@@ -100,14 +110,16 @@ public class UserModel : AuditColumnsModel
     this.Username = user.Username;
     this.Key = user.Key;
     this.Email = user.Email;
+    this.EmailVerified = user.EmailVerified;
+    this.EmailVerifiedOn = user.EmailVerifiedOn;
     this.DisplayName = user.DisplayName;
     this.IsEnabled = user.IsEnabled;
     this.FirstName = user.FirstName;
     this.MiddleName = user.MiddleName;
     this.LastName = user.LastName;
     this.Phone = user.Phone;
+    this.Gender = user.Gender;
     this.UserType = user.UserType;
-    this.EmailVerified = user.EmailVerified;
     this.Claims = user.Claims.Select(c => new UserClaimModel(c)).ToArray();
     this.Roles = user.Roles.Select(r => new RoleModel(r)).ToArray();
     this.Accounts = user.Accounts.Select(a => new AccountModel(a)).ToArray();
@@ -139,8 +151,10 @@ public class UserModel : AuditColumnsModel
       MiddleName = model.MiddleName,
       LastName = model.LastName,
       Phone = model.Phone,
+      Gender = model.Gender,
       UserType = model.UserType,
       EmailVerified = model.EmailVerified,
+      EmailVerifiedOn = model.EmailVerifiedOn,
       Version = model.Version,
     };
 

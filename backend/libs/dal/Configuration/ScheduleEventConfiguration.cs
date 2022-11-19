@@ -19,8 +19,11 @@ public class ScheduleEventConfiguration : SortableColumnsConfigurationWithoutInd
     builder.Property(m => m.StartOn).IsRequired();
     builder.Property(m => m.EndOn).IsRequired();
     builder.Property(m => m.ScheduleId).IsRequired();
+    builder.Property(m => m.SeriesId);
+    builder.Property(m => m.Tags).IsRequired().HasMaxLength(250).HasDefaultValueSql("''");
 
     builder.HasOne(m => m.Schedule).WithMany(m => m.Events).HasForeignKey(m => m.ScheduleId).OnDelete(DeleteBehavior.Cascade);
+    builder.HasOne(m => m.Series).WithMany(m => m.Events).HasForeignKey(m => m.SeriesId).OnDelete(DeleteBehavior.Cascade);
 
     base.Configure(builder);
   }

@@ -13,7 +13,7 @@ export const Day: React.FC<IDayProps> = ({ date, events }) => {
   return (
     <styled.Day>
       <div className="date">
-        <h2>{moment(date).date()}</h2>
+        <h2>{moment(date).format('DD')}</h2>
       </div>
       <div className="events">
         {events.map((e) => (

@@ -27,15 +27,11 @@ export const Login = styled.div`
     display: flex;
     flex-direction: row;
     padding: 0.5em;
-
-    input {
-      min-width: 44ch;
-    }
   }
 
   #user {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     padding: 0.5em;
   }
 `;

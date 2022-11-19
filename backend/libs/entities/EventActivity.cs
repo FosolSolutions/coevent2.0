@@ -18,6 +18,11 @@ public class EventActivity : SortableColumns<long>
   public ScheduleEvent? Event { get; set; }
 
   /// <summary>
+  /// get/set - The format of this activity.
+  /// </summary>
+  public string Format { get; set; } = "";
+
+  /// <summary>
   /// get/set - The date and time this schedule begins.
   /// </summary>
   public DateTime StartOn { get; set; }

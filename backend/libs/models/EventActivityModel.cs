@@ -18,6 +18,11 @@ public class EventActivityModel : SortableColumnsModel<long>
   public ScheduleEventModel? Event { get; set; }
 
   /// <summary>
+  /// get/set - The format of this activity.
+  /// </summary>
+  public string Format { get; set; } = "";
+
+  /// <summary>
   /// get/set - The date and time this schedule begins.
   /// </summary>
   public DateTime StartOn { get; set; }
@@ -46,6 +51,7 @@ public class EventActivityModel : SortableColumnsModel<long>
   public EventActivityModel(Entities.EventActivity entity) : base(entity)
   {
     this.EventId = entity.Id;
+    this.Format = entity.Format;
     this.StartOn = entity.StartOn;
     this.EndOn = entity.EndOn;
     this.Openings = entity.Openings.Select(o => new ActivityOpeningModel(o)).ToArray();

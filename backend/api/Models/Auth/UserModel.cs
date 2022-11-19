@@ -71,7 +71,7 @@ public class UserModel
   /// <summary>
   /// get/set -
   /// </summary>
-  public DateTime? VerifiedOn { get; set; }
+  public DateTime? EmailVerifiedOn { get; set; }
 
   /// <summary>
   /// get/set -
@@ -108,7 +108,7 @@ public class UserModel
     this.FailedLogins = user.FailedLogins;
     this.UserType = user.UserType;
     this.EmailVerified = user.EmailVerified;
-    this.VerifiedOn = user.VerifiedOn;
+    this.EmailVerifiedOn = user.EmailVerifiedOn;
     this.Roles = user.Roles.Select(r => r.Name).ToArray();
     this.Claims = user.Roles.SelectMany(r => r.Claims.Select(c => new ClaimModel(c)))
       .Concat(user.Claims.Select(c => new ClaimModel(c))).ToArray();

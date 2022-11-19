@@ -10,13 +10,14 @@ export const EventActivityStyled = styled.div`
   flex-direction: column;
   gap: 0.25em;
   flex: 1 1 auto;
+  background-color: ${(props) => props.theme.css.light};
 
   h3 {
     margin: 0;
   }
 
   :hover {
-    background-color: ${(props) => props.theme.css.light};
+    background-color: ${(props) => props.theme.css.white};
   }
 
   .opening:last-child {

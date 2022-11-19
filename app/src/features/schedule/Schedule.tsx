@@ -1,4 +1,4 @@
-import { Button, ButtonVariant } from 'components';
+import { Button, ButtonVariant, Row } from 'components';
 import { useApi } from 'hooks';
 import React from 'react';
 import { useParams } from 'react-router-dom';
@@ -33,25 +33,28 @@ export const Schedule: React.FC<IScheduleProps> = () => {
 
   return (
     <styled.Schedule>
-      <nav>
-        <ul>
-          <li>
-            <Button variant={ButtonVariant.link} onClick={() => setFilter('Sunday')}>
-              Sunday
-            </Button>
-          </li>
-          <li>
-            <Button variant={ButtonVariant.link} onClick={() => setFilter('Thursday')}>
-              Thursday
-            </Button>
-          </li>
-          <li>
-            <Button variant={ButtonVariant.link} onClick={() => setFilter('Saturday')}>
-              Cleaning
-            </Button>
-          </li>
-        </ul>
-      </nav>
+      <Row>
+        <h3>Filter:</h3>
+        <nav>
+          <ul>
+            <li>
+              <Button variant={ButtonVariant.link} onClick={() => setFilter('Sunday')}>
+                Sunday
+              </Button>
+            </li>
+            <li>
+              <Button variant={ButtonVariant.link} onClick={() => setFilter('Thursday')}>
+                Thursday
+              </Button>
+            </li>
+            <li>
+              <Button variant={ButtonVariant.link} onClick={() => setFilter('Saturday')}>
+                Cleaning
+              </Button>
+            </li>
+          </ul>
+        </nav>
+      </Row>
       <div className="schedule">
         {!!schedule && <Months schedule={schedule} filter={new ScheduleFilter(filter)} />}
       </div>

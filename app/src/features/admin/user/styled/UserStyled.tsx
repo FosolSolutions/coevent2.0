@@ -12,12 +12,13 @@ export const User = styled.div`
     align-items: center;
   }
 
-  > div {
-  }
-
   form {
     padding: 0.5em;
     border-radius: 0.25em;
     background-color: ${(props) => props.theme.css.formBackgroundColor};
+
+    input[name='key'] {
+      min-width: 38ch;
+    }
   }
 `;

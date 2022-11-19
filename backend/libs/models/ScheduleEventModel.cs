@@ -18,6 +18,21 @@ public class ScheduleEventModel : SortableColumnsModel<long>
   public ScheduleModel? Schedule { get; set; }
 
   /// <summary>
+  /// get/set - Foreign key to the series.
+  /// </summary>
+  public int? SeriesId { get; set; }
+
+  /// <summary>
+  /// get/set - The series.
+  /// </summary>
+  public EventSeriesModel? Series { get; set; }
+
+  /// <summary>
+  /// get/set - Comma separated list of tags.
+  /// </summary>
+  public string Tags { get; set; } = "";
+
+  /// <summary>
   /// get/set - The date and time this schedule begins.
   /// </summary>
   public DateTime StartOn { get; set; }
@@ -46,8 +61,11 @@ public class ScheduleEventModel : SortableColumnsModel<long>
   public ScheduleEventModel(Entities.ScheduleEvent entity) : base(entity)
   {
     this.ScheduleId = entity.ScheduleId;
+    this.SeriesId = entity.SeriesId;
+    this.Series = entity.Series != null ? new EventSeriesModel(entity.Series) : null;
     this.StartOn = entity.StartOn;
     this.EndOn = entity.EndOn;
+    this.Tags = entity.Tags;
     this.Activities = entity.Activities.Select(a => new EventActivityModel(a)).ToArray();
   }
   #endregion
@@ -62,9 +80,11 @@ public class ScheduleEventModel : SortableColumnsModel<long>
     return new Entities.ScheduleEvent(model.Name, model.ScheduleId, model.StartOn, model.EndOn)
     {
       Id = model.Id,
+      SeriesId = model.SeriesId,
       Description = model.Description,
       IsEnabled = model.IsEnabled,
       SortOrder = model.SortOrder,
+      Tags = model.Tags,
       Version = model.Version,
     };
   }

@@ -12,16 +12,17 @@ INSERT INTO dbo.[User] (
   , [LastName]
   , [IsEnabled]
   , [FailedLogins]
+  , [Status]
   , [UserType]
   , [EmailVerified]
-  , [VerifiedOn]
+  , [EmailVerifiedOn]
   , [CreatedBy]
   , [UpdatedBy]
 ) VALUES (
   1 -- Id
   , 'admin' -- Username
   , 'admin@fosol.ca' -- Email
-  , '24e8ae15-848f-44ee-8a79-e014f89c538e' -- Key
+  , NEWID() -- Key
   , '' -- Password
   , 'Administrator' -- DisplayName
   , 'System' -- FirstName
@@ -29,9 +30,10 @@ INSERT INTO dbo.[User] (
   , 'Administrator' -- LastName
   , 1 -- IsEnabled
   , 0 -- FailedLogins
+  , 2 -- Status
   , 1 -- UserType.User
-  , 1 -- EmailVerified
-  , null -- VerfiedOn
+  , 0 -- EmailVerified
+  , null -- EmailVerifiedOn
   , 'seed' -- CreatedBy
   , 'seed' -- UpdatedBy
 )

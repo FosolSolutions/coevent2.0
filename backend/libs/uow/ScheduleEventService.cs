@@ -36,6 +36,7 @@ public class ScheduleEventService : BaseService<ScheduleEvent, long>, IScheduleE
   {
     var values = (ScheduleEventFilter)filter;
     var query = this.Context.Set<ScheduleEvent>()
+      .Include(m => m.Series)
       .Include(m => m.Activities)
         .ThenInclude(m => m.Openings).ThenInclude(o => o.Requirements)
       .Include(m => m.Activities)

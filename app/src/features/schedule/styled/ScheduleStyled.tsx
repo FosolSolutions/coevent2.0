@@ -6,11 +6,10 @@ export const Schedule = styled.div`
   nav {
     display: flex;
     flex-direction: row;
-    margin: 1rem;
+    margin: 0.75em;
 
     ul {
       display: flex;
-      gap: 1rem;
       flex-direction: row;
       list-style-type: none;
     }

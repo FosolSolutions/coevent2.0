@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CoEvent.DAL.Migrations
 {
     [DbContext(typeof(CoEventContext))]
-    [Migration("20221117161649_Initial")]
+    [Migration("20221119001457_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -328,6 +328,13 @@ namespace CoEvent.DAL.Migrations
                     b.Property<long>("EventId")
                         .HasColumnType("bigint");
 
+                    b.Property<string>("Format")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasDefaultValueSql("''");
+
                     b.Property<bool>("IsEnabled")
                         .HasColumnType("bit");
 
@@ -365,6 +372,71 @@ namespace CoEvent.DAL.Migrations
                     b.HasIndex("EventId");
 
                     b.ToTable("EventActivity", (string)null);
+                });
+
+            modelBuilder.Entity("CoEvent.Entities.EventSeries", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AccountId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)")
+                        .HasDefaultValueSql("''");
+
+                    b.Property<bool>("IsEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("SortOrder")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
+                    b.Property<string>("UpdatedBy")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<DateTime>("UpdatedOn")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<byte[]>("Version")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("varbinary(max)")
+                        .HasDefaultValueSql("0");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId", "Name")
+                        .IsUnique();
+
+                    b.ToTable("EventSeries", (string)null);
                 });
 
             modelBuilder.Entity("CoEvent.Entities.OpeningRequirement", b =>
@@ -608,6 +680,9 @@ namespace CoEvent.DAL.Migrations
                     b.Property<long>("ScheduleId")
                         .HasColumnType("bigint");
 
+                    b.Property<int?>("SeriesId")
+                        .HasColumnType("int");
+
                     b.Property<int>("SortOrder")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
@@ -615,6 +690,13 @@ namespace CoEvent.DAL.Migrations
 
                     b.Property<DateTime>("StartOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Tags")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)")
+                        .HasDefaultValueSql("''");
 
                     b.Property<string>("UpdatedBy")
                         .IsRequired()
@@ -635,6 +717,8 @@ namespace CoEvent.DAL.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ScheduleId");
+
+                    b.HasIndex("SeriesId");
 
                     b.ToTable("ScheduleEvent", (string)null);
                 });
@@ -674,6 +758,9 @@ namespace CoEvent.DAL.Migrations
                     b.Property<bool>("EmailVerified")
                         .HasColumnType("bit");
 
+                    b.Property<DateTime?>("EmailVerifiedOn")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("FailedLogins")
                         .HasColumnType("int");
 
@@ -683,6 +770,9 @@ namespace CoEvent.DAL.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)")
                         .HasDefaultValueSql("''");
+
+                    b.Property<int?>("Gender")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsEnabled")
                         .HasColumnType("bit");
@@ -737,9 +827,6 @@ namespace CoEvent.DAL.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
-
-                    b.Property<DateTime?>("VerifiedOn")
-                        .HasColumnType("datetime2");
 
                     b.Property<byte[]>("Version")
                         .IsConcurrencyToken()
@@ -954,6 +1041,17 @@ namespace CoEvent.DAL.Migrations
                     b.Navigation("Event");
                 });
 
+            modelBuilder.Entity("CoEvent.Entities.EventSeries", b =>
+                {
+                    b.HasOne("CoEvent.Entities.Account", "Account")
+                        .WithMany("Series")
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Account");
+                });
+
             modelBuilder.Entity("CoEvent.Entities.OpeningRequirement", b =>
                 {
                     b.HasOne("CoEvent.Entities.ActivityOpening", "Opening")
@@ -1014,7 +1112,14 @@ namespace CoEvent.DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("CoEvent.Entities.EventSeries", "Series")
+                        .WithMany("Events")
+                        .HasForeignKey("SeriesId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.Navigation("Schedule");
+
+                    b.Navigation("Series");
                 });
 
             modelBuilder.Entity("CoEvent.Entities.UserAccount", b =>
@@ -1082,6 +1187,8 @@ namespace CoEvent.DAL.Migrations
 
                     b.Navigation("Schedules");
 
+                    b.Navigation("Series");
+
                     b.Navigation("UserClaims");
 
                     b.Navigation("UsersManyToMany");
@@ -1102,6 +1209,11 @@ namespace CoEvent.DAL.Migrations
             modelBuilder.Entity("CoEvent.Entities.EventActivity", b =>
                 {
                     b.Navigation("Openings");
+                });
+
+            modelBuilder.Entity("CoEvent.Entities.EventSeries", b =>
+                {
+                    b.Navigation("Events");
                 });
 
             modelBuilder.Entity("CoEvent.Entities.Role", b =>

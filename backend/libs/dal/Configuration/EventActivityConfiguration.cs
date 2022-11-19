@@ -19,6 +19,7 @@ public class EventActivityConfiguration : SortableColumnsConfigurationWithoutInd
     builder.Property(m => m.StartOn).IsRequired();
     builder.Property(m => m.EndOn).IsRequired();
     builder.Property(m => m.EventId).IsRequired();
+    builder.Property(m => m.Format).IsRequired().HasMaxLength(100).HasDefaultValueSql("''");
 
     builder.HasOne(m => m.Event).WithMany(m => m.Activities).HasForeignKey(m => m.EventId).OnDelete(DeleteBehavior.Cascade);
 

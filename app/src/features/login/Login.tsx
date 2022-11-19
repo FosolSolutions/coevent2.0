@@ -71,7 +71,7 @@ export const Login = () => {
         )}
       </Formik>
       <div>
-        <p>Or login with your user account</p>
+        <p>User Account</p>
       </div>
       <Formik
         initialValues={defaultUserValues}

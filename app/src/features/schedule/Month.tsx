@@ -27,7 +27,7 @@ export const Month: React.FC<IMonthProps> = ({ schedule, filter }) => {
   const events =
     schedule?.events.filter(
       (e) =>
-        moment(e.startOn).month() === filter.month &&
+        moment(e.startOn).month() === filter.month - 1 &&
         moment(e.startOn).format('dddd') === filter.dayOfWeek,
     ) ?? [];
 

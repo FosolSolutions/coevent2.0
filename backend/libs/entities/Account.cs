@@ -55,6 +55,11 @@ public class Account : CommonColumns<int>
   /// 
   /// </summary>
   public ICollection<Schedule> Schedules { get; } = new List<Schedule>();
+
+  /// <summary>
+  /// 
+  /// </summary>
+  public ICollection<EventSeries> Series { get; } = new List<EventSeries>();
   #endregion
 
   #region Constructors
