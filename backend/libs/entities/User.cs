@@ -130,6 +130,11 @@ public class User : AuditColumns
   /// get - Collection of applications.
   /// </summary>
   public ICollection<Application> Applications { get; } = new List<Application>();
+
+  /// <summary>
+  /// get - Collection of messages.
+  /// </summary>
+  public ICollection<OpeningMessage> Messages { get; } = new List<OpeningMessage>();
   #endregion
 
   #region Constructors

@@ -23,7 +23,7 @@ export const ScheduleEvent: React.FC<IScheduleEventProps> = ({ event }) => {
       </div>
       <div className="activities">
         {event.activities.map((a) => (
-          <EventActivity key={a.id} activity={a} />
+          <EventActivity key={a.id} activity={{ ...a, event }} />
         ))}
       </div>
     </styled.ScheduleEvent>

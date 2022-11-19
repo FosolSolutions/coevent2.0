@@ -1,10 +1,17 @@
+import { Dialog } from '@headlessui/react';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { AxiosError } from 'axios';
-import { Button, Show, Spinner, Text, TextVariant } from 'components';
-import { IActivityOpeningModel, IApplicationModel, useApi, usePadlock } from 'hooks';
+import { Button, Col, Row, Show, Spinner, TextArea, TextVariant } from 'components';
+import {
+  IActivityOpeningModel,
+  IApplicationModel,
+  IOpeningMessageModel,
+  useApi,
+  usePadlock,
+} from 'hooks';
 import moment from 'moment';
 import React from 'react';
-import { FaSave } from 'react-icons/fa';
+import { FaEdit, FaRegLightbulb } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import { useSchedules as useStore } from 'store/slices';
 
@@ -24,8 +31,11 @@ export const ActivityOpening: React.FC<IActivityOpeningProps> = ({
   const padlock = usePadlock();
   const [state, store] = useStore();
 
-  const [answer, setAnswer] = React.useState('');
   const [loading, setLoading] = React.useState(false);
+  const [answer, setAnswer] = React.useState('');
+  const [showQuestion, setShowQuestion] = React.useState(false);
+  const [message, setMessage] = React.useState('');
+  const [showMessage, setShowMessage] = React.useState(false);
 
   const userId = padlock.identity?.uid;
   const application = opening.applications.find((a) => a.userId === userId);
@@ -38,8 +48,25 @@ export const ActivityOpening: React.FC<IActivityOpeningProps> = ({
     setAnswer(application?.message ?? '');
   }, [application]);
 
+  const onApply = async () => {
+    if (!!opening.question && !application) {
+      setShowQuestion(true);
+    } else {
+      await handleApplication();
+    }
+  };
+
+  const onWithdraw = async () => {
+    await handleApplication();
+  };
+
+  const onEdit = async () => {
+    setShowQuestion(true);
+  };
+
   const handleApplication = async () => {
     try {
+      setShowQuestion(false);
       setLoading(true);
       if (!state.schedule) throw new Error('The schedule was not found');
       const open = { ...opening };
@@ -87,6 +114,7 @@ export const ActivityOpening: React.FC<IActivityOpeningProps> = ({
 
   const handleUpdateApplication = async (application: IApplicationModel) => {
     try {
+      setShowQuestion(false);
       setLoading(true);
       const open = { ...opening };
       application = await api.applications.update({ ...application, message: answer });
@@ -99,6 +127,23 @@ export const ActivityOpening: React.FC<IActivityOpeningProps> = ({
       toast.error(ex.response.data.error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const onSendMessage = async () => {
+    try {
+      setShowMessage(false);
+      const model: IOpeningMessageModel = {
+        id: 0,
+        openingId: opening.id,
+        opening: opening,
+        ownerId: userId ?? 0,
+        message,
+      };
+      await api.openings.add(model);
+      toast.success('Your message has been sent');
+    } catch (ex: any | AxiosError) {
+      toast.error(ex.response.data.error);
     }
   };
 
@@ -118,28 +163,19 @@ export const ActivityOpening: React.FC<IActivityOpeningProps> = ({
             <span>{a.user?.displayName}</span>
             <Show on={a.userId === padlock.identity?.uid}>
               <Show on={!!opening.question}>
-                <div className="question">
-                  <label htmlFor={`message-${opening.id}`}>{opening.question}</label>
-                  <Text
-                    id={`message-${opening.id}`}
-                    name="message"
-                    variant={TextVariant.primary}
-                    onChange={(e) => setAnswer(e.currentTarget.value)}
-                    value={answer}
-                  ></Text>
-                  <Button
-                    title="update"
-                    className="icon"
-                    onClick={() => handleUpdateApplication(a)}
-                  >
-                    <FaSave size={30} />
-                  </Button>
-                </div>
+                <Row>
+                  <p>{!!a.message ? `"${a.message}"` : 'TBA'}</p>
+                  <FaEdit size={25} className="btn edit" onClick={onEdit} />
+                </Row>
               </Show>
-              <ApplyButton active={true} onClick={handleApplication} />
+              <ApplyButton active={true} onClick={onWithdraw} />
             </Show>
             <Show on={a.userId !== padlock.identity?.uid && !!a.message}>
               <p>{a.message}</p>
+              <Button className="btn request" onClick={() => setShowMessage(true)}>
+                Make Request
+                <FaRegLightbulb size={25} />
+              </Button>
             </Show>
           </Show>
         </div>
@@ -150,22 +186,72 @@ export const ActivityOpening: React.FC<IActivityOpeningProps> = ({
             <Spinner />
           </Show>
           <Show on={!loading}>
-            <Show on={!!opening.question}>
-              <div className="question">
-                <label htmlFor={`message-${opening.id}`}>{opening.question}</label>
-                <Text
-                  id={`message-${opening.id}`}
-                  name="message"
+            <ApplyButton onClick={onApply} />
+          </Show>
+        </div>
+      </Show>
+      <Show on={!canApply && !!opening.question && !opening.applications.length}>
+        <div className="applicant">
+          <Button className="btn request" onClick={() => setShowMessage(true)}>
+            Make Request
+            <FaRegLightbulb size={25} />
+          </Button>
+        </div>
+      </Show>
+      <Dialog open={showQuestion} onClose={() => setShowQuestion(false)} className="dialog">
+        <div className="panel">
+          <Dialog.Panel>
+            <Dialog.Title>{opening.activity?.name}</Dialog.Title>
+            <Show on={!!opening.activity?.event?.series}>
+              <p>This opening is part of a series "{opening.activity?.event?.series?.name}".</p>
+              <p>Choose a subject that is related.</p>
+              <p>Lead the whole series, or share it with others.</p>
+            </Show>
+            <div>
+              <Col>
+                <label htmlFor="answer">{opening.question}</label>
+                <TextArea
+                  id={`answer-${opening.id}`}
+                  name="answer"
                   variant={TextVariant.primary}
                   onChange={(e) => setAnswer(e.currentTarget.value)}
                   value={answer}
                 />
-              </div>
-            </Show>
-            <ApplyButton onClick={handleApplication} />
-          </Show>
+                <Button
+                  onClick={() =>
+                    !!application ? handleUpdateApplication(application) : handleApplication()
+                  }
+                >
+                  Apply
+                </Button>
+              </Col>
+            </div>
+          </Dialog.Panel>
         </div>
-      </Show>
+      </Dialog>
+      <Dialog open={showMessage} onClose={() => setShowMessage(false)} className="dialog">
+        <div className="panel">
+          <Dialog.Panel>
+            <Dialog.Title>Send a Message</Dialog.Title>
+            <p>Interested in a subject?</p>
+            <p>Have a question?</p>
+            <p>Send a request to the volunteer.</p>
+            <div>
+              <Col>
+                <label htmlFor="message">Message:</label>
+                <TextArea
+                  id={`message-${opening.id}`}
+                  name="message"
+                  variant={TextVariant.primary}
+                  onChange={(e) => setMessage(e.currentTarget.value)}
+                  value={message}
+                />
+                <Button onClick={onSendMessage}>Send</Button>
+              </Col>
+            </div>
+          </Dialog.Panel>
+        </div>
+      </Dialog>
     </styled.ActivityOpening>
   );
 };

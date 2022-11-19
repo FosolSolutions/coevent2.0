@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CoEvent.DAL.Migrations
 {
     [DbContext(typeof(CoEventContext))]
-    [Migration("20221119001457_Initial")]
+    [Migration("20221119081118_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -437,6 +437,62 @@ namespace CoEvent.DAL.Migrations
                         .IsUnique();
 
                     b.ToTable("EventSeries", (string)null);
+                });
+
+            modelBuilder.Entity("CoEvent.Entities.OpeningMessage", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)")
+                        .HasDefaultValueSql("''");
+
+                    b.Property<long>("OpeningId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("OwnerId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("UpdatedBy")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<DateTime>("UpdatedOn")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<byte[]>("Version")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("varbinary(max)")
+                        .HasDefaultValueSql("0");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OpeningId");
+
+                    b.HasIndex("OwnerId");
+
+                    b.ToTable("OpeningMessage", (string)null);
                 });
 
             modelBuilder.Entity("CoEvent.Entities.OpeningRequirement", b =>
@@ -1052,6 +1108,25 @@ namespace CoEvent.DAL.Migrations
                     b.Navigation("Account");
                 });
 
+            modelBuilder.Entity("CoEvent.Entities.OpeningMessage", b =>
+                {
+                    b.HasOne("CoEvent.Entities.ActivityOpening", "Opening")
+                        .WithMany("Messages")
+                        .HasForeignKey("OpeningId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CoEvent.Entities.User", "Owner")
+                        .WithMany("Messages")
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Opening");
+
+                    b.Navigation("Owner");
+                });
+
             modelBuilder.Entity("CoEvent.Entities.OpeningRequirement", b =>
                 {
                     b.HasOne("CoEvent.Entities.ActivityOpening", "Opening")
@@ -1198,6 +1273,8 @@ namespace CoEvent.DAL.Migrations
                 {
                     b.Navigation("Applications");
 
+                    b.Navigation("Messages");
+
                     b.Navigation("Requirements");
                 });
 
@@ -1240,6 +1317,8 @@ namespace CoEvent.DAL.Migrations
                     b.Navigation("Applications");
 
                     b.Navigation("Claims");
+
+                    b.Navigation("Messages");
 
                     b.Navigation("OwnedAccounts");
 

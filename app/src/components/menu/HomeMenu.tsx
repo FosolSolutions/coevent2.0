@@ -33,7 +33,7 @@ export const HomeMenu = () => {
         </Menu>
       </Show>
       <Show on={!narrow}>
-        <styled.MenuButton onClick={() => navigate('/calendars')}>Calendar</styled.MenuButton>
+        {/* <styled.MenuButton onClick={() => navigate('/calendars')}>Calendar</styled.MenuButton> */}
         <Menu menuButton={<styled.MenuButton>Schedules</styled.MenuButton>} transition>
           <MenuLink to="/schedules">Victoria Ecclesia</MenuLink>
         </Menu>

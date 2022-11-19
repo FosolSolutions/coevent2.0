@@ -8,6 +8,7 @@ export * from './useAuth';
 export * from './useBase';
 export * from './useClaims';
 export * from './useMail';
+export * from './useOpenings';
 export * from './useRoles';
 export * from './useScheduleEvents';
 export * from './useSchedules';

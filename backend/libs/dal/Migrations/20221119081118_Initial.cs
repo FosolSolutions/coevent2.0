@@ -437,6 +437,38 @@ namespace CoEvent.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "OpeningMessage",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OpeningId = table.Column<long>(type: "bigint", nullable: false),
+                    OwnerId = table.Column<long>(type: "bigint", nullable: false),
+                    Message = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false, defaultValueSql: "''"),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    CreatedBy = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    Version = table.Column<byte[]>(type: "varbinary(max)", nullable: true, defaultValueSql: "0")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OpeningMessage", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OpeningMessage_ActivityOpening_OpeningId",
+                        column: x => x.OpeningId,
+                        principalTable: "ActivityOpening",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_OpeningMessage_User_OwnerId",
+                        column: x => x.OwnerId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "OpeningRequirement",
                 columns: table => new
                 {
@@ -516,6 +548,16 @@ namespace CoEvent.DAL.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_OpeningMessage_OpeningId",
+                table: "OpeningMessage",
+                column: "OpeningId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OpeningMessage_OwnerId",
+                table: "OpeningMessage",
+                column: "OwnerId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Role_AccountId",
                 table: "Role",
                 column: "AccountId");
@@ -592,6 +634,9 @@ namespace CoEvent.DAL.Migrations
             PreDown(migrationBuilder);
             migrationBuilder.DropTable(
                 name: "Application");
+
+            migrationBuilder.DropTable(
+                name: "OpeningMessage");
 
             migrationBuilder.DropTable(
                 name: "OpeningRequirement");

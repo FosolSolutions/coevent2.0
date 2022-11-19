@@ -1,4 +1,4 @@
-import { Show } from 'components';
+import { Button, ButtonVariant, Row, Show } from 'components';
 import { IScheduleModel } from 'hooks';
 import _ from 'lodash';
 import moment from 'moment';
@@ -35,6 +35,10 @@ export const Month: React.FC<IMonthProps> = ({ schedule, filter }) => {
     setShow(!show);
   };
 
+  const scrollTop = () => {
+    document.getElementsByTagName('main')?.[0].scrollTo({ top: 0 });
+  };
+
   return (
     <styled.Month className="month">
       <div className="header" onClick={handleResizeMonth} title={show ? 'hide' : 'show'}>
@@ -52,6 +56,11 @@ export const Month: React.FC<IMonthProps> = ({ schedule, filter }) => {
             .value()}
         </div>
       </Show>
+      <Row>
+        <Button variant={ButtonVariant.link} onClick={scrollTop}>
+          Go to top
+        </Button>
+      </Row>
     </styled.Month>
   );
 };

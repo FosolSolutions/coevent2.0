@@ -41,6 +41,11 @@ public class ActivityOpening : SortableColumns<long>
   /// get - Collection of requirements.
   /// </summary>
   public ICollection<OpeningRequirement> Requirements { get; } = new List<OpeningRequirement>();
+
+  /// <summary>
+  /// get - Collection of messages.
+  /// </summary>
+  public ICollection<OpeningMessage> Messages { get; } = new List<OpeningMessage>();
   #endregion
 
   #region Constructors

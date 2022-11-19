@@ -19,11 +19,11 @@ export const ScheduleEvent = styled.div`
     gap: 1em;
 
     svg {
-      color: ${(props) => props.theme.css.iconLightColor};
+      color: ${(props) => props.theme.css.primaryColor};
     }
 
     h3 {
-      color: ${(props) => props.theme.css.secondaryVariantColor};
+      color: ${(props) => props.theme.css.primaryColor};
     }
   }
 

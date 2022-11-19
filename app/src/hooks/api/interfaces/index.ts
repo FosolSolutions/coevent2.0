@@ -7,6 +7,7 @@ export * from './ICommonColumnsModel';
 export * from './IEventActivityModel';
 export * from './IEventSeriesModel';
 export * from './ILoginModel';
+export * from './IOpeningMessageModel';
 export * from './IOpeningRequirementModel';
 export * from './IPaging';
 export * from './IPagingFilter';

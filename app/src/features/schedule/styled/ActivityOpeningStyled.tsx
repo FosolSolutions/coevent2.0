@@ -19,5 +19,14 @@ export const ActivityOpening = styled.div`
       display: flex;
       align-items: center;
     }
+
+    .btn.edit {
+      color: ${(props) => props.theme.css.primaryColor};
+
+      &:hover {
+        filter: brightness(200%);
+        cursor: pointer;
+      }
+    }
   }
 `;

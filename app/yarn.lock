@@ -1910,7 +1910,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@headlessui/react@npm:1.7.4":
+"@headlessui/react@npm:^1.7.4":
   version: 1.7.4
   resolution: "@headlessui/react@npm:1.7.4"
   dependencies:
@@ -3087,6 +3087,15 @@ __metadata:
   dependencies:
     "@types/react": "*"
   checksum: 522e5e949d05f35c6037a2290838c9c7ff92a9d06f7d96b993c7c3f5a86d8f3a6337e059c94e6fb0920227f445e5d1ce10fbfe3d9bbd95fb82a5539249d90646
+  languageName: node
+  linkType: hard
+
+"@types/react-modal@npm:3.13.1":
+  version: 3.13.1
+  resolution: "@types/react-modal@npm:3.13.1"
+  dependencies:
+    "@types/react": "*"
+  checksum: b0ad403e0051a2882e9086c6006cc342901b1c90caf760893b31717a5cbc04f86cc1ea7b5ce12a2c8350c9c09e9b344de3783404e70b7c7ea6a037d0ffd70e99
   languageName: node
   linkType: hard
 
@@ -4722,7 +4731,7 @@ __metadata:
     "@fortawesome/fontawesome-svg-core": 6.2.0
     "@fortawesome/free-solid-svg-icons": 6.2.0
     "@fortawesome/react-fontawesome": 0.2.0
-    "@headlessui/react": 1.7.4
+    "@headlessui/react": ^1.7.4
     "@reduxjs/toolkit": 1.9.0
     "@szhsin/react-menu": 3.2.1
     "@testing-library/jest-dom": 5.16.5
@@ -4733,6 +4742,7 @@ __metadata:
     "@types/pretty": 2.0.1
     "@types/react": 18.0.25
     "@types/react-dom": 18.0.8
+    "@types/react-modal": 3.13.1
     "@types/react-table": 7.7.12
     "@types/redux-logger": 3.0.9
     "@types/styled-components": 5.1.26
@@ -4762,7 +4772,7 @@ __metadata:
     react-dom: 18.2.0
     react-icons: 4.6.0
     react-inlinesvg: 3.0.1
-    react-modal: ^3.16.1
+    react-modal: 3.16.1
     react-redux: 8.0.5
     react-redux-loading-bar: 5.0.4
     react-resize-detector: 7.1.2
@@ -11536,7 +11546,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-modal@npm:^3.16.1":
+"react-modal@npm:3.16.1":
   version: 3.16.1
   resolution: "react-modal@npm:3.16.1"
   dependencies:
