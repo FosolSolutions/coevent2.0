@@ -58,7 +58,7 @@ db-drop () {
 
 db-refresh () {
   echo "Refresh the database, drop and recreate"
-  db-rollback 0
+  db-drop
   db-update
 }
 

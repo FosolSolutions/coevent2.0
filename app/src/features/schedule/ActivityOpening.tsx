@@ -149,7 +149,6 @@ export const ActivityOpening: React.FC<IActivityOpeningProps> = ({
       const model: IOpeningMessageModel = {
         id: 0,
         openingId: opening.id,
-        opening: opening,
         ownerId: userId ?? 0,
         message: request,
       };

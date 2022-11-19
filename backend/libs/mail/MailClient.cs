@@ -62,6 +62,16 @@ public class MailClient
       IsBodyHtml = true,
       Body = $@"
 				Hello {model.To.FirstName},
+        <div>
+          <p>
+            The updated online volunteer schedule now has a few new features.
+          </p>
+          <ul>
+            <li>Works on mobile devices</li>
+            <li>Highlights recommended series</li>
+            <li>Provides a way for everyone to request a topic or submit questions</li>
+          </ul>
+        </div>
         <p>
 					Please use the following link to access the Victoria Ecclesial Volunteer Schedule - <a href=""{model.Url}/login?key={model.To.Key}&redirect_uri=/schedules/{model.Schedule.Id}"">VOLUNTEER LINK</a><br/>
 					This link is specifically generated for you, please do not forward it to someone else.
