@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using CoEvent.DAL;
 using CoEvent.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace CoEvent.UoW;
@@ -24,5 +25,19 @@ public class ActivityOpeningService : BaseService<ActivityOpening, long>, IActiv
   #endregion
 
   #region Methods
+  /// <summary>
+  /// 
+  /// </summary>
+  /// <param name="id"></param>
+  /// <returns></returns>
+  public override ActivityOpening? FindById(long id)
+  {
+    return this.Context.ActivityOpenings
+      .Include(m => m.Applications)
+        .ThenInclude(a => a.User)
+      .Include(m => m.Activity)
+        .ThenInclude(m => m!.Event)
+      .FirstOrDefault(m => m.Id == id);
+  }
   #endregion
 }

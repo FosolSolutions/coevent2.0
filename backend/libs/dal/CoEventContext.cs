@@ -83,6 +83,11 @@ public class CoEventContext : DbContext
   /// <summary>
   /// get/set - Table of 
   /// </summary>
+  public virtual DbSet<OpeningMessage> OpeningMessages { get; set; } = default!;
+
+  /// <summary>
+  /// get/set - Table of 
+  /// </summary>
   public virtual DbSet<Application> Applications { get; set; } = default!;
 
   // public virtual DbSet<Calendar> Calendars { get; set; } = default!;

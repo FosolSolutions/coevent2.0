@@ -2,7 +2,6 @@ import { Button, ButtonVariant, GridTable } from 'components';
 import { IUserModel, useApi } from 'hooks';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Row } from 'react-table';
 
 import * as styled from './styled';
 import { columns } from './userColumns';
@@ -31,11 +30,7 @@ export const Users = () => {
         </div>
       </div>
       <div>
-        <GridTable
-          columns={columns}
-          data={users}
-          onRowClick={(row: Row<IUserModel>) => navigate(`/admin/users/${row.original.id}`)}
-        ></GridTable>
+        <GridTable columns={columns} data={users}></GridTable>
       </div>
     </styled.Users>
   );

@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using CoEvent.DAL;
 using CoEvent.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace CoEvent.UoW;
@@ -24,5 +25,21 @@ public class OpeningMessageService : BaseService<OpeningMessage, long>, IOpening
   #endregion
 
   #region Methods
+  /// <summary>
+  /// 
+  /// </summary>
+  /// <param name="id"></param>
+  /// <returns></returns>
+  public override OpeningMessage? FindById(long id)
+  {
+    return this.Context.OpeningMessages
+      .Include(m => m.Owner)
+      .Include(m => m.Opening)
+        .ThenInclude(m => m!.Applications)
+          .ThenInclude(m => m.User)
+      .Include(m => m.Opening)
+        .ThenInclude(m => m!.Activity)
+      .FirstOrDefault(m => m.Id == id);
+  }
   #endregion
 }

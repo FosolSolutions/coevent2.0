@@ -12,7 +12,7 @@ import * as styled from './LoginStyled';
  * If the user is already authenticated it will redirect to the home route.
  * @returns Login component.
  */
-export const Login = () => {
+export const Login: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ className, ...rest }) => {
   const padlock = usePadlock();
   const api = useApi();
   const navigate = useNavigate();
@@ -36,7 +36,7 @@ export const Login = () => {
   }, [api.auth, key, navigate, padlock, redirect_uri]);
 
   return (
-    <styled.Login>
+    <styled.Login className={`login${!!className ? ` ${className}` : ''}`} {...rest}>
       <div>
         <Logo />
         <p>Scheduling for teams</p>

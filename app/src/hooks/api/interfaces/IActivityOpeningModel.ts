@@ -1,6 +1,7 @@
 import {
   IApplicationModel,
   IEventActivityModel,
+  IOpeningMessageModel,
   IOpeningRequirementModel,
   ISortableColumnsModel,
 } from '.';
@@ -13,4 +14,5 @@ export interface IActivityOpeningModel extends ISortableColumnsModel<number> {
   responseRequired: boolean;
   requirements: IOpeningRequirementModel[];
   applications: IApplicationModel[];
+  messages: IOpeningMessageModel[];
 }

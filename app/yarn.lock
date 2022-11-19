@@ -1910,7 +1910,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@headlessui/react@npm:^1.7.4":
+"@headlessui/react@npm:1.7.4":
   version: 1.7.4
   resolution: "@headlessui/react@npm:1.7.4"
   dependencies:
@@ -3025,6 +3025,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/moment-timezone@npm:^0.5.30":
+  version: 0.5.30
+  resolution: "@types/moment-timezone@npm:0.5.30"
+  dependencies:
+    moment-timezone: "*"
+  checksum: 488b5880b346101f15e3f90267eb8d848ce20a41ea8b51305b1fee25f4fac57b93d553dc0de6f2eb8412be764bd74c9c347ed678c9a6d20d800a06c106b674f9
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:*, @types/node@npm:18.11.9":
   version: 18.11.9
   resolution: "@types/node@npm:18.11.9"
@@ -3087,15 +3096,6 @@ __metadata:
   dependencies:
     "@types/react": "*"
   checksum: 522e5e949d05f35c6037a2290838c9c7ff92a9d06f7d96b993c7c3f5a86d8f3a6337e059c94e6fb0920227f445e5d1ce10fbfe3d9bbd95fb82a5539249d90646
-  languageName: node
-  linkType: hard
-
-"@types/react-modal@npm:3.13.1":
-  version: 3.13.1
-  resolution: "@types/react-modal@npm:3.13.1"
-  dependencies:
-    "@types/react": "*"
-  checksum: b0ad403e0051a2882e9086c6006cc342901b1c90caf760893b31717a5cbc04f86cc1ea7b5ce12a2c8350c9c09e9b344de3783404e70b7c7ea6a037d0ffd70e99
   languageName: node
   linkType: hard
 
@@ -4731,18 +4731,18 @@ __metadata:
     "@fortawesome/fontawesome-svg-core": 6.2.0
     "@fortawesome/free-solid-svg-icons": 6.2.0
     "@fortawesome/react-fontawesome": 0.2.0
-    "@headlessui/react": ^1.7.4
+    "@headlessui/react": 1.7.4
     "@reduxjs/toolkit": 1.9.0
     "@szhsin/react-menu": 3.2.1
     "@testing-library/jest-dom": 5.16.5
     "@testing-library/react": 13.4.0
     "@testing-library/user-event": 14.4.3
     "@types/jest": 29.2.2
+    "@types/moment-timezone": ^0.5.30
     "@types/node": 18.11.9
     "@types/pretty": 2.0.1
     "@types/react": 18.0.25
     "@types/react-dom": 18.0.8
-    "@types/react-modal": 3.13.1
     "@types/react-table": 7.7.12
     "@types/redux-logger": 3.0.9
     "@types/styled-components": 5.1.26
@@ -4772,7 +4772,6 @@ __metadata:
     react-dom: 18.2.0
     react-icons: 4.6.0
     react-inlinesvg: 3.0.1
-    react-modal: 3.16.1
     react-redux: 8.0.5
     react-redux-loading-bar: 5.0.4
     react-resize-detector: 7.1.2
@@ -6554,7 +6553,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"exenv@npm:^1.2.0, exenv@npm:^1.2.2":
+"exenv@npm:^1.2.2":
   version: 1.2.2
   resolution: "exenv@npm:1.2.2"
   checksum: a894f3b60ab8419e0b6eec99c690a009c8276b4c90655ccaf7d28faba2de3a6b93b3d92210f9dc5efd36058d44f04098f6bbccef99859151104bfd49939904dc
@@ -9573,6 +9572,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"moment-timezone@npm:*":
+  version: 0.5.39
+  resolution: "moment-timezone@npm:0.5.39"
+  dependencies:
+    moment: ">= 2.9.0"
+  checksum: 9f972d3a29b2726d4fd1464df27738b756441fe57575f087cda91b7716a5a31d2cfd274255e3edfb15eb60af3ccf33fd339527b456092cac1a2a4124e4369c8b
+  languageName: node
+  linkType: hard
+
 "moment-timezone@npm:0.5.38":
   version: 0.5.38
   resolution: "moment-timezone@npm:0.5.38"
@@ -11539,25 +11547,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-lifecycles-compat@npm:^3.0.0, react-lifecycles-compat@npm:^3.0.4":
+"react-lifecycles-compat@npm:^3.0.4":
   version: 3.0.4
   resolution: "react-lifecycles-compat@npm:3.0.4"
   checksum: a904b0fc0a8eeb15a148c9feb7bc17cec7ef96e71188280061fc340043fd6d8ee3ff233381f0e8f95c1cf926210b2c4a31f38182c8f35ac55057e453d6df204f
-  languageName: node
-  linkType: hard
-
-"react-modal@npm:3.16.1":
-  version: 3.16.1
-  resolution: "react-modal@npm:3.16.1"
-  dependencies:
-    exenv: ^1.2.0
-    prop-types: ^15.7.2
-    react-lifecycles-compat: ^3.0.0
-    warning: ^4.0.3
-  peerDependencies:
-    react: ^0.14.0 || ^15.0.0 || ^16 || ^17 || ^18
-    react-dom: ^0.14.0 || ^15.0.0 || ^16 || ^17 || ^18
-  checksum: 978936e9320fad839c039b9ee4de55d40888156cb40e093615d6fbc2ff07139d5db06f14782cb7767f780bd5fb57956778669426c535ebc0068a7a03882c7e75
   languageName: node
   linkType: hard
 
@@ -13738,15 +13731,6 @@ __metadata:
   dependencies:
     makeerror: 1.0.12
   checksum: ad7a257ea1e662e57ef2e018f97b3c02a7240ad5093c392186ce0bcf1f1a60bbadd520d073b9beb921ed99f64f065efb63dfc8eec689a80e569f93c1c5d5e16c
-  languageName: node
-  linkType: hard
-
-"warning@npm:^4.0.3":
-  version: 4.0.3
-  resolution: "warning@npm:4.0.3"
-  dependencies:
-    loose-envify: ^1.0.0
-  checksum: 4f2cb6a9575e4faf71ddad9ad1ae7a00d0a75d24521c193fa464f30e6b04027bd97aa5d9546b0e13d3a150ab402eda216d59c1d0f2d6ca60124d96cd40dfa35c
   languageName: node
   linkType: hard
 

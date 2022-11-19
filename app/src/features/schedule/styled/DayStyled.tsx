@@ -8,6 +8,7 @@ export const Day = styled.div`
   /* background-color: ${(props) => props.theme.css.filterBackgroundColor}; */
   border-radius: 0.25em;
   padding: 0.5em;
+  width: 100%;
 
   > .date {
     background-color: ${(props) => props.theme.css.light};
@@ -18,5 +19,6 @@ export const Day = styled.div`
   > .events {
     display: flex;
     flex-direction: column;
+    width: 100%;
   }
 `;

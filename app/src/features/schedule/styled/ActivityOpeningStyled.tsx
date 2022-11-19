@@ -2,9 +2,17 @@ import styled from 'styled-components';
 
 export const ActivityOpening = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   border: solid 1px ${(props) => props.theme.css.selectedColor};
   border-radius: 0.25em;
+  align-items: stretch;
+  align-content: stretch;
+
+  & > * {
+    width: 100%;
+    height: 100%;
+    gap: 0.25em;
+  }
 
   .applicant {
     margin-top: auto;
@@ -27,6 +35,20 @@ export const ActivityOpening = styled.div`
         filter: brightness(200%);
         cursor: pointer;
       }
+    }
+  }
+
+  .message {
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+
+    > * {
+      display: flex;
+      align-items: center;
+      flex: 1 1 auto;
     }
   }
 `;

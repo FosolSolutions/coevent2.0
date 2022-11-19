@@ -5,6 +5,7 @@ using CoEvent.UoW;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using CoEvent.Mail;
+using CoEvent.Models.Mail;
 
 namespace CoEvent.API.Areas.Admin.Controllers;
 
@@ -21,6 +22,8 @@ public class OpeningsController : ControllerBase
   #region Variables
   private readonly MailClient _client;
   private readonly IOpeningMessageService _openingMessageService;
+  private readonly IUserService _userService;
+  private readonly IActivityOpeningService _activityOpeningService;
   #endregion
 
   #region Constructors
@@ -29,10 +32,18 @@ public class OpeningsController : ControllerBase
   /// </summary>
   /// <param name="client"></param>
   /// <param name="openingMessageService">DAL service object</param>
-  public OpeningsController(MailClient client, IOpeningMessageService openingMessageService)
+  /// <param name="userService">DAL service object</param>
+  /// <param name="activityOpeningService">DAL service object</param>
+  public OpeningsController(
+    MailClient client,
+    IOpeningMessageService openingMessageService,
+    IUserService userService,
+    IActivityOpeningService activityOpeningService)
   {
     _client = client;
     _openingMessageService = openingMessageService;
+    _userService = userService;
+    _activityOpeningService = activityOpeningService;
   }
   #endregion
 
@@ -49,13 +60,28 @@ public class OpeningsController : ControllerBase
   [SwaggerOperation(Tags = new[] { "openings-add" })]
   public async Task<IActionResult> SendMessageAsync(OpeningMessageModel model)
   {
-    var opening = _openingMessageService.AddAndSave((Entities.OpeningMessage)model);
-    opening = _openingMessageService.FindById(opening.Id) ?? throw new KeyNotFoundException();
+    var message = _openingMessageService.AddAndSave((Entities.OpeningMessage)model);
+    message = _openingMessageService.FindById(message.Id) ?? throw new KeyNotFoundException();
 
-    var mail = _client.CreateOpeningMessage(model);
-    await _client.SendAsync(mail);
+    if (message.Opening?.Applications.Any() ?? false)
+    {
+      var from = new UserModel(_userService.FindByUsername("jfoster")!);
+      var url = new Uri(String.Format("{0}://{1}", this.HttpContext.Request.Scheme, this.HttpContext.Request.Host));
+      model.Owner = new UserModel(message.Owner!);
+      model.Opening = new ActivityOpeningModel(message.Opening)
+      {
+        Activity = new EventActivityModel(message.Opening!.Activity!)
+      };
 
-    return new JsonResult(new OpeningMessageModel(opening));
+      foreach (var applicant in message.Opening!.Applications)
+      {
+        var messageModel = new OpeningMessageMailModel(url, model, from, applicant.User!);
+        var mail = _client.CreateOpeningMessage(messageModel);
+        await _client.SendAsync(mail);
+      }
+    }
+
+    return new JsonResult(new OpeningMessageModel(message));
   }
   #endregion
 }

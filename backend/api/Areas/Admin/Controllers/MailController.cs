@@ -53,7 +53,7 @@ public class MailController : ControllerBase
   [SwaggerOperation(Tags = new[] { "mail-invitation" })]
   public async Task<IActionResult> SendInvitationAsync(UserModel to)
   {
-    var from = new UserModel(_userService.FindById(1)!);
+    var from = new UserModel(_userService.FindByUsername("jfoster")!);
     var url = new Uri(String.Format("{0}://{1}", this.HttpContext.Request.Scheme, this.HttpContext.Request.Host));
     var schedule = new ScheduleModel(_scheduleService.FindById(1)!);
     var model = new InvitationModel(url, schedule, from, to);

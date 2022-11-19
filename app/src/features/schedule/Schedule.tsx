@@ -7,9 +7,9 @@ import { useSchedules as useStore } from 'store/slices';
 import { Months, ScheduleFilter } from './Months';
 import * as styled from './styled';
 
-export interface IScheduleProps {}
+export interface IScheduleProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-export const Schedule: React.FC<IScheduleProps> = () => {
+export const Schedule: React.FC<IScheduleProps> = ({ className, ...rest }) => {
   const api = useApi();
   const [{ schedule }, { storeSchedule }] = useStore();
   const { id } = useParams();
@@ -32,7 +32,7 @@ export const Schedule: React.FC<IScheduleProps> = () => {
   }, [api.events, api.schedules, schedule, scheduleId, storeSchedule]);
 
   return (
-    <styled.Schedule>
+    <styled.Schedule className={`schedule${!!className ? ` ${className}` : ''}`} {...rest}>
       <Row>
         <h3>Filter:</h3>
         <nav>
@@ -55,9 +55,7 @@ export const Schedule: React.FC<IScheduleProps> = () => {
           </ul>
         </nav>
       </Row>
-      <div className="schedule">
-        {!!schedule && <Months schedule={schedule} filter={new ScheduleFilter(filter)} />}
-      </div>
+      <div>{!!schedule && <Months schedule={schedule} filter={new ScheduleFilter(filter)} />}</div>
     </styled.Schedule>
   );
 };

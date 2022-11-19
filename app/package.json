@@ -21,6 +21,7 @@
     "@testing-library/react": "13.4.0",
     "@testing-library/user-event": "14.4.3",
     "@types/jest": "29.2.2",
+    "@types/moment-timezone": "0.5.30",
     "@types/node": "18.11.9",
     "@types/pretty": "2.0.1",
     "@types/react": "18.0.25",

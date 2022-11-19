@@ -1,7 +1,10 @@
 import styled from 'styled-components';
 
 export const Schedule = styled.div`
+  display: flex;
+  flex-direction: column;
   margin: 0 1em 0 1em;
+  width: 100%;
 
   nav {
     display: flex;
@@ -13,12 +16,6 @@ export const Schedule = styled.div`
       flex-direction: row;
       list-style-type: none;
     }
-  }
-
-  .schedule {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
   }
 `;
 

@@ -38,9 +38,16 @@ public class ScheduleEventService : BaseService<ScheduleEvent, long>, IScheduleE
     var query = this.Context.Set<ScheduleEvent>()
       .Include(m => m.Series)
       .Include(m => m.Activities)
-        .ThenInclude(m => m.Openings).ThenInclude(o => o.Requirements)
+        .ThenInclude(m => m.Openings)
+          .ThenInclude(o => o.Requirements)
       .Include(m => m.Activities)
-        .ThenInclude(m => m.Openings).ThenInclude(m => m.Applications).ThenInclude(m => m.User)
+        .ThenInclude(m => m.Openings)
+          .ThenInclude(m => m.Applications)
+            .ThenInclude(m => m.User)
+      .Include(m => m.Activities)
+        .ThenInclude(m => m.Openings)
+          .ThenInclude(m => m.Messages)
+            .ThenInclude(m => m.Owner)
       .AsQueryable();
 
     if (values.ScheduleId.HasValue)

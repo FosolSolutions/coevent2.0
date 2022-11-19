@@ -9,6 +9,8 @@ export const Login = styled.div`
   align-content: center;
   align-items: center;
   gap: 1em;
+  height: 100%;
+  width: 100%;
 
   & > div:first-child {
     text-align: center;

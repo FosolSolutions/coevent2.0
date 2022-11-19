@@ -41,6 +41,11 @@ public class ActivityOpeningModel : SortableColumnsModel<long>
   /// get - Collection of applications.
   /// </summary>
   public IEnumerable<ApplicationModel> Applications { get; set; } = Array.Empty<ApplicationModel>();
+
+  /// <summary>
+  /// get - Collection of messages.
+  /// </summary>
+  public IEnumerable<OpeningMessageModel> Messages { get; set; } = Array.Empty<OpeningMessageModel>();
   #endregion
 
   #region Constructors
@@ -61,6 +66,7 @@ public class ActivityOpeningModel : SortableColumnsModel<long>
     this.ResponseRequired = entity.ResponseRequired;
     this.Requirements = entity.Requirements.Select(r => new OpeningRequirementModel(r)).ToArray();
     this.Applications = entity.Applications.Select(a => new ApplicationModel(a)).ToArray();
+    this.Messages = entity.Messages.Select(a => new OpeningMessageModel(a)).ToArray();
   }
   #endregion
 }

@@ -19,12 +19,12 @@ interface ILayoutProps extends React.HTMLAttributes<HTMLDivElement> {
  * @param param0 Div element attributes.
  * @returns Layout component.
  */
-export const Layout: React.FC<ILayoutProps> = ({ name, children, ...rest }) => {
+export const Layout: React.FC<ILayoutProps> = ({ name, className, children, ...rest }) => {
   const padlock = usePadlock();
   const [isLoading] = React.useState(false);
 
   return (
-    <styled.Layout {...rest}>
+    <styled.Layout className={`layout${!!className ? ` ${className}` : ''}`} {...rest}>
       {padlock.authenticated && (
         <header>
           <HomeMenu />

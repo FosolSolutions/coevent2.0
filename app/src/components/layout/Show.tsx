@@ -1,8 +1,8 @@
 export interface IShowProps {
-  on: boolean;
+  on?: boolean;
   children: React.ReactNode;
 }
 
-export const Show: React.FC<IShowProps> = ({ on, children }) => {
+export const Show: React.FC<IShowProps> = ({ on = false, children }) => {
   return on ? <>{children}</> : null;
 };

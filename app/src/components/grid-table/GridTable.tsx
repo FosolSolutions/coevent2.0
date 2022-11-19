@@ -17,7 +17,7 @@ export interface IGridTableProps<CT extends object = Record<string, unknown>> {
   /**
    * Handle row click event.
    */
-  onRowClick: (row: Row<CT>) => void;
+  onRowClick?: (row: Row<CT>) => void;
 }
 
 /**
@@ -46,7 +46,7 @@ export const GridTable = <T extends object>({ columns, data, onRowClick }: IGrid
         {rows.map((row) => {
           prepareRow(row);
           return (
-            <div {...row.getRowProps()} onClick={() => onRowClick(row)}>
+            <div {...row.getRowProps()} onClick={() => onRowClick?.(row)}>
               {row.cells.map((cell) => {
                 return <div {...cell.getCellProps()}>{cell.render('Cell')}</div>;
               })}

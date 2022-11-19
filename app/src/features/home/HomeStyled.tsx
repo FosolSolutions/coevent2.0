@@ -7,6 +7,7 @@ export const Home = styled.div`
   align-items: center;
   justify-content: center;
   height: 100%;
+  width: 100%;
 
   & > p {
     margin: 1em;

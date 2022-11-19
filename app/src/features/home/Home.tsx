@@ -6,14 +6,14 @@ import { useNavigate } from 'react-router-dom';
 
 import * as styled from './HomeStyled';
 
-export const Home = () => {
+export const Home: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ className, ...rest }) => {
   const padlock = usePadlock();
   const navigate = useNavigate();
 
   const [showModal, setShowModal] = React.useState(false);
 
   return (
-    <styled.Home className="home">
+    <styled.Home className={`home${!!className ? ` ${className}` : ''}`} {...rest}>
       <Logo onClick={() => setShowModal(true)} />
       <p>Scheduling for teams</p>
       {!padlock.authenticated && (

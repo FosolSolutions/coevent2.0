@@ -1,3 +1,4 @@
+import { getIn } from 'formik';
 import { SelectHTMLAttributes } from 'react';
 
 import { DropdownVariant, instanceOfIOption, IOption } from '.';
@@ -19,11 +20,11 @@ export interface IDropdownProps<T> extends Omit<SelectHTMLAttributes<HTMLSelectE
   /**
    * Property name of option item that is used to match the selected value(s).
    */
-  optionValue?: string;
+  optionValue?: string | ((item: T) => string);
   /**
    * Property name of the option item that is used to match the text.
    */
-  optionText?: string;
+  optionText?: string | ((item: T) => string);
   /**
    * The selected values.
    */
@@ -50,7 +51,8 @@ export const Dropdown = <T,>({
     if (value === undefined || !Array.isArray(value) || !value.length) return value;
     if (value[0] instanceof HTMLOptionElement) return value.map((o) => o.value);
     if (typeof value[0] === 'string' || typeof value[0] === 'number') return value;
-    if (optionValue) return value.map((v) => (v as any)[optionValue]);
+    if (typeof optionValue === 'function') return value.map((v) => optionValue(v));
+    if (!!optionValue) return value.map((v) => getIn(v, optionValue));
     return value;
   };
 
@@ -87,9 +89,16 @@ export const Dropdown = <T,>({
               );
             } else if (optionValue && typeof option === 'object') {
               const value = option as any;
+              const ovalue =
+                typeof optionValue === 'function' ? optionValue(value) : getIn(value, optionValue);
+              const text = !!optionText
+                ? typeof optionText === 'function'
+                  ? optionText(value)
+                  : getIn(value, optionText)
+                : ovalue;
               return (
-                <option key={value[optionValue]} value={value[optionValue]}>
-                  {value[optionText ?? optionValue]}
+                <option key={ovalue} value={ovalue}>
+                  {text}
                 </option>
               );
             }
