@@ -73,7 +73,7 @@ public class MailClient
           </ul>
         </div>
         <p>
-					Please use the following link to access the Victoria Ecclesial Volunteer Schedule - <a href=""{model.Url}/login?key={model.To.Key}&redirect_uri=/schedules/{model.Schedule.Id}"">VOLUNTEER LINK</a><br/>
+					Please use the following link to access the Victoria Ecclesial Volunteer Schedule - <a href=""{model.Url}login?key={model.To.Key}&redirect_uri=/schedules/{model.Schedule.Id}"">VOLUNTEER LINK</a><br/>
 					This link is specifically generated for you, please do not forward it to someone else.
 				</p>
         <p>
@@ -109,7 +109,7 @@ public class MailClient
         </p>
         <hr/>
         <p>
-          Please use the following link to access the Victoria Ecclesial Volunteer Schedule - <a href=""{model.Url}/login?key={model.To.Key}&redirect_uri=/schedules/{model.Message.Opening?.Activity?.Event?.ScheduleId}"">VOLUNTEER LINK</a>
+          Please use the following link to access the Victoria Ecclesial Volunteer Schedule - <a href=""{model.Url}login?key={model.To.Key}&redirect_uri=/schedules/{model.Message.Opening?.Activity?.Event?.ScheduleId}"">VOLUNTEER LINK</a>
         </p>
         <p>
           Love in Christ,<br/>
