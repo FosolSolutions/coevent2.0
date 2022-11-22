@@ -227,18 +227,26 @@ public partial class Initial : SqlServerSeedMigration
     var date = new DateTime(startOn.Year, startOn.Month, startOn.GetFirstDayOfWeekInMonth(DayOfWeek.Thursday), 19, 30, 0);
     while (date <= endOn)
     {
-      int? seriesId = date switch
+      // Last day of each quarter is a business meeting
+      if (new[] { 1, 4, 7, 10 }.Contains(date.Month) && date.AddDays(7).Month > date.Month)
       {
-        { Month: 3 } => 1, // Character Study
-        { Month: 4 } => 2, // Theme Study
-        { Month: 5, Day: < 14 } => 4, // Group Discussion
-        _ => null,
-      };
-      AddEvent(migrationBuilder, date, date.AddHours(1), "Bible Class", seriesId);
-      AddActivity(migrationBuilder, date, "Speaking", "Lecture");
-      AddOpening(migrationBuilder, "Speak", 1, "Title", true, "speak");
-      _activityId++;
-      _openingId++;
+        AddEvent(migrationBuilder, date, date.AddHours(2), date.Month == 1 ? "AGBM" : "QGBM");
+      }
+      else
+      {
+        int? seriesId = date switch
+        {
+          { Month: 3 } => 1, // Character Study
+          { Month: 4 } => 2, // Theme Study
+          { Month: 5, Day: < 14 } => 4, // Group Discussion
+          _ => null,
+        };
+        AddEvent(migrationBuilder, date, date.AddHours(1), "Bible Class", seriesId);
+        AddActivity(migrationBuilder, date, "Speaking", "Lecture");
+        AddOpening(migrationBuilder, "Speak", 1, "Title", true, "speak");
+        _activityId++;
+        _openingId++;
+      }
 
       date = date.AddDays(7);
       _eventId++;
