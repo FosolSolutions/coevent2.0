@@ -227,7 +227,7 @@ public partial class Initial : SqlServerSeedMigration
     var date = new DateTime(startOn.Year, startOn.Month, startOn.GetFirstDayOfWeekInMonth(DayOfWeek.Thursday), 19, 30, 0);
     while (date <= endOn)
     {
-      // Last day of each quarter is a business meeting
+      // Last day of each quarter is a business meeting (Jan, Apr, July, Oct).
       if (new[] { 1, 4, 7, 10 }.Contains(date.Month) && date.AddDays(7).Month > date.Month)
       {
         AddEvent(migrationBuilder, date, date.AddHours(2), date.Month == 1 ? "AGBM" : "QGBM");

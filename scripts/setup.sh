@@ -18,6 +18,7 @@ gen_env () {
   gen_api_env ${1-}
   gen_dal_env ${1-}
   gen_app_env ${1-}
+  gen_nginx_env ${1-}
 }
 
 gen_root_env () {
@@ -101,5 +102,15 @@ gen_app_env () {
     echo \
 "" >> ./app/.env
     echo "./app/.env created"
+  fi
+}
+
+gen_nginx_env () {
+  if test -f "./nginx/.env"; then
+    echo "./nginx/.env exists"
+  else
+    echo \
+"" >> ./nginx/.env
+    echo "./nginx/.env created"
   fi
 }
